@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<body>
+    <div id ="noncanvas">
+    <div id="testUno">
+        UNOO
+        <div id="testDos"></div>
+    </div>
+   <!-- <div id="myTestButton1">My Test Button 1</div>
+    <div id="myTestButton2">My Test Button 2</div>-->
+
+    <button id="bypassButton">click to bypass</button>
+    <div id ='testTime'>Test Time!</div>
+    <div id = "menu" class="container">
+        <form class = "item" id="createRoom">
+            <h1>Create Room</h1>
+            <div id="radio">
+            <label for="public">Public
+            <input type="radio" name="access" id="public" value="public" checked="yes">
+            </label>
+            <label for="unlisted">Unlisted
+            <input type="radio" name="access" id="unlisted" value="private">
+            </label>
+            </div>
+            <br>
+            <label for="roomname">Room Name:</label>
+            <input type="text" name="roomname" id="roomname">
+            <label for="passcode">Passcode:<span id="optional"> (Optional)</span></label>
+            <input type="text" name="passcode" id="passcode">
+            <label for="playerCnt">Player #:</label>
+            <select name="playerCnt">
+                <option val="1">1</option> 
+                <option val="2">2</option>
+                <option val="3">3</option>
+                <option val="4">4</option>
+            </select>
+            <input type="button" id="createPlay" value="Create!">
+        </form>
+        <form class="item" id="main" type="usernameForm">
+            <input type="text" name="username" id="playerName" placeholder="Player Name:">
+            <input type="button" id="singlePlayerButton" value="Singleplayer">
+            <input type="button" id="createButton" value="Create Room">
+            <input type="button" id="joinButton" value="Join Room">
+    
+    
+        </form>
+        <div class="item" id="joinRoom">
+            <h1 id="joinh1">Join Room</h1>
+            <!-- <h1>Join Room</h1> -->
+            <!-- Click a Room To Join: -->
+            <div id="buttonContainer">
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="game" class="container">
+        <div id="mainUI">
+            <div id="mainUIIcons">
+                <div id = "testButton"></div>
+                <div id = "store-icon-holder" class="icon storeClass">   Store  </div>
+                <div id = "orbsInv-icon-holder" class="icon orbsClass">   Orbs  </div>
+                <div id = "robosInv-icon-holder" class="icon robosClass">   Robots   </div>
+            </div> 
+            <div id = "store" class="showcase storeClass"><h1>Welcome to Store</h1></div>
+            <div id = "orbsInv" class="showcase orbsClass"><h1>Welcome to Orbs Inventory</h1></div>
+            <div id = "robosInv" class="showcase robosClass"><h1>Welcome to Robots Inventory</h1></div>
+       </div>
+
+        <div id="roboUI">
+            
+        </div>
+
+        <div id="resourceUI">
+            <div id="gears"></div>
+            <div id="energy"></div>
+        </div>
+    <!-- <h1>Ayo is game time</h1> 
+      <button id="superButton">SUPER BUTTON</button>-->
+    </div>
+    <!-- <div id="test"></div> -->
+    
+     
+    <div id="visuals" class="container">
+        <canvas></canvas>
+    </div>
+    <div id="test">TEST</div>
+    </div>
+</body>
+
+   
+
+</html>

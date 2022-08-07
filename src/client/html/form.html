@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        $(document).ready(function(){
+            $("form").submit(function(event){
+                event.preventDefault(); //disables whatever happens normally. 
+                var name = $("$mail-name").val();
+                
+            }); //looking for a submit event, overriding the default post.
+        });
+    </script>
+</head>
+
+<body>
+    <form action="mail.php" method="POST">
+        <input id ="mail-name" type="text" name="name" placeholder="Full name">
+        <br>
+        <input id ="mail-email"type="text" name="email" placeholder="E-mail">
+        <br>
+        <select id ="mail-gender"name="gender">
+            <option value="male">Male</option>
+            <option value="female">Male</option>
+        </select>
+        <br>
+        <textarea id ="mail-message"name="message" placeholder="Message"></textarea>
+        <br>
+        <button id="mail-submit" type="submit" name="submit">Send e-mail</button>
+        <p id="form-message"></p>
+    </form>
+</body>
+
+</html>
