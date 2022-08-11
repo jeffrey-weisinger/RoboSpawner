@@ -8,8 +8,10 @@ import {menuLogicSetup, fillButtons, handleErrors, consoleLogTester, menuComplet
 import {agentSelectComplete} from './agentSelectLogic.js'
 import {setupCanvas, updateCanvas} from './canvas.js' //update canvas because that's where we're going to start listening ==> updating.
 import {draw} from './draw.js';
-import {startCapturingInput} from './input.js';
+import {startCapturingInput, resetDiv, removeDiv} from './input.js';
 import {initState, processGameUpdate} from './process.js' //the center of where we get/process our updates from the server! 
+import {updateGears, addToInventory} from './gameLogic.js';
+import { update } from 'lodash';
 let mode;
 let playerClassType;
 let multiStyle;
@@ -32,7 +34,7 @@ export function connect(playerType){
          //   $('#myTestButton2')[0].onclick = () => console.log("OOMA POMA2");
             console.log("connected!");
            // document.getElementById("superButton").addEventListener('click', ()=> {console.log("SUPERE!"); socket.emit("gimmeInfo")});
-           document.getElementById("bypassButton").addEventListener('click', ()=>{socket.emit('bypass')});
+           /*document.getElementById("bypassButton").addEventListener('click', ()=>{socket.emit('bypass')});*/
            //$("#store-icon-holder")[0].onclick = ()=>{console.log("DUMBASS WTF ARE YOU DOING")};
 
            //document.getElementById("testTime").onclick = () => {console.log("test time!!")};
@@ -55,7 +57,10 @@ export function connect(playerType){
             socket.on('error', (type, roomname) => {handleErrors(type, roomname); console.log(type + " is what was returned.")});
             socket.on('menuComplete', menuComplete);
             socket.on('agentSelectComplete', agentSelectComplete);
+            socket.on('gearUpdate', newGearCount => updateGears(newGearCount));
             socket.on('gameTime', configGame);
+            socket.on('buyConfirmation', returnObj => addToInventory(returnObj));
+            socket.on('updateDiv', obj=>updateDiv(obj));
         }) 
         resolve()});
 }
@@ -76,10 +81,22 @@ export function classSelect(selectedClass){
     socket.emit('classSelect', selectedClass);
 }
 
-export function mouseInput(x, y, canvasX, canvasY, type){
+export function mouseMove(x, y, canvasX, canvasY, type){
     let obj = {x, y, canvasX, canvasY, type}
     socket.emit('mouseInput', obj);
 }
+export function pickupItem(uuid){
+    socket.emit('pickupItem', uuid);
+    console.log("AAQAAHAAH");
+
+}
+
+export function buyRobot(model){
+    socket.emit('buyRobot', model); //model
+    console.log(model);
+    console.log('buyin');
+} 
+
 
 export function keyInput(key, type){
     let obj = {key, type}
@@ -88,6 +105,25 @@ export function keyInput(key, type){
 
 
 function configGame(){
-    startCapturingInput();
+    startCapturingInput(); //note how this only happens after game is configured. 
     draw();
+}
+
+export function reqRoboAdd(obj){
+    socket.emit('reqRoboAdd', obj);
+    console.log("REQ ROBO ADD TIME");
+
+}
+
+function updateDiv(obj){
+    let {update, uuid} = obj
+    if (update == 'reset'){
+        resetDiv(uuid);//didn't go through (not necessarily a failure)
+    }else if(update == 'remove'){
+        removeDiv(uuid); //success
+    }
+}
+
+export function orbitUpdate(obj){
+    socket.emit('orbitUpdate', obj);
 }

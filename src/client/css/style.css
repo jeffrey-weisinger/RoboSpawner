@@ -67,6 +67,7 @@ label{
     background-color: #dcf5f0;
     grid-column: 2 4;
     visibility: visible;
+    z-index: 4;
 
 }
 
@@ -278,7 +279,6 @@ canvas {
 }
 
 
-
 #mainUIIcons{
     position: absolute; 
     height: 530px;
@@ -290,6 +290,7 @@ canvas {
     font-family: Arial, Helvetica, sans-serif;
     height: 37px;
     /*they all start off as adadad.*/
+    z-index: 5;
 
 
 }
@@ -367,12 +368,17 @@ canvas {
     top: 46px;
     left: 20px;  
     height: 505px;
-    width: 282px;
+    width: 340px;
     background-color:#bf974d; /*they all start off as adadad.*/
     border: 1px solid black;
+    z-index: 5;
+
+    overflow: scroll;
 }
 #store{
-
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 #orbsInv{
@@ -424,7 +430,8 @@ span{
     width: 1455px;
     top: 560px;
     left: 20px;
-    background-color: yellow;
+    background-color: 'transparent';
+
 }
 
 .expanded{
@@ -545,18 +552,326 @@ canvas{
 
 #resourceUI{
     position: absolute;
-    height: 60px;
-    width: 330px;
+
     display: inline-block;
     top: 15px;
-    left: 1340px;
+    left: 1400px;
+    font-size: 3rem;
+    font-family: Arial, Helvetica, sans-serif;
+   /* background-color: yellow;
+    border: 1px solid black;*/
+    display: flex;
     
 }
 #gears{
-    display: inline-block;
-    width: 160px;
+    display: flex;
+
+    width: 90%;
+    height: auto;
+    margin-right: 1rem;
 }
 #energy{
+    display: flex;
+
+    width: 90%;
+    height: auto;
+}
+#energy img{
+    position: relative;
+    top: 0.4rem;
+}
+
+.roboUnitGUI{
     display: inline-block;
-    width: 160px;
+    border: 1px solid red;
+}
+
+.infoHolder {
+    display: inline-block;
+    border: 1px solid black;
+
+}
+
+/*css tricks :) */
+
+
+.roboUnit{
+    position: static; 
+
+    margin-top: 5px;
+    background-color: pink;
+    display: inline-grid;
+    margin-right: 13px;
+
+    margin-bottom: 30px;
+    grid-template-rows: repeat(36.7px, 3);
+    grid-template-columns: 65px 90px; 
+
+
+    height: 110px;
+    width: 146px;
+    grid-template-areas:
+    "title title"
+    "image info1"
+    "image info1";
+
+
+    
+}
+
+.unitImg{
+    position: relative;
+
+    padding-top: 5px;
+    padding-bottom: 15.5px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+
+ 
+}
+
+.unitImgHolder{
+
+    grid-area: image;
+    border: 2px solid black;
+    margin-top: 0px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+
+
+}
+.unitInfo{
+    grid-area: info1;
+    display: grid;
+    border: 2px solid brown;
+
+    grid-template-columns: 20px 20px 20px 20px;
+    grid-template-rows: 28px 28px 28px;
+
+    width: 80px;
+    height: 81px;
+    
+    grid-template-areas:
+    "img1 text1 img2 text2"
+    "img3 text3 img4 text4"
+    "img5 text5 img6 text6";
+
+
+}
+
+
+#roboImage1{
+    width: 130%;
+    height: auto; 
+    object-fit: cover;
+    object-position: 20% 10%;
+    right: 9px;
+    top: 5px;
+    padding-bottom: 4px;
+}
+#roboImage2{
+    width: 115%;
+    height: auto; 
+    object-fit: cover;
+    object-position: 20% 10%;  
+    right: 6px;
+    top: 7px;
+}
+#roboImage3{
+    width: 122%;
+    height: auto; 
+    object-fit: cover;
+    object-position: 20% 10%;   
+    right: 7.5px;
+    top: 7px;
+
+
+}
+#roboImage4{
+    width: 100%;
+    height: auto; 
+    object-fit: cover;
+    object-position: 20% 10%;
+    right: 2px;
+}
+#roboImage5{
+    width: 110%;
+    height: auto; 
+    object-fit: cover;
+    object-position: 20% 10%; 
+    padding-bottom:2px;
+    right: 5px;
+    bottom: 4px;
+}
+#unitImgHolder5{
+    padding-bottom: 15px;
+}
+
+.img1{
+    grid-area: img1;
+}
+.text{
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.text1{
+    grid-area: text1;
+}
+.text2{
+    grid-area: text2;
+}
+.text3{
+    grid-area: text3;
+}
+.text4{
+    grid-area: text4;
+}
+.text5{
+    grid-area: text5;
+}
+.text6{
+    grid-area: text6;
+}
+
+.img2{
+    grid-area: img2;
+}
+.img3{
+    grid-area: img3;
+}
+.img4{
+    grid-area: img4;
+}
+.img5{
+    grid-area: img5;
+}
+.img6{
+    grid-area: img6;
+}
+
+.title{
+    grid-area: title;
+    border: 1px solid grey;
+    height: 20px;
+
+    text-align: center;
+    width: 147px;
+    height: 23px;
+
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.orbsDiv{
+    display: grid;
+    grid-template-columns: 20px 20px;
+    grid-template-rows: 20px;
+    background-color: gold;
+    border: 1px solid green;
+    
+}
+
+.buyButton{
+    height: 1.75rem;
+    width: 150px;
+    background-color: pink;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.buyButton text{
+    color: green;
+    position: relative;
+
+}
+
+
+h3{
+    display: block;
+}
+
+.gearCost{
+    position: relative;
+    max-width: 20%;
+    height: auto;
+    margin-left: 3px;
+}
+
+.inventoryBubble{
+    position: absolute;
+    top: 0px;
+    left: 1.6rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background-color: red;
+    z-index: 8;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.5rem;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.inventoryBubble span{
+    position: absolute;
+    right: 0.22rem;
+    top: -1.425em;
+}
+
+#faded1{
+    width: 120%;
+    height: auto;
+    opacity: 40%;
+    position: relative; /*this changed the size..? why?*/
+    left: 2.5rem;
+}
+
+#faded2{
+    width: 120%;
+    height: auto;
+    opacity: 40%;
+    position: relative; /*this changed the size..? why?*/
+    left: 2.4rem;
+    bottom: 1rem;
+}
+
+#faded3{
+    width: 120%;
+    height: auto;
+    opacity: 40%;
+    position: relative; /*this changed the size..? why?*/
+    left: 2.5rem;
+}
+
+#faded4{
+    width: 120%;
+    height: auto;
+    opacity: 40%;
+    position: relative; /*this changed the size..? why?*/
+    left: 2.5rem;
+}
+
+
+#faded5{
+    width: 120%;
+    height: auto;
+    opacity: 40%;
+    position: relative; /*this changed the size..? why?*/
+    left: 2.5rem;
 }

@@ -55,6 +55,11 @@ io.on('connection', (socket)=>{
     socket.on('keyInput', obj => handleKeyInput(socket, obj));
     socket.on('mouseInput', obj => handleMouseInput(socket, obj));
     socket.on('bypass', ()=> newBypassArena(socket));
+    socket.on('pickupItem', (uuidsArr) => pickupItem(socket, uuidsArr));
+    socket.on('buyRobot', model => buyRobot(socket, model));
+    socket.on('reqRoboAdd', obj =>addToBattleField(socket, obj) );
+    socket.on('orbitUpdate', obj =>updateDirection(socket, obj) );
+
 });
 
 
@@ -195,7 +200,6 @@ function handleJoinValidation(socket, validationObj){
  
             io.emit('refillButtons', Object.assign({}, {[roomname]:correct_room}));
             socket.emit('menuComplete');
-
             arenaAdd(socket);
 
             //console.log(arenas);
@@ -224,4 +228,37 @@ function handleMouseInput(socket, obj){
     }
 }
 
+function pickupItem(socket, uuidsArr){
+    console.log(arenas);
+    console.log(socket.id);
+    if (arenas[socket.id]){
+        arenas[socket.id].pickupItem(socket, uuidsArr);
+    }else{
+        console.log("no sockets?");
+    }
+    console.log("AQAAH");
+}
 
+function buyRobot(socket, model){
+    console.log(socket.id);
+    if (arenas[socket.id]){ 
+        arenas[socket.id].buyRequest(socket, model);
+        console.log("BUY REQ");
+    }
+    console.log("BUY REQ2");
+
+}
+
+function addToBattleField(socket, obj){
+    console.log("WE WEWEWE");
+    if (arenas[socket.id]){ 
+        arenas[socket.id].addToBattleField(socket, obj);
+        console.log("BUY REQ");
+    }
+}
+
+function updateDirection(socket, obj){
+    if (arenas[socket.id]){ 
+        arenas[socket.id].updateDirection(socket, obj);
+    }
+}

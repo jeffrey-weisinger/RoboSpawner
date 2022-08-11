@@ -135,6 +135,52 @@ class SpatialHashMap{
     }
 
 
+    findSeek(x, y, width, height){
+        let viewReturnArr = [];
+        let {minCell, maxCell} = this.cellFinder(x, y, width, height);
+        //let clampXMin = (minCell[0]-3, this.xboundLow, this.xboundHigh);
+        //let clampXMax = (maxCell[0]+3, this.xboundLow, this.xboundHigh);
+        //let clampYMin = (minCell[0]-3, this.yboundLow, this.yboundHigh);
+        //let clampYMax = (maxCell[0]+3, this.yboundLow, this.yboundHigh);
+
+        let clampXMin = minCell[0]-2;
+        let clampXMax = maxCell[0]+2;
+        let clampYMin = minCell[0]-2;
+        let clampYMax = maxCell[0]+2;
+        //console.log("&&&&");
+        /*
+        console.log(minCell);
+        console.log(maxCell);
+        console.log(x);
+        console.log(y);
+        console.log(clampXMin);
+        console.log(clampXMax);
+        console.log(clampYMin);
+        console.log(clampYMax);*/
+        
+        for (let x = clampXMin; x <= clampXMax; x++){
+            for (let y = clampYMin; y <= clampYMax; y++){
+                let client_arr = this.world[x][y];
+                //nconsole.log(client_arr); 
+                if (client_arr){
+                    client_arr.forEach(client => {
+                        // console.log("1");
+                         if (client.returnNumber == -1){
+                           //console.log(client_arr)
+                           viewReturnArr.push(client);
+                           client_arr.returnNumber = 1;
+                         }
+                       });
+                }
+
+                
+            }
+        }
+        viewReturnArr.forEach(client => client.returnNumber = -1); //just getting everything! and then putting it back how we found it.
+        //console.log(viewReturnArr);
+        return viewReturnArr;   
+    }
+
     cellFinder(x, y, xSize, ySize){
        // console.log(x);
        // console.log(y);

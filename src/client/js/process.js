@@ -161,25 +161,31 @@ function getBaseUpdate() {
 function interpolateObject(prevObj, nextObj, timeRatio){
     let returnObj = {};
 
-    if (prevObj.type == 'robot'){
-      /*console.log("we got a robot");
-      console.log("prevX" + prevObj.x);
-      console.log("nextX" + nextObj.x);*/
-    }
+
 
     //note how we're only interpolating these 3 objects. stuff like hp or esp. dmg does not get interpolated.
     //we should also pass back height so we know exactly where to place the health bars.. or maybe we can do it by robo-type?
     returnObj.x = prevObj.x + (nextObj.x - prevObj.x)*timeRatio;
     returnObj.y = prevObj.y + (nextObj.y - prevObj.y)*timeRatio;
     returnObj.rotation = interpolateDirection(prevObj.rotation, nextObj.rotation, timeRatio);
-    //console.log(returnObj.x);
-
-    returnObj.model = nextObj.model;
     returnObj.unique_id = nextObj.unique_id;
-    returnObj.dmg = nextObj.dmg;
-    returnObj.hp = nextObj.hp;
-    returnObj.animation = nextObj.animation;
+
+    //console.log(returnObj.x);
+    if (prevObj.type != "gear"){
+      returnObj.model = nextObj.model;
+      returnObj.unique_id = nextObj.unique_id;
+      returnObj.dmg = nextObj.dmg;
+      returnObj.hp = nextObj.hp;
+      returnObj.animation = nextObj.animation;
+
+    }
     returnObj.type = nextObj.type;
+    if (prevObj.type == 'robot'){
+      /*console.log("we got a robot");
+      console.log("prevX" + prevObj.x);
+      console.log("nextX" + nextObj.x);*/
+      returnObj.side = nextObj.side;
+    }
 
     return returnObj;
     //return(nextObj);

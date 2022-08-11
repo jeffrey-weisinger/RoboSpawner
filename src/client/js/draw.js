@@ -37,9 +37,11 @@ export async function draw(){
         console.log(update);*/
         num++;
         //console.log
+        //console.log(update);
+        //console.log("***");
         await drawBeings(update.playerObj, update.othersArr); //2 json objects
        /* console.log("THIS. should be the point where we finish drawBeings");
-        
+            s
         console.log(update);
         console.log(num);*/
         num++;

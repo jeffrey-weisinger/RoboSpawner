@@ -6,9 +6,13 @@ class ThreeObj{
         this.currentAnimationName;
         this.unique_id = unique_id;
         this.checked = true; //because we don't want it being deleted on the pass after creation.
+        console.log("suspect");
+        console.log(animation);
+        console.log(type);
+        console.log(actionArray);
         this.updateAnimation(animation); //this way, we can actually update the new animation to be this.currentAnimation;
       //  this.twoDRenderer = twoDRenderer;
-      this.label = label;
+        this.label = label;
 
         //we should first initialize the health bar here. it's literally going to be a div inside a div which has absolute positioning. 
         //note that we should have a "death" phase for each robot where you can see it losing all its health, because if we don't, then the robots 

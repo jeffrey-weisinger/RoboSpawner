@@ -22,10 +22,11 @@ class GuiUnit{
         this.dmg;
         this.hp;
 
-        this.range;
-        this.aoe;
         this.speed;
         this.atkSpd;
+        this.range;
+        this.aoe;
+
 
         this.inventoryArrPos -1;
         this.activeArrPos = -1;
@@ -40,49 +41,55 @@ class GuiUnit{
                 this.dmg = 5;
                 this.hp = 25;
     
-                this.range = 1;
-                this.aoe = 1;
                 this.speed = 3;
                 this.atkSpd = 2;
+                this.range = 1;
+                this.aoe = 1;
+
             break;
 
             case "2":
                 this.dmg = 3;
                 this.hp = 20;
 
-                this.range = 2;
-                this.aoe = 1;
                 this.speed = 2.5;
                 this.atkSpd = 1;
+                this.range = 2;
+                this.aoe = 1;
+
             break;
 
             case "3":
                 this.dmg = 2;
                 this.hp = 15;
 
-                this.range = 2;
-                this.aoe = 2;
                 this.speed = 1.5;
                 this.atkSpd = 1;
+                this.range = 2;
+                this.aoe = 2;
+
             break;
 
             case "4":
                 this.dmg = 2;
                 this.hp = 40;
 
-                this.range = 1;
-                this.aoe = 1;
                 this.speed = 2;
                 this.atkSpd = 2;
+                this.range = 1;
+                this.aoe = 1;
+
             break;
 
             case "5":
                 this.dmg = 5;
                 this.hp = 20;
-                this.range = 2;
-                this.aoe = 2;
+
                 this.speed = 3;
                 this.atkSpd = 1;
+                this.range = 2;
+                this.aoe = 2;
+
             break;
         }
   
@@ -91,7 +98,7 @@ class GuiUnit{
     addToInventory(){
         //just to be safe, we might want to check here that it's not more than 10, even though we really should be checking it on the server. 
         
-
+        this.inventoryArr
     }
     removeFromInventory(){
 

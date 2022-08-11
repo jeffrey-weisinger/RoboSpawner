@@ -1,7 +1,8 @@
 class Player{
-    constructor(x, y, rotation, animation, socket_id, uuid){
+    constructor(x, y, rotation, animation, socket_id, unique_id){
+        this.gears = 25; //this is the starting value.
         this.soc_id = socket_id;
-        this.uuid = uuid;
+        this.unique_id = unique_id;
         //this.playerType = playerType;
         this.gravityFactor = 0;
         this.hp = 100;
@@ -12,24 +13,103 @@ class Player{
         this.rotation = rotation;
         this.speed = 5;
         this.currentMove = [];
+        this.invRobots = {};
+        this.orbRot = 0;
+        this.orbitXVert = 0;//idk what these two start at..
+        this.orbitYVert = 0;
+        this.orbitXHoriz =0;
+        this.orbitYHoriz = 0;
+
+        setInterval(this.printOrbits.bind(this), 2000);
+
     }
     infoPack(){
         //console.log("lahaasdff");
         //console.log("t --> " + this.currentMove);
+        //first, we need the unit vector
+        let vertLength;
+        let horizLength;
+
+        let newOrbitXVert;
+        let newOrbitYVert;
+        let newOrbitXHoriz;
+        let newOrbitYHoriz;
+        //console.log(vertLength);
+        vertLength = (this.orbitXVert)**2 + (this.orbitYVert)**2
+        horizLength = (this.orbitXHoriz)**2 + (this.orbitYHoriz)**2
+        if (vertLength != 0){
+            newOrbitXVert = this.orbitXVert/vertLength/3
+            newOrbitYVert = this.orbitYVert/vertLength/3
+        }
+        if (horizLength != 0){
+            newOrbitXHoriz = this.orbitXHoriz/horizLength/3
+            newOrbitYHoriz = this.orbitYHoriz/horizLength/3
+            //console.log(newOrbitX);
+           // console.log(newOrbitY);
+ 
+        }
+        if (newOrbitXVert == undefined || newOrbitYVert == undefined){
+            /*console.log('susss');
+            console.log(this.orbitX);
+            console.log(this.orbitY);
+            console.log(length);
+            console.log(this.orbitX/length);
+            console.log(this.orbitY/length);*/
+            newOrbitXVert = 0;
+            newOrbitYVert = 0;
+        }
+        if (newOrbitXHoriz == undefined || newOrbitYHoriz == undefined){
+            /*console.log('susss');
+            console.log(this.orbitX);
+            console.log(this.orbitY);
+            console.log(length);
+            console.log(this.orbitX/length);
+            console.log(this.orbitY/length);*/
+            newOrbitXHoriz = 0;
+            newOrbitYHoriz = 0;
+        }
+
         this.currentMove.forEach(key => {
             switch(key){
                 case 'w':
-                    this.y -= 0.3; //going w/ coords.
+                    console.log("LENGTHS");
+                    console.log(vertLength);
+                    console.log(horizLength);
+                    console.log("HORIZ X AND Y");
+                    console.log(this.orbitXHoriz);
+                    console.log(this.orbitYHoriz);
+                    console.log("VERT X AND Y");
+
+                    console.log(this.orbitXVert);
+                    console.log(this.orbitYVert);
+
+
+                    console.log("NEW VERTS");
+                    console.log(newOrbitXVert);
+                    console.log(newOrbitYVert)
+                   //this.x -= newOrbitX;
+                    this.y -= newOrbitYVert;
+                    this.x -= newOrbitXVert;
+
+                  //  this.y -= 0.3; //going w/ coords.
                     break;
-                case 'a':
-                    this.x -= 0.3;
+                case 'a': 
+                    this.y += newOrbitYHoriz;
+                    this.x += newOrbitXHoriz;
                     break;
                 case 's':
-                    this.y += 0.3; 
+                    this.y += newOrbitYVert;
+                    this.x += newOrbitXVert; 
+ 
+
+
+                  // this.x += newOrbitX;
+                 //  this.y += newOrbitY;
                     break;
                         //i guess if it's not broken it'll also do what's below it??
                 case 'd':
-                    this.x += 0.3;
+                    this.y -= newOrbitYHoriz;
+                    this.x -= newOrbitXHoriz; 
                     break;
             }
         }
@@ -40,7 +120,7 @@ class Player{
         return {
             type: 'player',
 
-            unique_id: this.uuid,
+            unique_id: this.unique_id,
 
             //playerType: this.playerType,
             animation: this.animation,
@@ -96,9 +176,44 @@ class Player{
 
       console.log("new x: " + x);
       console.log("new y: " + y);
-        this.rotation = Math.atan2(x, y)// + 180/Math.PI; //* (Math.PI/180) //- 90;
+        this.rotation = this.orbRot + Math.atan2(x, y)// + 180/Math.PI; //* (Math.PI/180) //- 90;
         console.log('new rotation!: ' + this.rotation);
         //cons  ole.log(this.degree);
+    }
+
+    updateDirection(z, other){ 
+        this.orbRot = z;
+        this.orbitXVert = Math.cos(-z+Math.PI/2);// -0.5;
+        this.orbitYVert = Math.sin(-z+Math.PI/2); //-0.5;
+        this.orbitXHoriz = Math.cos(-z -Math.PI);
+        this.orbitYHoriz = Math.sin(-z - Math.PI);
+        /*if (y >= -Math.PI/2 && y <= Math.PI/2){
+            this.orbitY = Math.asin(y); //-0.5;
+        }else if (y <= Math.PI){
+            this.orbitY = Math.asin(y - Math.PI/2); 
+        }else{
+            this.orbitY = Math.asin(y + Math.PI/2); 
+
+        }*/
+
+    }
+    printOrbits(){/*
+        console.log("rot:");
+        console.log(this.orbRot);
+        console.log("orbits in radians:");
+        console.log(this.orbitXVert);
+        console.log(this.orbitYVert);
+        console.log(this.orbitXHoriz);
+        console.log(this.orbitYHoriz);
+        console.log("orbits in degrees:"); 
+        console.log(this.orbitXVert * 180/Math.PI);
+        console.log(this.orbitYVert * 180/Math.PI);
+        console.log(this.orbitXHoriz * 180/Math.PI);
+        console.log(this.orbitYHoriz * 180/Math.PI);*/
+
+       // console.log(this.x);
+       // console.log(this.y);
+       // console.log("-----")
     }
 
 }

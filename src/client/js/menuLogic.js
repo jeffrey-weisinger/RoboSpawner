@@ -16,8 +16,7 @@ export function menuLogicSetup(){
     //$('#game').hide();
     $('#visuals').hide();
     
-    gameSetup();
-
+    gameSetup(); //i see.
    // zoom(); //for menu.
 //window.setInterval(1000, fillButtons);
 $("#createRoom")

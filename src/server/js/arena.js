@@ -4,6 +4,7 @@ const WGen = require('./WorldGeneratorTest.js')
 const SpatialHashMap = require('./SpatialHashMap.js');
 const { v4: uuidv4 } = require('uuid');
 const Robot = require('./Robot.js');
+const InvRobot = require('./InvRobot.js');
  
 class Arena{ 
     constructor(){
@@ -13,6 +14,8 @@ class Arena{
         this.myNum;
         this.robots = {}; 
         this.buildings = {};
+        this.items = {};
+        this.invRobots = {}; //these won't go into all objects, because inventory items haven't spawned yet -- we don't count them as objects.
         //this is for "looking things up" when we don't know exactly what we want to look up. 
         // the above are things that we look up when we want to filter by group, especially players.
         //when an object is added, it will ALWAYS be added t0o both 
@@ -20,8 +23,9 @@ class Arena{
         setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
         //setInterval(this.printPlayers.bind(this), 500);
         this.sMap = new SpatialHashMap(0, 10000, 0, 10000, 20, 20);
-        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.allObjects);
+        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.allObjects);
         this.WGen.wGen1(); //should generate the first world for TEST.
+        setInterval(this.logRoboPositions.bind(this), 10000); 
     }
  
     setType(type){
@@ -72,6 +76,121 @@ class Arena{
         )
         
     }
+
+    pickupItem(socket, uuidsArr){
+
+        console.log("we're gettin in");
+        //we're assuming that such a uuid will always exist.. but in the case that isn't the case..
+        uuidsArr.forEach(uuid => {
+            console.log("THIS IS THE UUID:")
+            console.log(uuid);
+            if (this.allObjects[uuid]){
+                console.log(Object.keys(this.allObjects).length);
+                delete this.allObjects[uuid]
+                console.log(Object.keys(this.allObjects).length);
+            }
+            if (this.items[uuid]){
+                console.log(Object.keys(this.items).length);
+                delete this.items[uuid]
+                console.log(Object.keys(this.items).length);
+            }
+            this.players[socket.id].gears++
+            
+        })
+        console.log(this.players[socket.id].gears + "<- gear count ");
+        socket.emit('gearUpdate', this.players[socket.id].gears);
+      
+    }
+    buyRequest(socket, model){
+        let player = this.players[socket.id];
+        let gearsNeeded;
+        switch(model){
+            case "1":
+                gearsNeeded = 2;
+                break;
+            case "2":
+                gearsNeeded = 3;
+                break;
+
+            case "3":
+                gearsNeeded = 4;
+                break;
+
+            case "4":
+                gearsNeeded = 3;
+                break;
+
+            case "5":
+                gearsNeeded = 5;
+                break;
+
+        }
+        if (player.gears >= gearsNeeded){
+            player.gears -= gearsNeeded;
+            console.log("OOH");
+            console.log({model:model, playerGears:player.gears});
+            let newRoboUuid = uuidv4();
+            let newInvRobot = new InvRobot(newRoboUuid, model);
+            this.invRobots[newRoboUuid] = newInvRobot;
+            player.invRobots[newRoboUuid] = newInvRobot; 
+            socket.emit("buyConfirmation", {uuid:newRoboUuid, model:model, playerGears:player.gears}); 
+            
+            //the player need only worry about the uuid for when it's dragging the model onto the battlefield.
+            //in other words, as long as it just drags the right thing onto the battlefield, we'll confirm that, turn it into a model, 
+            //and then return the necessary information.
+
+            //yet, we still pass the model back so it can get the correct div.
+        }else{
+            console.log("ya need more geers");
+            console.log(player.gears);
+            console.log(gearsNeeded);
+            //don't do anything :
+        }
+
+
+    }
+
+    addToBattleField(socket, obj){
+        console.log("WE IN AND WE UP");
+        let {uuid, x, y} = obj;
+        let player = this.players[socket.id]
+        console.log(this.invRobots);
+        console.log(uuid);
+        if (this.invRobots[uuid]){//let us assume this means that it exists.
+            console.log("INININ");
+           /* let zOffset;
+            switch(model){
+
+                case "1":
+                    zOffset = 10;
+                    break;
+                
+            }
+*/
+            let model = this.invRobots[uuid].model;
+
+            let robotToAdd = new Robot(player.x + x, player.y + y, 0, "Run", model, socket.id, uuid, player) //x, y, rotation, animation, model, soc_id, uuid, parent(id)
+        
+            delete this.invRobots[uuid]
+            delete player.invRobots[uuid]//do we need more confirmation??? not really, because the id must be of this player by virtue of this player referencing the id-- so we don't need to attach a socket to it.
+            //Is this an OK assumption to make??
+    
+            this.allObjects[uuid] = robotToAdd;
+            this.robots[uuid] = robotToAdd;
+
+            console.log(this.robots);
+            this.sMap.insert(player.x + x, player.y + y, 1, 1, uuid);
+            socket.emit('updateDiv', {update:"remove", uuid:uuid})
+        }else{
+            socket.emit('updateDiv', {update:"reset", uuid:uuid});
+        }
+
+    }
+    updateDirection(socket, obj){
+        let {x, y} = obj;
+        let player = this.players[socket.id];
+        player.updateDirection(x, y);
+    }
     printPlayers(){
         console.log("////");
         console.log(Object.keys(this.players).length);
@@ -102,7 +221,11 @@ class Arena{
     }
 
     returnToSockets(){
-        
+        ///we must first perform a robot update before the return. even though this isn't part of the return itself, we'll put it here.
+        Object.values(this.robots).forEach(robot=>{
+            robot.act(this.sMap, this.allObjects);
+        })
+
        // console.log("Ok");
         //Part 1: We have to find WHAT the player can see.
         //console.log(this.players);
@@ -126,17 +249,48 @@ class Arena{
                 let playerObj = pl.infoPack();
 
                 let othersArr = [];
-                objsToReturn.forEach(being => {
+               // console.log(objsToReturn);
+               // console.log(this.robots);
+               /* console.log("TEST 0");
+                console.log(this.robots);
+
+                console.log("TEST 0.5");
+                console.log(objsToReturn);
+
+               console.log("TEST 1");
+                Object.values(this.robots).forEach(robo=> {
+                    console.log(robo);
+                })
+                console.log("TEST 2");
+                objsToReturn.forEach(being=>{
+                    console.log(being.unique_id);
+                })*/
+
+                objsToReturn.forEach(being => { 
+                    
                     //console.log(being.unique_id);
                     //console.log("asdfsf");
-                    if(this.allObjects[being.unique_id]){//it should exist, always. but this is like a safety net.
+                  //  console.log("yo");
+                    if(this.allObjects[being.unique_id]){//it should exist, always. but this is like a safety net. 
                         //we're going to use the socket_id which everyone has to see whether it's an ally/enemy before returning. 
                         let returnInfoObj = this.allObjects[being.unique_id].infoPack();
-                        if (this.allObjects[being.unique_id].soc_id == pl.soc_id){
-                            returnInfoObj.side = 'ally';
-                        }else{
-                            returnInfoObj.side = 'enemy';
+                        /*console.log("WE FOUND ONE");
+                        console.log(returnInfoObj);
+                        console.log()
+                        //console.log("ABT TO RETURN AHHHHAHFUGASPGBI");
+                       // console.log(being.type);*/
+                        if (returnInfoObj.type == 'robot'){ //we don't want to do this if it's just a gear;  //chnaged... hope that's right.
+                           // console.log("do we get here??");
+                            if (this.allObjects[being.unique_id].soc_id == pl.soc_id){
+                                returnInfoObj.side = 'ally';
+                                //console.log("ALLY") 
+                            }else{
+                                returnInfoObj.side = 'enemy';
+                                //console.log("ENEMY")
+
+                            }   
                         }
+
                         othersArr.push(returnInfoObj); 
                     };
                 })
@@ -151,6 +305,8 @@ class Arena{
                // console.log(this.sockets[pl.soc_id]);
                 // console.log("AFdf");
                 //console.log("ro");
+               // console.log(returnObj);
+                //console.log(returnObj);y
                 //console.log(returnObj);
                 this.sockets[pl.soc_id].emit('returnInfo', returnObj);
 
@@ -175,7 +331,20 @@ class Arena{
             //console.log("ensdpessfs");
             soc.emit('returnInfo', pI);
         })*/
-    } 
+    }
+    
+    logRoboPositions(){    
+        Object.values(this.robots).forEach(robot => {
+            console.log("WE UP");
+            console.log(robot.unique_id);
+            console.log(robot.x);
+            console.log(robot.y);
+        });
+        
+    }
+    
+     
+    
 
     handleKeyInput(socket, obj){
         let {key, type} = obj;

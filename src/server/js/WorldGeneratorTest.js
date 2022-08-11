@@ -1,14 +1,16 @@
 const { v4: uuidv4 } = require('uuid');
-const Player = require('./Player');
+const Player = require('./Player'); //remember that these are the classes, not the objects.
 const Robot = require('./Robot');
+const Gear = require('./Gear');
 class WorldGeneratorTest{
-    constructor(spatialHashMap, playerObj, roboObj, buildObj, allObj){
+    constructor(spatialHashMap, playerObj, roboObj, buildObj, items, allObj){
 
         this.sMap = spatialHashMap;
         this.playerObj = playerObj;
         this.roboObj = roboObj;
         this.buildObj = buildObj; 
         this.allObj = allObj;
+        this.items = items;
     }
     wGen1(){
         
@@ -27,8 +29,20 @@ class WorldGeneratorTest{
         this.roboObj[uuid2] = robo2
         this.allObj[uuid2] = robo2
         this.sMap.insert(505, 505, 1, 1, uuid2);
+/*
+        let uuid3 = uuidv4();
+        let gear1 = new Gear(uuid3, 502, 502, 0);
+        this.sMap.insert(505, 505, 1, 1, uuid3);
+        this.items[uuid3] = gear1;
+        this.allObj[uuid3] = gear1;
+
+        let uuid4 = uuidv4();
+        let gear2 = new Gear(uuid4, 502, 502, 0);
+        this.sMap.insert(505, 505, 1, 1, uuid4);
+        this.items[uuid4] = gear2;
+        this.allObj[uuid4] = gear2;*/
  
-        
+    /*    
         let uuid3 = uuidv4();
         let robo3 = new Robot(502, 502, 0, 'Run', "3", null, uuid3, null)
         this.playerObj[uuid3] = robo3;
@@ -318,7 +332,7 @@ class WorldGeneratorTest{
         this.playerObj[uuid49] = robo49;
         this.allObj[uuid49] = robo49;
         this.sMap.insert(524, 495, 1, 1, uuid49 );
-
+*/
 
 /*
         let uuid6 = uuidv4();
