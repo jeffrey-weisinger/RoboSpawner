@@ -10,6 +10,7 @@ import robo4Full from '../../assets/icons/robo4FullCrop.png';
 import robo5Full from '../../assets/icons/robo5FullCrop.png';
 
 import {rayCastForBattleField} from './drawBeings.js';
+import { updateActiveRobos } from './gameLogic.js';
 
 
 let isDragging = false;
@@ -193,7 +194,7 @@ function handleMouseDown(e){
     console.log("in mouse down");
     console.log(e.composedPath());
     let comp = e.composedPath();
-    if (comp[0].className == "viewport"){
+    if (comp[0].className == "viewport"){ //in other words we clicked on something in the scene. this could be a gear.
         mouseDownCanvas(e);
     }
     comp.forEach(div => {
@@ -237,5 +238,12 @@ export function removeDiv(uuid){
     console.log(uuid);
     console.log(`#${uuid}`);
     console.log($(`#${uuid}`));
-    $(`#${uuid}`).remove();
+    let divToRemove =  $(`#${uuid}`);
+    divToRemove.remove();
+   // $(`#${uuid}`).remove();
+    //now we add it to the activeRobos
+    //restoration.
+    let ogDiv = originalDivs[uuid]
+
+    updateActiveRobos(ogDiv); //passing the div that we deleted.
 }

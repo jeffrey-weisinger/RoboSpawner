@@ -167,26 +167,33 @@ function interpolateObject(prevObj, nextObj, timeRatio){
     //we should also pass back height so we know exactly where to place the health bars.. or maybe we can do it by robo-type?
     returnObj.x = prevObj.x + (nextObj.x - prevObj.x)*timeRatio;
     returnObj.y = prevObj.y + (nextObj.y - prevObj.y)*timeRatio;
-    returnObj.rotation = interpolateDirection(prevObj.rotation, nextObj.rotation, timeRatio);
+    returnObj.type = nextObj.type;
     returnObj.unique_id = nextObj.unique_id;
 
-    //console.log(returnObj.x);
-    if (prevObj.type != "gear"){
-      returnObj.model = nextObj.model;
-      returnObj.unique_id = nextObj.unique_id;
-      returnObj.dmg = nextObj.dmg;
-      returnObj.hp = nextObj.hp;
-      returnObj.animation = nextObj.animation;
+    //all objects have some sort of rotation. for gear and projectile, it's always 0. maybe we could remove them? i'm just keeping it but it could be extra, unnecessary info.
+      returnObj.rotation = interpolateDirection(prevObj.rotation, nextObj.rotation, timeRatio);
 
-    }
-    returnObj.type = nextObj.type;
-    if (prevObj.type == 'robot'){
+      //console.log(returnObj.x);
+      if (prevObj.type != "gear" && prevObj.type != "gear"){  //honestly, this doesn't really do anything because they'll just be undefined otherwise, which isn't an issue. 
+     //   returnObj.unique_id = nextObj.unique_id;
+        returnObj.dmg = nextObj.dmg;
+        returnObj.hp = nextObj.hp;
+        returnObj.animation = nextObj.animation;
+  
+      }
+      returnObj.model = nextObj.model; //sort of like i said above, this won't happen in gear/player, but whatever.
+
+     // returnObj.type = nextObj.type;
+      
+
+    if (prevObj.type == 'robot' || prevObj.type == 'projectile'){
       /*console.log("we got a robot");
       console.log("prevX" + prevObj.x);
       console.log("nextX" + nextObj.x);*/
       returnObj.side = nextObj.side;
-    }
+    }  
 
+   
     return returnObj;
     //return(nextObj);
    // console.log("AFTER CHANGES");

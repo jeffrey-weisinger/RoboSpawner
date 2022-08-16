@@ -5,7 +5,9 @@ const SpatialHashMap = require('./SpatialHashMap.js');
 const { v4: uuidv4 } = require('uuid');
 const Robot = require('./Robot.js');
 const InvRobot = require('./InvRobot.js');
- 
+const Projectile = require('./Projectile.js');
+const Chip = require('./Chip.js');
+
 class Arena{ 
     constructor(){
         this.type;
@@ -13,6 +15,7 @@ class Arena{
         this.players = {};
         this.myNum;
         this.robots = {}; 
+        this.projectiles = {};
         this.buildings = {};
         this.items = {};
         this.invRobots = {}; //these won't go into all objects, because inventory items haven't spawned yet -- we don't count them as objects.
@@ -20,10 +23,12 @@ class Arena{
         // the above are things that we look up when we want to filter by group, especially players.
         //when an object is added, it will ALWAYS be added t0o both 
         this.allObjects = {};
+        this.chips = {};
+
         setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
         //setInterval(this.printPlayers.bind(this), 500);
         this.sMap = new SpatialHashMap(0, 10000, 0, 10000, 20, 20);
-        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.allObjects);
+        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.allObjects);
         this.WGen.wGen1(); //should generate the first world for TEST.
         setInterval(this.logRoboPositions.bind(this), 10000); 
     }
@@ -60,11 +65,21 @@ class Arena{
         const uuid = uuidv4();
         //we use socket to access, but note that some will NOT have socket.ids. FOR RETURN, we always use uuid.
         //uuids are ONLY for drawing -- and also to keep track for when in map. 
-        let pl = new Player(500, 500, 0, "Run", soc.id, uuid);
+        let pl = new Player(500, 500, 0, "Run", soc.id, soc.id);
         this.players[soc.id] =  pl;//id, playerNumber, playerType
         this.allObjects[soc.id] = pl;   
         console.log("logging all players");
         console.log(this.players);
+        this.sMap.insert(500, 500, 1, 1, soc.id);
+/*
+
+        let roboUuid = uuidv4()
+        let robo = new Robot(500, 500, 0, "Idle", "1", soc.id, roboUuid, pl); //goofy aah
+        this.robots[roboUuid] = robo;
+        this.allObjects[roboUuid] = robo;
+        this.sMap.insert(502, 502, 1, 1, roboUuid);
+        console.log("logging robos");
+        console.log(this.robots);*/
         ///console.log(this.players);
         //playerNum might be good for keeping track of players.
     }
@@ -94,6 +109,7 @@ class Arena{
                 delete this.items[uuid]
                 console.log(Object.keys(this.items).length);
             }
+            
             this.players[socket.id].gears++
             
         })
@@ -169,7 +185,7 @@ class Arena{
 */
             let model = this.invRobots[uuid].model;
 
-            let robotToAdd = new Robot(player.x + x, player.y + y, 0, "Run", model, socket.id, uuid, player) //x, y, rotation, animation, model, soc_id, uuid, parent(id)
+            let robotToAdd = new Robot(player.x + x, player.y + y, 0, "Run", model, socket.id, uuid, player, this.allObjects, this.projectiles, this.sMap) //x, y, rotation, animation, model, soc_id, uuid, parent(id)
         
             delete this.invRobots[uuid]
             delete player.invRobots[uuid]//do we need more confirmation??? not really, because the id must be of this player by virtue of this player referencing the id-- so we don't need to attach a socket to it.
@@ -222,8 +238,16 @@ class Arena{
 
     returnToSockets(){
         ///we must first perform a robot update before the return. even though this isn't part of the return itself, we'll put it here.
+       /// console.log("loggin all objs")
+        //console.log(this.allObjects);
+        //console.log("asdfsadfadsfa");
         Object.values(this.robots).forEach(robot=>{
             robot.act(this.sMap, this.allObjects);
+        }) 
+
+        //after we decide the actions of each robot, we should then update the projectiles.
+        Object.values(this.projectiles).forEach(projectile => {
+            projectile.calculate(); //updates the projectile distances.
         })
 
        // console.log("Ok");
@@ -238,7 +262,7 @@ class Arena{
             if (pl.soc_id != null){//meaning it's a real player
                 let x = pl.x;
                 let y = pl.y;
-                let objsToReturn = this.sMap.findView(x, y); 
+                let objsToReturn = this.sMap.get(x, y, 'find'); 
                 //console.log(objsToReturn);
                 //console.log("obj^^");
                // if (pl.x < 10000 && pl.x > 0 ) pl.x = pl.x + 0.01;
@@ -265,7 +289,8 @@ class Arena{
                 objsToReturn.forEach(being=>{
                     console.log(being.unique_id);
                 })*/
-
+                //console.log("---");
+                //console.log(pl.soc_id);
                 objsToReturn.forEach(being => { 
                     
                     //console.log(being.unique_id);
@@ -279,21 +304,41 @@ class Arena{
                         console.log()
                         //console.log("ABT TO RETURN AHHHHAHFUGASPGBI");
                        // console.log(being.type);*/
-                        if (returnInfoObj.type == 'robot'){ //we don't want to do this if it's just a gear;  //chnaged... hope that's right.
+                       //console.log(being);
+                       //console.log(this.allObjects[being.unique_id].soc_id);
+                        if (returnInfoObj.type == 'robot' || 'projectile'){ //we don't want to do this if it's just a gear;  //chnaged... hope that's right.
                            // console.log("do we get here??");
-                            if (this.allObjects[being.unique_id].soc_id == pl.soc_id){
+                            if (this.allObjects[being.unique_id].soc_id == pl.soc_id){ //note that for projectile, it should just be passed in from the robot.
                                 returnInfoObj.side = 'ally';
-                                //console.log("ALLY") 
+                              //  console.log("ALLY") 
                             }else{
                                 returnInfoObj.side = 'enemy';
                                 //console.log("ENEMY")
 
                             }   
                         }
+                        if (returnInfoObj.unique_id != playerObj.unique_id){
 
-                        othersArr.push(returnInfoObj); 
+                            othersArr.push(returnInfoObj); 
+
+                        }
+
                     };
                 })
+
+                //death
+              /*  Object.values(this.robots).forEach(robot => {
+                if (robot.hp <= 0){
+                    delete this.players[robot.unique_id];
+                    delete this.allObjects[robot.unique_id];
+                    //note that we have to do this last, because we need to keep the player object around as a reference to remove it from the two places where it gets referenced.
+                    //robot = null;
+                    //wait, note that we don't even need to do that bc it'll get garbage collected.
+ 
+
+                }
+            });*/
+
                 let t = Date.now();
                 //console.log(playerObj);
                 let returnObj = {t, playerObj, othersArr};
@@ -307,7 +352,10 @@ class Arena{
                 //console.log("ro");
                // console.log(returnObj);
                 //console.log(returnObj);y
-                //console.log(returnObj);
+                
+                //console.log("RO");
+               // console.log(returnObj);
+           //     console.log(returnObj.othersArr.forEach(other => console.log(other)));
                 this.sockets[pl.soc_id].emit('returnInfo', returnObj);
 
 
@@ -334,11 +382,12 @@ class Arena{
     }
     
     logRoboPositions(){    
+        console.log("///");
         Object.values(this.robots).forEach(robot => {
-            console.log("WE UP");
-            console.log(robot.unique_id);
-            console.log(robot.x);
-            console.log(robot.y);
+           // console.log("WE UP");
+            //console.log(robot.unique_id);
+            //console.log(robot.x);
+            //console.log(robot.y);
         });
         
     }
@@ -357,7 +406,7 @@ class Arena{
             this.players[socket.id].currentPress(key.toLowerCase());
            }
         } else{
-            console.log(type);  
+            //console.log(type);  
             if (key){ //i don't know what it means for key to be undefined, but it can happen.
                 this.players[socket.id].currentUnPress(key.toLowerCase());
             }

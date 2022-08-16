@@ -34,42 +34,88 @@ class SpatialHashMap{
             returnNumber:-1,
 
         }
-        let posList  = [];
-        console.log('-----=');
+        let posArr = [...Array(this.horizCellCount)].map(_ => [...Array(this.vertCellCount)]);//.map(_ => [])); //taken almost directly from simondev
+       // console.log('insertion');
 
         for (let x = minCell[0]; x <= maxCell[0]; x++){
             for (let y = minCell[1]; y <= maxCell[1]; y++){
                 let l = this.world[x][y].length
                 //console.log("should be an array//");
-                posList.push(l); //be cause we're pushing to the end, the length IS the index for after we've pushed.
+                posArr[x][y] = l; //be cause we're pushing to the end, the length IS the index for after we've pushed.
+                /*console.log("increment poslist and also world arr")
+                console.log(unique_id);
+                //console.log(posList);
+                console.log("B For");
+                console.log(this.world[x][y]);*/
+                
                 (this.world[x][y]).push(being);
+                //console.log("Af tear");
+
+             //   console.log(this.world[x][y])
+               // console.log("_*_");
                // console.log(this.world[x][y]);
 
                 //console.log(this.world[x][y]);
                 //console.log("^^^^^^^^");
+               // console.log("insert world");
+              //  console.log(this.world[x][y]);
             }
         }
-        being.posList = posList;
-        this.beingMap.set(unique_id, being); 
+        being.posArr = posArr;
+        this.beingMap.set(unique_id, being);
         
     }
 
     deleteBeing(unique_id){
+        console.log("REMOVING");
+        console.log(unique_id);
         let being = this.beingMap.get(unique_id);
         if (being){
-            posList = being.posList
+            let posArr = being.posArr
+           // console.log(posList);
+
             let traverseNum = 0;
-            for (let x = minCell[0]; x < maxCell[0]; x++){
-                for (let y = minCell[1]; y < maxCell[1]; y++){
-                    storage = this.world[x][y][this.world[x][y].length-1]
-                    this.world[x][y][this.world[x][y].length-1] = null;
-                    this.world[x][y][posList[traverseNum++]] = storage; //this gets rid of the being.
+            let minCell = being.minCell;
+            let maxCell = being.maxCell;
+           // console.log(minCell);
+           // console.log(maxCell);
+            for (let x = minCell[0]; x <= maxCell[0]; x++){
+                for (let y = minCell[1]; y <= maxCell[1]; y++){
+                    if (this.world[x][y].length == 0){
+                        this.world[x][y] = [];
+                    }else{
+                        /*
+                        console.log("before world")
+                        console.log(this.world[x][y].length)
+                        console.log(this.world[x][y]);*/
+                        let storage = this.world[x][y][this.world[x][y].length-1]    
+                      /*  this.world[x][y][this.world[x][y].length-1] = null;
+                        console.log("inbetween world")
+                        console.log(this.world[x][y]);
+                        */
+                        let positionInWorldArr;
+                        if (posArr){
+                            positionInWorldArr = posArr[x][y];
+                        } 
+                      //  console.log("positionInWorldArr");
+                     //   console.log(positionInWorldArr);
+                        if (this.world[x][y][this.world[x][y].length-1]  != null){
+                            this.world[x][y][positionInWorldArr] = storage; //this gets rid of the being.
+                        }
+                        //let diffX = x - storage.minCell[0] +1;
+                        //let diffY = y - storage.minCell[1] +1;
+                        storage.posArr[x][y]  = positionInWorldArr; //assigning a new position.
+                     //   console.log("after world")
+                     //   console.log(this.world[x][y]);
+                        this.world[x][y].pop() //popping last element which is null.
+                    }
+                   
                 }
             }
         }
         
     }
-
+/*
     findPossCollisions(x, y, xSize, ySize){
         possCollisionsArr = [];
         let minCell, maxCell = this.cellFinder(x, y, xSize, ySize);
@@ -87,19 +133,33 @@ class SpatialHashMap{
         possCollisionsArr.forEach(client => client.returnNumber = -1);
         return possCollisionsArr;
     }
-
-    findView(x, y){
+*/
+    
+    get(x, y, searchType){ //previously findView
         let viewReturnArr = [];
         let {minCell, maxCell} = this.cellFinder(x, y, 0, 0);
         //let clampXMin = (minCell[0]-3, this.xboundLow, this.xboundHigh);
         //let clampXMax = (maxCell[0]+3, this.xboundLow, this.xboundHigh);
         //let clampYMin = (minCell[0]-3, this.yboundLow, this.yboundHigh);
         //let clampYMax = (maxCell[0]+3, this.yboundLow, this.yboundHigh);
+        let searchAmt;
+        switch(searchType){
+            case "find":
+                searchAmt = 3;
+                break;
+            case "collision":
+                searchAmt = 1;
+                break;
+            case "seek":
+                searchAmt = 2;
+                break;
+                
+        }
 
-        let clampXMin = minCell[0]-3;
-        let clampXMax = maxCell[0]+3;
-        let clampYMin = minCell[0]-3;
-        let clampYMax = maxCell[0]+3;
+        let clampXMin = minCell[0]-searchAmt;
+        let clampXMax = maxCell[0]+searchAmt;
+        let clampYMin = minCell[0]-searchAmt;
+        let clampYMax = maxCell[0]+searchAmt;
         //console.log("&&&&");
         /*
         console.log(minCell);
@@ -110,7 +170,7 @@ class SpatialHashMap{
         console.log(clampXMax);
         console.log(clampYMin);
         console.log(clampYMax);*/
-        
+       // console.log("in get");
         for (let x = clampXMin; x <= clampXMax; x++){
             for (let y = clampYMin; y <= clampYMax; y++){
                 let client_arr = this.world[x][y];
@@ -118,10 +178,10 @@ class SpatialHashMap{
                 if (client_arr){
                     client_arr.forEach(client => {
                         // console.log("1");
-                         if (client.returnNumber == -1){
+                         if (client.returnNumber == -1){ //means we haven't returned it yet.
                            //console.log(client_arr)
-                           viewReturnArr.push(client);
-                           client_arr.returnNumber = 1;
+                           viewReturnArr.push(client); 
+                           client_arr.returnNumber = 1; //means that we havve returned it
                          }
                        });
                 }

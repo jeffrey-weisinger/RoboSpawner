@@ -134,8 +134,8 @@ function handleCreateValidation(socket, validationObj){
         socket.emit('menuComplete');
         //console.log(arenas);
         //console.log("arenasCreate");
-        console.log(rooms);
-        console.log("Rooms^");
+     //   console.log(rooms);
+      //  console.log("Rooms^");
         arenaAdd(socket);
 
     }
@@ -229,8 +229,9 @@ function handleMouseInput(socket, obj){
 }
 
 function pickupItem(socket, uuidsArr){
-    console.log(arenas);
-    console.log(socket.id);
+    console.log("PICKING UP, SERVER");
+   // console.log(arenas);
+   // console.log(socket.id);
     if (arenas[socket.id]){
         arenas[socket.id].pickupItem(socket, uuidsArr);
     }else{
@@ -240,6 +241,7 @@ function pickupItem(socket, uuidsArr){
 }
 
 function buyRobot(socket, model){
+    console.log("OOHGA DOOGA")
     console.log(socket.id);
     if (arenas[socket.id]){ 
         arenas[socket.id].buyRequest(socket, model);
@@ -253,7 +255,7 @@ function addToBattleField(socket, obj){
     console.log("WE WEWEWE");
     if (arenas[socket.id]){ 
         arenas[socket.id].addToBattleField(socket, obj);
-        console.log("BUY REQ");
+        console.log("BUY REQa");
     }
 }
 

@@ -2,34 +2,59 @@ const { v4: uuidv4 } = require('uuid');
 const Player = require('./Player'); //remember that these are the classes, not the objects.
 const Robot = require('./Robot');
 const Gear = require('./Gear');
+const Chip = require('./Chip');
+
 class WorldGeneratorTest{
-    constructor(spatialHashMap, playerObj, roboObj, buildObj, items, allObj){
+    constructor(spatialHashMap, playerObj, roboObj, buildObj, items, projectiles, allObjs){
 
         this.sMap = spatialHashMap;
         this.playerObj = playerObj;
         this.roboObj = roboObj;
         this.buildObj = buildObj; 
-        this.allObj = allObj;
+        this.allObjs = allObjs;
+        this.projectiles = projectiles;
+
         this.items = items;
     }
     wGen1(){
         
         console.log("WORLD GEN");
-        
+        /*
         let uuid1 = uuidv4();
-        let robo1_1 = new Robot(505, 495, 0, "Run", "3", null, uuid1, null);
+        let robo1_1 = new Robot(510, 510, 0, "Run", "2", null, uuid1, null);
         this.roboObj[uuid1] = robo1_1
         this.allObj[uuid1] = robo1_1
         //equivalent to a direct insertion.
-        this.sMap.insert(505, 495, 1, 1, uuid1);
+        this.sMap.insert(505, 505, 1, 1, uuid1) ;
+*/
         
+        let uuid2 = uuidv4();
+        let robo2 = new Robot(505, 505, 0, "Run", "2", null, uuid2, null, this.allObjs, this.projectiles, this.sMap);
+        this.roboObj[uuid2] = robo2;
+        this.allObjs[uuid2] = robo2;
+        this.sMap.insert(505, 505, 1, 1, uuid2);
+
+        let uuid10 = uuidv4();
+        let robo10 = new Robot(495, 495, 0, 'Run', "3", null, uuid10, null, this.allObjs, this.projectiles, this.sMap)
+        this.roboObj[uuid10] = robo10;
+        this.allObjs[uuid10] = robo10;
+        this.sMap.insert(490, 490, 1, 1, uuid10 );
+        
+        let uuid3 = uuidv4();
+        let chip1 = new Chip(490, 490, 0, "10", uuid3);
+        this.items[uuid3] = chip1;
+        this.allObjs[uuid3] = chip1;
+        this.sMap.insert(502, 502, 1, 1, uuid3);
+
+        
+/*5
 
         let uuid2 = uuidv4();
         let robo2 = new Robot(505, 505, 0, "Run", "2", null, uuid2, null);
         this.roboObj[uuid2] = robo2
         this.allObj[uuid2] = robo2
         this.sMap.insert(505, 505, 1, 1, uuid2);
-/*
+
         let uuid3 = uuidv4();
         let gear1 = new Gear(uuid3, 502, 502, 0);
         this.sMap.insert(505, 505, 1, 1, uuid3);
@@ -42,7 +67,7 @@ class WorldGeneratorTest{
         this.items[uuid4] = gear2;
         this.allObj[uuid4] = gear2;*/
  
-    /*    
+        /*
         let uuid3 = uuidv4();
         let robo3 = new Robot(502, 502, 0, 'Run', "3", null, uuid3, null)
         this.playerObj[uuid3] = robo3;
@@ -65,8 +90,8 @@ class WorldGeneratorTest{
         let robo6 = new Robot(495, 495, 0, 'Run', "1", null, uuid6, null)
         this.playerObj[uuid6] = robo6;
         this.allObj[uuid6] = robo6;
-        this.sMap.insert(495, 495, 1, 1, uuid6);
-        
+        this.sMap.insert(495, 495, 1, 1, uuid6);*/
+      /*
         let uuid7 = uuidv4();
         let robo7 = new Robot(516, 505, 0, 'Run', "1", null, uuid7, null)
         this.playerObj[uuid7] = robo7;
@@ -83,20 +108,15 @@ class WorldGeneratorTest{
         let robo9 = new Robot(520, 505, 0, 'Run', "1", null, uuid9, null)
         this.playerObj[uuid9] = robo9;
         this.allObj[uuid9] = robo9;
-        this.sMap.insert(515, 495, 1, 1, uuid9);
+        this.sMap.insert(515, 495, 1, 1, uuid9);*/
 
-        let uuid10 = uuidv4();
-        let robo10 = new Robot(495, 495, 0, 'Run', "2", null, uuid10, null)
-        this.playerObj[uuid10] = robo10;
-        this.allObj[uuid10] = robo10;
-        this.sMap.insert(524, 495, 1, 1, robo10 );
-        
+     /*   
         let uuid11 = uuidv4();
         let robo11 = new Robot(522, 505, 0, 'Run', "2", null, uuid11, null)
         this.playerObj[uuid11] = robo11;
         this.allObj[uuid11] = robo11;
         this.sMap.insert(524, 495, 1, 1, uuid11 );
-
+/*
         let uuid12 = uuidv4();
         let robo12 = new Robot(524, 505, 0, 'Run', "2", null, uuid12, null)
         this.playerObj[uuid12] = robo12;

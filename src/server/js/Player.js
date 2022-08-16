@@ -19,6 +19,7 @@ class Player{
         this.orbitYVert = 0;
         this.orbitXHoriz =0;
         this.orbitYHoriz = 0;
+        this.type = 'player';  
 
         setInterval(this.printOrbits.bind(this), 2000);
 
@@ -38,12 +39,12 @@ class Player{
         vertLength = (this.orbitXVert)**2 + (this.orbitYVert)**2
         horizLength = (this.orbitXHoriz)**2 + (this.orbitYHoriz)**2
         if (vertLength != 0){
-            newOrbitXVert = this.orbitXVert/vertLength/3
-            newOrbitYVert = this.orbitYVert/vertLength/3
+            newOrbitXVert = this.orbitXVert/vertLength/9
+            newOrbitYVert = this.orbitYVert/vertLength/9
         }
         if (horizLength != 0){
-            newOrbitXHoriz = this.orbitXHoriz/horizLength/3
-            newOrbitYHoriz = this.orbitYHoriz/horizLength/3
+            newOrbitXHoriz = this.orbitXHoriz/horizLength/9
+            newOrbitYHoriz = this.orbitYHoriz/horizLength/9 
             //console.log(newOrbitX);
            // console.log(newOrbitY);
  
@@ -72,6 +73,7 @@ class Player{
         this.currentMove.forEach(key => {
             switch(key){
                 case 'w':
+                    /*
                     console.log("LENGTHS");
                     console.log(vertLength);
                     console.log(horizLength);
@@ -86,7 +88,7 @@ class Player{
 
                     console.log("NEW VERTS");
                     console.log(newOrbitXVert);
-                    console.log(newOrbitYVert)
+                    console.log(newOrbitYVert)*/
                    //this.x -= newOrbitX;
                     this.y -= newOrbitYVert;
                     this.x -= newOrbitXVert;
@@ -125,7 +127,7 @@ class Player{
             //playerType: this.playerType,
             animation: this.animation,
             rotation : this.rotation,
-           // hp: this.hp,
+            hp: this.hp,
             //dmg: this.dmg,
             x : this.x,
             y: this.y
@@ -165,19 +167,19 @@ class Player{
     mouseMove(x, y, canvasX, canvasY){
         //console.log(this.x + "x, " + this.y + "y ");
         //console.log(x + " - " + y);
+        /*
         console.log("mouse_posX" + x);
         console.log("mouse_posY" + y);
         console.log("canvasX" + canvasX/2);
-        console.log("canvasY" + canvasY/2       );
-
+        console.log("canvasY" + canvasY/2       );*/
         x = x - canvasX/2;
         y = y - canvasY/2;
       //  console.log("MOVING MOUSE -- position before: x:" + x + " : y:" + y);
 
-      console.log("new x: " + x);
-      console.log("new y: " + y);
+   //   console.log("new x: " + x);
+     // console.log("new y: " + y);
         this.rotation = this.orbRot + Math.atan2(x, y)// + 180/Math.PI; //* (Math.PI/180) //- 90;
-        console.log('new rotation!: ' + this.rotation);
+       // console.log('new rotation!: ' + this.rotation);
         //cons  ole.log(this.degree);
     }
 

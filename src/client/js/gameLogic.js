@@ -21,12 +21,27 @@ import speedImg from '../../assets/icons/speedFlipped.png';
 import rangeImg from '../../assets/icons/range.png';
 import aoeImg from '../../assets/icons/aoe.png'
 
+import chip1Img from '../../assets/icons/chip1ImgClipped.png'
+import chip2Img from '../../assets/icons/chip2ImgClipped.png'
+import chip3Img from '../../assets/icons/chip3ImgClipped.png'
+import chip4Img from '../../assets/icons/chip4ImgClipped.png'
+import chip5Img from '../../assets/icons/chip5ImgClipped.png'
+import chip6Img from '../../assets/icons/chip6ImgClipped.png'
+import chip7Img from '../../assets/icons/chip7ImgClipped.png'
+import chip8Img from '../../assets/icons/chip8ImgClipped.png'
+import chip9Img from '../../assets/icons/chip9ImgClipped.png'
+import chip10Img from '../../assets/icons/chip10ImgClipped.png'
+import chip11Img from '../../assets/icons/chip11ImgClipped.png'
+import chip12Img from '../../assets/icons/chip12ImgClipped.png'
+
+
 let gears = 0;
 
 
 import { consoleLogTester } from "./menuLogic";
 import { DiscreteInterpolant } from "three";
 import { BufferGeometry } from "three";
+import _ from "lodash";
 
 let currentExpanded;
 let store = $("#store");
@@ -455,4 +470,30 @@ function updateInventoryBubble(update){
 
     //most efficient if we just update span either way. 
     invBubble.children('span').html(invBubbleCounter); 
+}
+
+
+export function updateActiveRobos(div){
+
+
+    let roboUI = $("#roboUI");
+
+
+    let holder = ($("<div></div>").addClass("activeRoboHolder"))
+    holder.append(div);
+    holder.prepend($("<button>Select</button>").addClass("roboSelect"))
+    let extras = $("<div></div>").addClass("extras")
+    extras.append($("<button></button>").addClass("superButton"));
+    extras.append($("<div></div>").addClass("chipHolder"));
+    holder.append(extras)
+    roboUI.append(holder);
+    $("#" + div.id).css({"margin-top" : "0px", "margin-right": "0px", "margin-bottom": '0px'});
+    //holder.css("margin-right", "13px");
+
+    
+/*
+    if( roboUI.children().length == 1) {    //meaning this is the first addition
+    }
+    just added flex!
+    */
 }

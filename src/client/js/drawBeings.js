@@ -25,7 +25,25 @@ import gltfPath_robo3Red from '../../assets/models/robo3Red.gltf';
 import gltfPath_robo4Red from '../../assets/models/robo4RedFixed.gltf';
 import gltfPath_robo5Red from '../../assets/models/robo5Red.gltf';
 
+import gltfPath_chip1 from '../../assets/models/chip1.gltf';
+import gltfPath_chip2 from '../../assets/models/chip2.gltf';
+import gltfPath_chip3 from '../../assets/models/chip3.gltf';
+import gltfPath_chip4 from '../../assets/models/chip4.gltf';
+import gltfPath_chip5 from '../../assets/models/chip5.gltf';
+import gltfPath_chip6 from '../../assets/models/chip6.gltf';
+import gltfPath_chip7 from '../../assets/models/chip7.gltf';
+import gltfPath_chip8 from '../../assets/models/chip8.gltf';
+import gltfPath_chip9 from '../../assets/models/chip9.gltf';
+import gltfPath_chip10 from '../../assets/models/chip10.gltf';
+import gltfPath_chip11 from '../../assets/models/chip11.gltf';
+import gltfPath_chip12 from '../../assets/models/chip12.gltf';
+
+
 import gltfPath_gear from '../../assets/models/gameGear.gltf'
+
+import gltfPath_projectileBlue  from '../../assets/models/projectileBlue.gltf'
+import gltfPath_projectileRed  from '../../assets/models/projectileRed.gltf'
+
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -99,8 +117,10 @@ labelRenderer.setSize( window.innerWidth, window.innerHeight );
 labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.top = '0px';
 labelRenderer.domElement.style.zIndex = "1";
-//document.body.appendChild( labelRenderer.domElement )
+labelRenderer.domElement.style.pointerEvents = 'none';
+//.addClass("labelElement");
 document.body.appendChild( renderer.domElement );
+document.body.appendChild( labelRenderer.domElement )
 
 
 const planeMesh = new THREE.Mesh(
@@ -235,7 +255,9 @@ export async function drawBeings(mainPlayerInfo, beingsInfo){
         if (clock)[
             clockDelta = clock.getDelta()
         ]
-
+        console.log("starting");
+        console.log("logging beings info");
+        console.log(beingsInfo);
         await updatePlayer();
             await updateBeing();
         cleanup();
@@ -277,7 +299,7 @@ async function updatePlayer() {
                     playerMixer._root.add( label );
                     label.layers.set( 0 );  
                     playerContainer = new ThreeObj(_mainPlayerInfo.unique_id, _mainPlayerInfo.type, actionArray, _mainPlayerInfo.animation, playerMixer, testDiv)        
-                    playerContainer.setHP(95);
+                    playerContainer.setHP(100);
 
                     //setting global uuid
                     console.log(playerMixer._root.userData);
@@ -305,6 +327,8 @@ async function updatePlayer() {
                 if(playerMixer) {               
                     playerMixer.update(clockDelta);
                 }
+                playerContainer.setHP(_mainPlayerInfo.hp); //assuming the hp comes back.
+
              }  );}
             /*! console.log("<3>");*//*
             await new Promise (resolve => 
@@ -367,6 +391,7 @@ async function updateBeing(){
         //For each uuid in the map, if the object doesn't exist, then we're going to do the big 3.
         //1.) load gltf, 2.) add to scene, 3.) create model. 
         for (const being of _beingsInfo) {
+            
            /*! console.log("<5> should be x3" + passCount); //should be
 
             console.log("this is the being we're about to look at:")
@@ -451,6 +476,58 @@ async function updateBeing(){
                         gltfPath = gltfPath_gear; 
                         zOffset = 0.1;
                         break;
+                    case 'projectile':
+                        console.log("PROJ");
+                        if (being.side == 'ally')
+                            gltfPath = gltfPath_projectileBlue;
+                        else
+                            gltfPath = gltfPath_projectileRed;
+                        zOffset = 2.3;
+                        //we will need x and y offsets, no?
+
+                        break;
+                    case 'chip':
+                        zOffset = 2;
+                        switch(being.model){ //this is always going to be valid (techinically it will be valid regardless of whether the model exists or not.)
+                            case "1":
+                                gltfPath = gltfPath_chip1;
+                                break;
+                            case "2":
+                                gltfPath = gltfPath_chip2;
+                                break;
+                            case "3":
+                                gltfPath = gltfPath_chip3;
+                                break;
+                            case "4":
+                                gltfPath = gltfPath_chip4;
+                                break;
+                            case "5":
+                                gltfPath = gltfPath_chip5
+                                break;
+                            case "6":
+                                gltfPath = gltfPath_chip6;
+                                break;
+                            case "7":
+                                gltfPath = gltfPath_chip7;
+                                break;
+                            case "8":
+                                gltfPath = gltfPath_chip8;
+                                break;
+                            case "9":
+                                gltfPath = gltfPath_chip9;
+                                break;
+                            case "10":
+                                gltfPath = gltfPath_chip10;
+                                break;
+                            case "11":
+                                gltfPath = gltfPath_chip11;
+                                break;
+                            case "12":
+                                gltfPath = gltfPath_chip12;
+                                break;
+                        }
+                    break;
+
 
 
                 } 
@@ -465,6 +542,8 @@ async function updateBeing(){
                             gltf.scene.scale.set(0.7, 0.7, 0.7);
                         }else if (being.type == 'gear'){
                             gltf.scene.scale.set(0.8, 0.8, 0.8);
+                        }else if(being.type == 'projectile'){
+                            gltf.scene.scale.set(0.4, 0.4, 0.4);
                         }
                         mixer = new THREE.AnimationMixer(gltf.scene);
                         
@@ -472,7 +551,7 @@ async function updateBeing(){
                         let actionArray = [];
                         let label;
                         let testDiv
-                        if (being.type != 'gear'){
+                        if (being.type != 'gear' && being.type != "projectile" && being.type != 'chip'){ //because none of these should have health bars or healthbars //note that we need to figure out the rotation situation for gears and chips.
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Idle' )));
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Run' )));
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Attack' )));
@@ -499,8 +578,9 @@ async function updateBeing(){
                         //we are adding the uuid!
                         //object.global_uuid
                         mixer._root.userData.global_uuid = unique_id;
-                        mixer._root.userData.type = being.type;
+                        mixer._root.userData.type = being.type; //this is for all mixers.
 
+                        //note that the actionArray may be undefined.
                         beingsMap.set(unique_id, new ThreeObj(unique_id, being.type, actionArray, being.animation, mixer, testDiv));
                         mixer._root.position.y += zOffset;//this is actually z. we put it here so it only happens once.
                         //note how we don't need to reference the threeObj here because we're only doing this once.
@@ -513,9 +593,12 @@ async function updateBeing(){
             let beingContainer = beingsMap.get(unique_id); //this will always return with something.
             beingContainer.updateX(being.x, playerX); //this works since playerX now exists!
             beingContainer.updateY(being.y, playerY);
+            //if (being.type != 'projectile'){. got rid of this if statement because i've decided that i'm going to give a rotation of 0 to projectile, and same logic for gear.
             beingContainer.updateRot(being.rotation); //note that when this is NAN, it fails.
+            //}
+            
            // console.log("<5>, about to update animation: " + being.animation);
-           if (being.type != 'gear'){
+           if (being.type != 'gear' || being.type != 'projectile'){
             console.log("ABT TO PLAY");
             beingContainer.updateAnimation(being.animation);
            }
@@ -647,13 +730,13 @@ export function mouseDownCanvas(e){ // it doesn't matter the order that this is 
             }
             let uuid = objToCheck.userData.global_uuid;
             let type = objToCheck.userData.type;
-            console.log(uuid);
-            console.log(type);
+            //console.log(uuid);
+           // console.log(type);
             //this should get us objToCheck where the parent of parent is null.
-            if (type == "gear" || type == "energy"){
+            if (type == "gear" || type == "chip" ){ //note that if we're clicking on a player that doens't have a type, it doesn't matter.
                 if (!uuidsArr.includes(uuid)) uuidsArr.push(uuid) //basically, if we haven't yet pushed the globaluuid to the array, do so now. 
             }
-    
+            //now we're going to have the list of all things that you clicked on (unique)
         }
      
     });

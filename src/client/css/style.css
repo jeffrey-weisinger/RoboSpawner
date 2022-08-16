@@ -875,3 +875,47 @@ h3{
     position: relative; /*this changed the size..? why?*/
     left: 2.5rem;
 }
+
+.labelElement{
+
+}
+
+#roboUI{
+    border: 1px solid black;
+    margin-top: -1rem; 
+    zoom: 130%;
+    height: 10rem;
+    display: flex;
+
+}
+
+.activeRoboHolder{
+    display: flex;
+    flex-direction: column;
+    margin-right: 13px;
+    border: 1px solid brown;
+}
+
+.roboSelect{
+    height: 2rem;
+    width: 102%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+.extras{
+    display: flex;
+    border: 1px solid grey;
+    height: 100%;
+    align-content: stretch;
+}
+.superButton{
+    width: 100%;
+    margin-right: 0.1rem;
+    height: 100%;
+}
+
+.chipHolder{
+    width: 100%;
+    border: 1px solid black;
+}
