@@ -61,7 +61,7 @@ class Projectile{
                         delete this.allObjs[this.unique_id]
                         delete this.projectiles[this.unique_id];
                         this.sMap.deleteBeing(this.unique_id)
-                        console.log("IN RANGE")
+                        //console.log("IN RANGE")
                         if (possCollisionObj.type == 'robot' || possCollisionObj.type == 'player'){ //otherwise, it just disappears on collision. and nothing happens.
                             //console.log(possCollisionObj.hp);
 

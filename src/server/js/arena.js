@@ -176,12 +176,27 @@ class Arena{
 
     }
 
-    moveChipToActive(socket, uuid){
+    moveChipToActive(socket, obj){
+        let {uuid, robouuid} = obj;
+        console.log("MOVE TO ACTIVE");
+        console.log(uuid);
+        console.log(robouuid)
+        console.log(obj);
         let pl = this.players[socket.id]
+        console.log(pl)
+        console.log("PLAYER LOGGED")
+        console.log(pl.invChips[uuid]);
         if (pl.invChips[uuid]){
             pl.activeChips[uuid] = pl.invChips[uuid]
+            if (this.robots[robouuid].activeChip != null){
+                pl.invChips[this.robots[robouuid].activeChip.uuid] = this.robots[robouuid].activeChip; //we're assigning it to invChips.
+            }
+            this.robots[robouuid].activeChip = pl.invChips[uuid];
             delete pl.invChips[uuid];
+            console.log("IN ACTIVE");
+            console.log(pl)
             socket.emit('chipMovedActive', uuid);
+            
         }else{
 
         }
@@ -189,9 +204,11 @@ class Arena{
     }
 
     
-    moveChipToInv(socket, uuid){
+    moveChipToInv(socket, obj){
+       let {uuid, robouuid} = obj;
         let pl = this.players[socket.id]
         if (pl.activeChips[uuid]){
+            this.robots[robouuid].activeChip = null
             pl.invChips[uuid] = pl.activeChips[uuid]
             delete pl.activeChips[uuid];
             socket.emit('chipMovedInv', uuid);

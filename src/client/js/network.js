@@ -131,12 +131,12 @@ export function orbitUpdate(obj){
     socket.emit('orbitUpdate', obj);
 }
 
-export function moveChipToActive(uuid){
+export function moveChipToActive(obj){
     console.log("MOVING2")
-    socket.emit('moveChipToActive', uuid);
+    socket.emit('moveChipToActive', obj);
 }
 
-export function moveChipToInv(uuid){
-    socket.emit('moveChipToInv', uuid);
+export function moveChipToInv(obj){
+    socket.emit('moveChipToInv', obj);
 }
 

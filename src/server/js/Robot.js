@@ -25,6 +25,7 @@ class Robot{
         this.type = "robot";
         this.atkDistance;
         this.roboToAtk;
+        this.activeChip;
 
         this.allObjs = allObjs;
         this.projectiles = projectiles;
@@ -126,7 +127,7 @@ class Robot{
             })
            // console.log(minObj);
             //by now, we should have a min object w/ min distance.
-            console.log(this.unique_id);
+            //console.log(this.unique_id);
             if (minObj){ //we will either run to object or atk.
                /* console.log("ASDF");
                 console.log(this.unique_id);
@@ -187,7 +188,7 @@ class Robot{
             if (this.model == "2" || this.model == "3" || this.model == "5"){
                 let projUuid = uuidv4();
                 let projectile = new Projectile(this.x, this.y, this.roboToAtk.x, this.roboToAtk.y, this.dmg, this.projSpeed, this.soc_id,  projUuid, this.allObjs, this.projectiles, this.unique_id, this.sMap); //startX, startY, endX, endY -- note that each projectile won't necessarily hit the enemy., dmg for if/when we hit.
-                console.log(this.projectiles);
+                //console.log(this.projectiles);
                 console.log("///")
                 this.projectiles[projUuid] = projectile;
                 this.allObjs[projUuid] = projectile;

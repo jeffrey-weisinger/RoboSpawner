@@ -938,17 +938,16 @@ h3{
     display: inline-flex;
 }
 
-.chipsInv{
-    display: flex;
+#chipsInv{
 
 }
 .chipDiv{
     display: inline-flex;
     flex-direction: column;
-    width: 9.775rem; 
-    margin-left: 0.46rem;
+    width: 9.43rem; 
+    margin-left: 0.4rem;
     margin-right: 0px;
-    position: absolute;
+    position: relative;
     z-index: 10;
 
 }

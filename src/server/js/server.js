@@ -59,8 +59,8 @@ io.on('connection', (socket)=>{
     socket.on('buyRobot', model => buyRobot(socket, model));
     socket.on('reqRoboAdd', obj =>addToBattleField(socket, obj) );
     socket.on('orbitUpdate', obj =>updateDirection(socket, obj) );
-    socket.on('moveChipToActive', uuid => moveChipToActive(socket, uuid));
-    socket.on('moveChipToInv', uuid => moveChipToInv(socket, uuid));
+    socket.on('moveChipToActive', obj => moveChipToActive(socket, obj));
+    socket.on('moveChipToInv', obj => moveChipToInv(socket, obj));
 
 
 });
@@ -269,15 +269,15 @@ function updateDirection(socket, obj){
     }
 }
 
-function moveChipToActive(socket, uuid){
+function moveChipToActive(socket, obj){
     if (arenas[socket.id]){ 
         console.log("WE A MOVING"); 
-        arenas[socket.id].moveChipToActive(socket, uuid);
+        arenas[socket.id].moveChipToActive(socket, obj);
     }
 }
 
-function moveChipToInv(socket, uuid){
+function moveChipToInv(socket, obj){
     if (arenas[socket.id]){
-        arenas[socket.id].moveChipToInv(socket, uuid);
+        arenas[socket.id].moveChipToInv(socket, obj);
     }
 }

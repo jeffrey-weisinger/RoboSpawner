@@ -27,9 +27,11 @@ let model;
 let type;
 let newSrcImg;
 let originalDivs = {};
+let lastRoboDivs = {};
 let chipHolderDiv;
 let firstOver360 = true;
 let startPlace;
+let originalRoboDiv;
 console.log(document.styleSheets[0].cssRules);
 
 let halfRoboHeight;// = $('.roboUnit').css('height');//we can just say this since all the robo units are effectively the same.
@@ -169,6 +171,7 @@ function handleMouseDown(e){
                     console.log(div);
                     console.log(div.classList);
                     if (div.classList &&div.classList[0] == "chipDiv"){
+                        originalRoboDiv = div.parentElement;
                         type = 'chip';
                         startPlace = "active";
                         draggingUuid = div.id;
@@ -242,7 +245,7 @@ function handleMouseMove(e){
                 divToMove.css('left', ( -halfWidth + e.clientX) + 'px');
                 divToMove.css('top', ( -halfHeight + e.clientY) + 'px'); //splitting jquery css into 2 parts for readability.
 
-                if (e.clientX > 360){
+                if (e.clientX > 360 || e.clientY > 551){
                     console.log('abt to hide');
                     console.log(divToMove.children())
                     let chipImg;
@@ -284,6 +287,7 @@ function handleMouseMove(e){
                                     break;
                             }
                         }else if (type == "chip"){
+                            fadedId = `${draggingUuid}_img`
                             console.log("WTF");
                             newSrcImg = divToMove.find(".chipImg")[0].src;
                         }/*
@@ -327,12 +331,41 @@ function handleMouseUp(e){
         //we need to figure out where it was dropped.
         if (type == "chip"){
             if(e.composedPath()[0].classList[0] == 'chipHolder' && startPlace == 'inv'){
-                console.log("MOVING");
-                //note: i'm pretty sure that auto pointerevents allow me to click the chipDiv.
                 chipHolderDiv = $("#" + e.composedPath()[0].parentElement.parentElement.children[0].id).parent().find(".chipHolder") //we want the specific one.
-                moveChipToActive(draggingUuid);
+                console.log("woahKage");
+                //note: i'm pretty sure that auto pointerevents allow me to click the chipDiv.
+                console.log({uuid: draggingUuid, robouuid: chipHolderDiv[0].parentElement.parentElement.children[0].id})
+                console.log($("#"+draggingUuid));
+                console.log($("#"+chipHolderDiv[0].parentElement.parentElement.children[0].id))
+                moveChipToActive({uuid: draggingUuid, robouuid: chipHolderDiv[0].parentElement.parentElement.children[0].id});
+            }else if (e.composedPath()[1].classList[0] == 'chipHolder' && startPlace == 'inv'){
+                console.log("HOKage")
+                chipHolderDiv = $("#" + e.composedPath()[1].parentElement.parentElement.children[0].id).parent().find(".chipHolder") //we want the specific one.
+                console.log(chipHolderDiv);
+                console.log({uuid: draggingUuid, robouuid: e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id});
+                console.log($("#"+draggingUuid));
+                console.log($("#"+e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id))
+                /*
+                console.log(e.composedPath()[1].children[0].parentElement.parentElement);
+                console.log(e.composedPath()[1].children[0].parentElement.parentElement.parentElement);
+                console.log(e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id);
+                console.log(lastRoboDivs[e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id]);*/
+               // console.log({uuid: draggingUuid, robouuid: e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id})
+                moveChipToActive({uuid: draggingUuid, robouuid: e.composedPath()[1].children[0].parentElement.parentElement.parentElement.children[0].id});
             }else if (e.target.id == 'chipsInv' && startPlace == 'active'){
-                moveChipToInv(draggingUuid);
+                console.log("Brokage??");
+                console.log({uuid: draggingUuid, robouuid: lastRoboDivs[draggingUuid][0].parentElement.parentElement.children[0].id});
+                console.log($("#"+draggingUuid));
+                console.log($("#"+lastRoboDivs[draggingUuid][0].parentElement.parentElement.children[0].id));
+                moveChipToInv({uuid: draggingUuid, robouuid: lastRoboDivs[draggingUuid][0].parentElement.parentElement.children[0].id});
+            }else{
+                if (startPlace == 'inv'){
+                    console.log("HEYJ??");
+
+                    chipMovedInvResult(draggingUuid);
+                }else if (startPlace == 'active'){
+                    chipMovedActiveResult(draggingUuid, true)
+                }
             }
         }
         rayCastForBattleField(e, draggingUuid);
@@ -368,21 +401,43 @@ export function removeDiv(uuid){
     updateActiveRobos(ogDiv); //passing the div that we deleted.
 }
 
-export function chipMovedActiveResult(uuid){
+export function chipMovedActiveResult(uuid, ret){
     console.log("GETTING REALLY CHIPPY");
     //$("#" + e.composedPath()[0].parentElement.parentElement.children[0].id)
-    chipHolderDiv.append($(`#${uuid}`).css({'pointerEvents': 'auto', 'position': 'static', "margin": '0px', 'width': '6rem', 'height': 'auto', 'zoom': '80%'}));
+    if (ret){
+        lastRoboDivs[uuid].append($(`#${uuid}`).css({'pointerEvents': 'auto', 'position': 'static', "margin": '0px', 'width': '6rem', 'height': 'auto', 'zoom': '80%'}));
+    }else{
+        console.log(chipHolderDiv)
+        console.log(chipHolderDiv.children());
+        console.log("AHA")
+        if (chipHolderDiv.children().length != 0){//so something is inside, we'll assume it's the old chipDiv
+            console.log(chipHolderDiv.children()[0]);
+            chipMovedInvResult(chipHolderDiv.children()[0].id);
+        }
+        chipHolderDiv.append($(`#${uuid}`).css({'pointerEvents': 'auto', 'position': 'static', "margin": '0px', 'width': '6rem', 'height': 'auto', 'zoom': '80%'}));
+        lastRoboDivs[uuid] = chipHolderDiv
+        
+    }
     //chipHolderDiv.find('.chipImgDiv').show();
     console.log(uuid);
     console.log($(`#${uuid}`));
-    console.log(chipHolderDiv);
+    //console.log(chipHolderDiv);
     //chipHolderDiv = null;
 }
 
 
-export function chipMovedInvResult(uuid){
-    let divToShow =  $("#"+uuid).children().show()
-    divToShow.children().hide();
-    divToShow.css( 'width', '9.775rem');
+export function chipMovedInvResult(uuid){   
+    let divToShow =  $("#"+uuid)
+    divToShow.children().show()
+    divToShow.css('margin-left', '0.4rem');
+    console.log("div to show");
+    //divToShow[2].style.visbility = 'hidden';
+    //console.log(divToShow[2]);
+    $(`#${uuid}_img`).remove();//idk why the other approach didn't work... (2 lines above)
+    console.log(divToShow);
+
+    //divToShow.children().hide();
+    //RESETTING EVERYTHING.
+    divToShow.css({ 'width': '9.3rem',  'position': 'relative',  'top': '0rem', 'left': '0rem', 'zoom': '0%', 'pointerEvents': 'auto'}).removeClass('added');
     $("#chipsInv").append(divToShow);
 }
