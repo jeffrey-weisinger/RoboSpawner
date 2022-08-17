@@ -255,9 +255,9 @@ export async function drawBeings(mainPlayerInfo, beingsInfo){
         if (clock)[
             clockDelta = clock.getDelta()
         ]
-        console.log("starting");
+      /*  console.log("starting");
         console.log("logging beings info");
-        console.log(beingsInfo);
+        console.log(beingsInfo);*/
         await updatePlayer();
             await updateBeing();
         cleanup();
@@ -415,10 +415,10 @@ async function updateBeing(){
                     case 'robot':
                         let model = being.model;
                         //we say this here because model doesn't exist unless we're dealing with a robot. 
-                        console.log("MODEL PRINTING");
+                      /*  console.log("MODEL PRINTING");
                         console.log(model);
                         console.log(being);
-                        console.log(being.side);
+                        console.log(being.side);*/
                         switch(model){
                             case "1":
                                 zOffset = 0.26;
@@ -599,7 +599,7 @@ async function updateBeing(){
             
            // console.log("<5>, about to update animation: " + being.animation);
            if (being.type != 'gear' || being.type != 'projectile'){
-            console.log("ABT TO PLAY");
+            //console.log("ABT TO PLAY");
             beingContainer.updateAnimation(being.animation);
            }
             beingContainer.checked = true; //so at this point, everything will have been checked!
@@ -696,8 +696,8 @@ function cleanup(){
     const hex = 0xffff00;
     arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
     scene.add( arrowHelper );
-    console.log("updates in degrees");
-    console.log((z+ 3*Math.PI/2)*180/Math.PI);
+    //console.log("updates in degrees");
+    //console.log((z+ 3*Math.PI/2)*180/Math.PI);
 
     renderer.render(scene, perspectiveCamera);
     labelRenderer.render(scene, perspectiveCamera);

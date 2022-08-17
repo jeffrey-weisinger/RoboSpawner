@@ -46,6 +46,19 @@ class WorldGeneratorTest{
         this.allObjs[uuid3] = chip1;
         this.sMap.insert(502, 502, 1, 1, uuid3);
 
+        let uuid4 = uuidv4();
+        let chip2 = new Chip(495, 490, 0, "1", uuid4);
+        this.items[uuid4] = chip2;
+        this.allObjs[uuid4] = chip2;
+        this.sMap.insert(502, 502, 1, 1, uuid4);
+
+        
+        let uuid5 = uuidv4();
+        let chip3 = new Chip(498, 490, 0, "5", uuid5);
+        this.items[uuid5] = chip3;
+        this.allObjs[uuid5] = chip3;
+        this.sMap.insert(502, 502, 1, 1, uuid5);
+
         
 /*5
 

@@ -8,9 +8,9 @@ import {menuLogicSetup, fillButtons, handleErrors, consoleLogTester, menuComplet
 import {agentSelectComplete} from './agentSelectLogic.js'
 import {setupCanvas, updateCanvas} from './canvas.js' //update canvas because that's where we're going to start listening ==> updating.
 import {draw} from './draw.js';
-import {startCapturingInput, resetDiv, removeDiv} from './input.js';
+import {startCapturingInput, resetDiv, removeDiv, chipMovedActiveResult, chipMovedInvResult} from './input.js';
 import {initState, processGameUpdate} from './process.js' //the center of where we get/process our updates from the server! 
-import {updateGears, addToInventory} from './gameLogic.js';
+import {updateGears, updateChipsIntoInv, addToInventory} from './gameLogic.js';
 import { update } from 'lodash';
 let mode;
 let playerClassType;
@@ -58,9 +58,12 @@ export function connect(playerType){
             socket.on('menuComplete', menuComplete);
             socket.on('agentSelectComplete', agentSelectComplete);
             socket.on('gearUpdate', newGearCount => updateGears(newGearCount));
+            socket.on('chipUpdateInv', obj => updateChipsIntoInv(obj));
             socket.on('gameTime', configGame);
             socket.on('buyConfirmation', returnObj => addToInventory(returnObj));
             socket.on('updateDiv', obj=>updateDiv(obj));
+            socket.on('chipMovedActive', chipMovedActiveResult);
+            socket.on('chipMovedInv', chipMovedInvResult);
         }) 
         resolve()});
 }
@@ -127,3 +130,13 @@ function updateDiv(obj){
 export function orbitUpdate(obj){
     socket.emit('orbitUpdate', obj);
 }
+
+export function moveChipToActive(uuid){
+    console.log("MOVING2")
+    socket.emit('moveChipToActive', uuid);
+}
+
+export function moveChipToInv(uuid){
+    socket.emit('moveChipToInv', uuid);
+}
+

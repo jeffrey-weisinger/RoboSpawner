@@ -59,6 +59,9 @@ io.on('connection', (socket)=>{
     socket.on('buyRobot', model => buyRobot(socket, model));
     socket.on('reqRoboAdd', obj =>addToBattleField(socket, obj) );
     socket.on('orbitUpdate', obj =>updateDirection(socket, obj) );
+    socket.on('moveChipToActive', uuid => moveChipToActive(socket, uuid));
+    socket.on('moveChipToInv', uuid => moveChipToInv(socket, uuid));
+
 
 });
 
@@ -228,6 +231,7 @@ function handleMouseInput(socket, obj){
     }
 }
 
+
 function pickupItem(socket, uuidsArr){
     console.log("PICKING UP, SERVER");
    // console.log(arenas);
@@ -262,5 +266,18 @@ function addToBattleField(socket, obj){
 function updateDirection(socket, obj){
     if (arenas[socket.id]){ 
         arenas[socket.id].updateDirection(socket, obj);
+    }
+}
+
+function moveChipToActive(socket, uuid){
+    if (arenas[socket.id]){ 
+        console.log("WE A MOVING"); 
+        arenas[socket.id].moveChipToActive(socket, uuid);
+    }
+}
+
+function moveChipToInv(socket, uuid){
+    if (arenas[socket.id]){
+        arenas[socket.id].moveChipToInv(socket, uuid);
     }
 }

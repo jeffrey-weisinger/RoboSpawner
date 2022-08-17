@@ -134,7 +134,7 @@ class Robot{
                 console.log(minObj);
                 console.log(minDistance)*/
                 if (Math.abs(minDistance) >= this.atkDistance){ //then we're not in range. move closer. atkDistance will always be positive.
-                    console.log("YE");
+                   // console.log("YE");
                     this.x -= (this.x - minObj.x) / Math.sqrt((this.x - minObj.x)**2 + (this.y - minObj.y)**2)/10
                     this.y -= (this.y - minObj.y) / Math.sqrt((this.x - minObj.x)**2 + (this.y - minObj.y)**2)/10
                     this.rotation = Math.atan2(minObj.x - this.x, minObj.y - this.y);
@@ -145,7 +145,7 @@ class Robot{
                     this.phase = "attack";
                     this.animation = "Attack";
                     //this.rotation = Math.atan2(minObj.y - this.y, minObj.x - this.x); //we still want to rotate. this is mainly for bots that didn't get a chance to rotate since they were spawned so close to each other.
-                    console.log(this.unique_id);
+                    //console.log(this.unique_id);
                     this.rotation = Math.atan2(minObj.x - this.x, minObj.y - this.y);
                     console.log(this.x);
                     console.log(this.y);

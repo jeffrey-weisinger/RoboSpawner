@@ -7,6 +7,7 @@ const Robot = require('./Robot.js');
 const InvRobot = require('./InvRobot.js');
 const Projectile = require('./Projectile.js');
 const Chip = require('./Chip.js');
+const GuiChip = require('./GuiChip.js')
 
 class Arena{ 
     constructor(){
@@ -100,6 +101,17 @@ class Arena{
             console.log("THIS IS THE UUID:")
             console.log(uuid);
             if (this.allObjects[uuid]){
+                let type = this.allObjects[uuid].type;
+                if (type == 'gear'){
+                    this.players[socket.id].gears++
+                    socket.emit('gearUpdate', this.players[socket.id].gears); //this is a gui thing, so it doesn't matter that it comes before we delete it on the canvas.
+                }else if (type == 'chip'){
+                    let model = this.allObjects[uuid].model;
+                    //personalized inventory object, which i think is better because it's more intuitive, more so compared to the global one. however, both work.
+                    //note that this is only really used 
+                    this.players[socket.id].invChips[uuid] = new GuiChip(model, uuid); //this is what the chip will remain as. -- same logi here as above, since an invchip info when returned is for the canvas.
+                    socket.emit('chipUpdateInv', {model, uuid});
+                }
                 console.log(Object.keys(this.allObjects).length);
                 delete this.allObjects[uuid]
                 console.log(Object.keys(this.allObjects).length);
@@ -109,12 +121,10 @@ class Arena{
                 delete this.items[uuid]
                 console.log(Object.keys(this.items).length);
             }
-            
-            this.players[socket.id].gears++
-            
+
+            this.sMap.deleteBeing(uuid);
         })
         console.log(this.players[socket.id].gears + "<- gear count ");
-        socket.emit('gearUpdate', this.players[socket.id].gears);
       
     }
     buyRequest(socket, model){
@@ -166,6 +176,29 @@ class Arena{
 
     }
 
+    moveChipToActive(socket, uuid){
+        let pl = this.players[socket.id]
+        if (pl.invChips[uuid]){
+            pl.activeChips[uuid] = pl.invChips[uuid]
+            delete pl.invChips[uuid];
+            socket.emit('chipMovedActive', uuid);
+        }else{
+
+        }
+
+    }
+
+    
+    moveChipToInv(socket, uuid){
+        let pl = this.players[socket.id]
+        if (pl.activeChips[uuid]){
+            pl.invChips[uuid] = pl.activeChips[uuid]
+            delete pl.activeChips[uuid];
+            socket.emit('chipMovedInv', uuid);
+        }else{
+
+        }
+    }
     addToBattleField(socket, obj){
         console.log("WE IN AND WE UP");
         let {uuid, x, y} = obj;
@@ -419,6 +452,7 @@ class Arena{
             this.players[socket.id].mouseMove(x, y, canvasX, canvasY);
         }
     }
+
 
 }
 module.exports = Arena;

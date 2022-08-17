@@ -78,7 +78,7 @@ function iconSetup(){
     console.log($("#store-icon-holder")[0]);
     //$("#store-icon-holder")[0].addEventListener('click', () => {console.log("ONG (and for eraal)")});
     $("#store-icon-holder").prepend(`<img src = ${projStoreIcon} width=35 height=35>`)
-    $("#orbsInv-icon-holder").prepend(`<img src = ${projOrbInvIcon} width=35 height=35>`)
+    $("#chipsInv-icon-holder").prepend(`<img src = ${projOrbInvIcon} width=35 height=35>`)
     $("#robosInv-icon-holder").prepend(`<img src = ${projRoboInvIcon} width=35 height=35>`)
 
 
@@ -478,22 +478,77 @@ export function updateActiveRobos(div){
 
     let roboUI = $("#roboUI");
 
-
+    let upperHolder = ($("<div></div>").addClass("upperActiveRoboHolder"))
     let holder = ($("<div></div>").addClass("activeRoboHolder"))
     holder.append(div);
-    holder.prepend($("<button>Select</button>").addClass("roboSelect"))
+    upperHolder.prepend($("<button>Select</button>").addClass("roboSelect"))
     let extras = $("<div></div>").addClass("extras")
-    extras.append($("<button></button>").addClass("superButton"));
     extras.append($("<div></div>").addClass("chipHolder"));
-    holder.append(extras)
-    roboUI.append(holder);
+    extras.append($("<button></button>").addClass("superButton"));
+    upperHolder.append(holder.append(extras));
+    roboUI.append(upperHolder);
     $("#" + div.id).css({"margin-top" : "0px", "margin-right": "0px", "margin-bottom": '0px'});
     //holder.css("margin-right", "13px");
-
+    console.log(div.id);
     
 /*
     if( roboUI.children().length == 1) {    //meaning this is the first addition
     }
     just added flex!
     */
+}
+
+export function updateChipsIntoInv(obj){
+    let {model, uuid} = obj
+    let chipImg;
+    let chipTitle = "Default Chip Title";
+    switch(model){
+        case "1":
+            chipImg = chip1Img;
+            chipTitle = "Chip of Damage"
+            break;
+        case "2":
+            chipImg = chip2Img;
+            break;
+        case "3":
+            chipImg = chip3Img;
+            break;
+        case "4":
+            chipImg = chip4Img;
+            break;
+        case "5":
+            chipTitle = "Shield Chip"
+            chipImg = chip5Img;
+            break;
+        case "6":
+            chipImg = chip6Img;
+            break;
+        case "7":
+            chipImg = chip7Img;
+            break;
+        case "8":
+            chipImg = chip8Img;
+            break;
+        case "9":
+            chipImg = chip9Img;
+            break;
+        case "10":
+            chipImg = chip10Img;
+            chipTitle = "Dragon Chip"
+            break;
+        case "11":
+            chipImg = chip11Img;
+            break;
+        case "12":
+            chipImg = chip12Img;
+            break;
+
+    }
+    let chipDiv = $(`<div id=${uuid}></div>`).addClass("chipDiv");
+    let chipImgDiv = $(`<div></div>`).addClass("chipImgDiv");
+    let chipImgjQuery = $(`<img src=${chipImg}></img>`).addClass("chipImg")
+    chipImgjQuery.on('dragstart', e=>e.preventDefault());
+    chipDiv.append(chipImgDiv.append(chipImgjQuery));
+    chipDiv.prepend($(`<div>${chipTitle}</div>`).addClass('chipTitle'));
+    $("#chipsInv").append(chipDiv);
 }

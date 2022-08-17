@@ -1,4 +1,4 @@
-import {mouseMove, keyInput} from './network.js';
+import {mouseMove, keyInput, moveChipToActive, moveChipToInv} from './network.js';
 import $ from "jquery";
 import {mouseDownCanvas} from './drawBeings.js';
 import { some } from 'lodash';
@@ -11,6 +11,7 @@ import robo5Full from '../../assets/icons/robo5FullCrop.png';
 
 import {rayCastForBattleField} from './drawBeings.js';
 import { updateActiveRobos } from './gameLogic.js';
+import { consoleLogTester } from './menuLogic.js';
 
 
 let isDragging = false;
@@ -23,24 +24,38 @@ topAdjust = topAdjust.substring(0, topAdjust.length-2);
 let leftOffset;
 let topOffset;
 let model;
+let type;
 let newSrcImg;
 let originalDivs = {};
+let chipHolderDiv;
+let firstOver360 = true;
+let startPlace;
 console.log(document.styleSheets[0].cssRules);
 
-let halfHeight;// = $('.roboUnit').css('height');//we can just say this since all the robo units are effectively the same.
-let halfWidth;
+let halfRoboHeight;// = $('.roboUnit').css('height');//we can just say this since all the robo units are effectively the same.
+let halfRoboWidth;
+let halfChipHeight;
+let halfChipWidth;
 Object.values(document.styleSheets[0].cssRules).forEach(rule => {
     if (rule.selectorText == '.roboUnit'){
         console.log("RULE");
         console.log(rule.style);
-        halfHeight = rule.style.height;
-        halfHeight = halfHeight.substring(0, halfHeight.length-2)/2
+        halfRoboHeight = rule.style.height;
+        halfRoboHeight = halfRoboHeight.substring(0, halfRoboHeight.length-2)/2
 
-        halfWidth = rule.style.width;
-        halfWidth = halfWidth.substring(0, halfWidth.length-2)/2    }
+        halfRoboWidth = rule.style.width;
+        halfRoboWidth = halfRoboWidth.substring(0, halfRoboWidth.length-2)/2    }
+    if (rule.selectorText == '.chipDiv'){
+        console.log("RULE");
+        console.log(rule.style);
+        halfChipHeight = rule.style.height;
+        halfChipHeight = halfChipHeight.substring(0, halfChipHeight.length-3)/2*16-39
+
+        halfChipWidth = rule.style.width;
+        halfChipWidth = halfChipWidth.substring(0, halfChipWidth.length-3)/2*16-27    }      
 })
-console.log('halfHeight' + halfHeight);
-console.log('halfWidth' + halfWidth);
+console.log('halfHeight' + halfChipHeight);
+console.log('halfWidth' + halfChipWidth );
 
 
 
@@ -109,7 +124,69 @@ function handleMouseInput(e){
 /*
 } */
 
+function handleMouseDown(e){ 
+    
+    console.log(e);
+    console.log("in mouse down");
+    console.log(e.composedPath());
+    let comp = e.composedPath();
+    if (comp[0].localName == "canvas"){ //in other words we clicked on something in the scene. this could be a gear. (NOTE that we changed it to canvas from viewport)
+        console.log('goin into canvas');
+        mouseDownCanvas(e);
+
+    }else {
+        comp.forEach(div => {
+            console.log("DIV ID ")
+            console.log(div.id);
+            console.log(div);
+            if (div.id == "robosInv" || div.id == "chipsInv"){//it has a jquery element??? weird.
+                isDragging = true;
+                comp.forEach(div => {
+                    console.log(div.classList);
+                    if (div.classList){
+                        if (div.classList[0] == 'roboUnit'){
+                            type = 'robot';
+                            draggingUuid = div.id //already string.
+                            console.log("draggingUUID in mousedown: " + draggingUuid);
+                            model = div.classList[1];
+                        }
+                        if (div.classList[0] == 'chipDiv'){
+                            type = 'chip';
+                            startPlace = "inv"
+                            draggingUuid = div.id //already string.
+                            console.log("draggingUUID in mousedown: " + draggingUuid);
+                            //model = div.classList[1]
+                        }
+                    }
+
+                })
+            }else if (div.id == "roboUI"){
+                isDragging = true;
+                console.log("DD");
+                console.log(div);
+                comp.forEach(div => {
+                    console.log("DIV");
+                    console.log(div);
+                    console.log(div.classList);
+                    if (div.classList &&div.classList[0] == "chipDiv"){
+                        type = 'chip';
+                        startPlace = "active";
+                        draggingUuid = div.id;
+                    }
+                
+                    
+                });
+            }
+        })
+    }
+
+
+}
+
+
 function handleMouseMove(e){
+    console.log("L")
+    console.log(draggingUuid)
     if (!isDragging){
         let x = e.clientX;
         let y = e.clientY;
@@ -127,6 +204,8 @@ function handleMouseMove(e){
         if (draggingUuid){
             if (!startedDragging){           //means this is our first pass-through -- getting all the id-specific things we'll need for moving (and for a possible reposition at the end).
                 divToMove = $(`#${draggingUuid}`); //the indexing is important later, as otherwise we'll just get the jquery version. 
+                // i'm so fucking smart like DAMN 
+                if (type == 'chip')divToMove.css({"pointerEvents": "none"});
                 console.log(divToMove.id);
                 originalDivs[draggingUuid] = ($(`#${draggingUuid}`)[0]).cloneNode(true);
                 //originalLeftPos = 
@@ -149,37 +228,85 @@ function handleMouseMove(e){
 
                 console.log(divToMove.offset());
                 console.log("WE UP");
-                divToMove.css('left', ( - halfWidth + e.clientX) + 'px');
+                let halfHeight;
+                let halfWidth;
+                if (type == "robot"){
+                    halfHeight = halfRoboHeight;
+                    halfWidth = halfRoboWidth
+                }else if (type == "chip"){
+                    halfHeight = halfChipHeight +85
+                    halfWidth = halfChipWidth
+                }
+                console.log(halfWidth);
+                console.log(halfHeight);
+                divToMove.css('left', ( -halfWidth + e.clientX) + 'px');
                 divToMove.css('top', ( -halfHeight + e.clientY) + 'px'); //splitting jquery css into 2 parts for readability.
 
                 if (e.clientX > 360){
                     console.log('abt to hide');
                     console.log(divToMove.children())
-                    divToMove.children().hide();/*each((index, div) => {
-                        console.log(div);
-                        div.style.visiblity = 'hidden'; //we're going convert it into another robo image, so we can't have previous content existing.
-                    })*/
-                    console.log('now we add some more stuff here');
-                    divToMove.css('background-color', 'transparent'); //aha this is the default value.
-                    switch(model){
-                        case "1":
-                            newSrcImg = robo1Full;  
-                            break;
-                        case "2":
-                            newSrcImg = robo2Full;
-                            break;
-                        case "3":
-                            newSrcImg = robo3Full;
-                            break;
-                        case "4":
-                            newSrcImg = robo4Full;
-                            break;
-                        case "5":
-                            newSrcImg = robo5Full;
-                            break;
+                    let chipImg;
+                    console.log(divToMove);
+                    console.log(divToMove.find(".chipImg"));
+                    if (type == "chip"){
                     }
-                    divToMove.append(`<image src=${newSrcImg} id="faded${model}"></image>`) //remember, it's important that this is a variable name here.
-                }
+                    if (!divToMove[0].classList.contains("added")){
+                        divToMove.children().hide();
+                    }
+                        /*each((index, div) => {
+                            console.log(div);
+                            div.style.visiblity = 'hidden'; //we're going convert it into another robo image, so we can't have previous content existing.
+                        })*/
+                        console.log('now we add some more stuff here');
+                        divToMove.css('background-color', 'transparent'); //aha this is the default value.
+                        let fadedId;
+                        console.log("type");  
+                        console.log(type);  
+                        console.log(model);
+                        if (type == "robot"){
+                            fadedId = `faded${model}`
+                            switch(model){
+                                case "1":
+                                    console.log('why are you not here dumnbesass');
+                                    newSrcImg = robo1Full;  
+                                    break;
+                                case "2":
+                                    newSrcImg = robo2Full;
+                                    break;
+                                case "3":
+                                    newSrcImg = robo3Full;
+                                    break;
+                                case "4":
+                                    newSrcImg = robo4Full;
+                                    break;
+                                case "5":
+                                    newSrcImg = robo5Full;
+                                    break;
+                            }
+                        }else if (type == "chip"){
+                            console.log("WTF");
+                            newSrcImg = divToMove.find(".chipImg")[0].src;
+                        }/*
+                        console.log("NEW SRC IMG");
+                        console.log(newSrcImg);
+                        console.log(divToMove);
+                        console.log(divToMove.find(".chipImg")[0]);
+                        console.log(divToMove.find(".chipImg")[0].src);*/
+                       // console.log(newSrcImg);
+                        
+                        if(!divToMove[0].classList.contains("added")){ //we only want to do this once.
+                            let imgToAppendjQuery = $(`<image src=${newSrcImg} id=${fadedId}></image>`).css({'pointerEvents': 'none'});
+                            if (type == 'chip') divToMove.css('width', "6rem").addClass("added");
+                            console.log("AHHHHHHH");
+                            divToMove.append(imgToAppendjQuery);//remember, it's important that this is a variable name here.
+                            console.log(divToMove);
+                         }else{
+                            console.log("WTF???A?");
+                        }
+                       
+                    }
+                   
+               // }
             
 
         }
@@ -189,43 +316,36 @@ function handleMouseMove(e){
 
 }
 
-function handleMouseDown(e){ 
-    console.log(e);
-    console.log("in mouse down");
-    console.log(e.composedPath());
-    let comp = e.composedPath();
-    if (comp[0].className == "viewport"){ //in other words we clicked on something in the scene. this could be a gear.
-        mouseDownCanvas(e);
-    }
-    comp.forEach(div => {
-        if (div.id == "robosInv"){//it has a jquery element??? weird.
-            isDragging = true;
-            comp.forEach(div => {
-                console.log(div.classList);
-                if (div.classList){
-                    if (div.classList[0] == 'roboUnit'){
-                        draggingUuid = div.id //already string.
-                        console.log("draggingUUID in mousedown: " + draggingUuid);
-                        model = div.classList[1]
-                    }
-                }
-
-            })
-        }
-    })
-
-
-}
-
-
 function handleMouseUp(e){
     //let dragDiv = $(`#${uuid}`);
     isDragging = false;
   //  divToMove.css('position', 'static');
     startedDragging = false;
-    rayCastForBattleField(e, draggingUuid);
+     
+    if (draggingUuid){
+        console.log("UUPUPP")
+        //we need to figure out where it was dropped.
+        if (type == "chip"){
+            if(e.composedPath()[0].classList[0] == 'chipHolder' && startPlace == 'inv'){
+                console.log("MOVING");
+                //note: i'm pretty sure that auto pointerevents allow me to click the chipDiv.
+                chipHolderDiv = $("#" + e.composedPath()[0].parentElement.parentElement.children[0].id).parent().find(".chipHolder") //we want the specific one.
+                moveChipToActive(draggingUuid);
+            }else if (e.target.id == 'chipsInv' && startPlace == 'active'){
+                moveChipToInv(draggingUuid);
+            }
+        }
+        rayCastForBattleField(e, draggingUuid);
+        draggingUuid = null;
+        firstOver360 = true;
+    }
 }
 
+/*
+ $("#" + e.composedPath()[0].parentElement.parentElement.children[0].id).parent().find(".chipHolder").append($(`#${draggingUuid}`).css({'pointerEvents': 'auto'}));
+                console.log( $("#" + e.composedPath()[0].parentElement.parentElement.children[0].id).parent());
+                console.log('^there');
+*/
 
 export function resetDiv(uuid){
     //if it doesn't exist in the original divs, we will have a problem... that doesn't seem possible unless we mess something else up, though. 
@@ -246,4 +366,23 @@ export function removeDiv(uuid){
     let ogDiv = originalDivs[uuid]
 
     updateActiveRobos(ogDiv); //passing the div that we deleted.
+}
+
+export function chipMovedActiveResult(uuid){
+    console.log("GETTING REALLY CHIPPY");
+    //$("#" + e.composedPath()[0].parentElement.parentElement.children[0].id)
+    chipHolderDiv.append($(`#${uuid}`).css({'pointerEvents': 'auto', 'position': 'static', "margin": '0px', 'width': '6rem', 'height': 'auto', 'zoom': '80%'}));
+    //chipHolderDiv.find('.chipImgDiv').show();
+    console.log(uuid);
+    console.log($(`#${uuid}`));
+    console.log(chipHolderDiv);
+    //chipHolderDiv = null;
+}
+
+
+export function chipMovedInvResult(uuid){
+    let divToShow =  $("#"+uuid).children().show()
+    divToShow.children().hide();
+    divToShow.css( 'width', '9.775rem');
+    $("#chipsInv").append(divToShow);
 }

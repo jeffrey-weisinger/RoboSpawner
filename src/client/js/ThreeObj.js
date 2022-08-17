@@ -101,10 +101,10 @@ class ThreeObj{
     }
 
     setHP(newHP){
-        console.log(newHP);
-        console.log(newHP/100*70);
+       // console.log(newHP);
+        //console.log(newHP/100*70);
         this.label.children[0].style["width"] = (newHP/100*70)+ "px";
-        console.log(this.label.children[0].style.width);
+        //console.log(this.label.children[0].style.width);
     }   
     updateAnimation(newAnimationName){
         //console.log("UPDATING");

@@ -21,6 +21,11 @@ class Player{
         this.orbitYHoriz = 0;
         this.type = 'player';  
 
+
+        //these two are mainly just used for confirmation.
+        this.invChips = {};
+        this.activeChips = {}; //note that this should also go into the robot.
+
         setInterval(this.printOrbits.bind(this), 2000);
 
     }
