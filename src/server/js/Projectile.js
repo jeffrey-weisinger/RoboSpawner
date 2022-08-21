@@ -1,11 +1,16 @@
 
 class Projectile{
 
-    constructor(startX, startY, endX, endY, dmg, projSpeed, soc_id, unique_id, allObjs, projectiles, parent_unique_id, spatialHashMap){//spatialHashMap
-        this.startX = startX;
+    constructor(startX, startY, startZ, endX, endY, dmg, projSize, projSpeed, soc_id, unique_id, allObjs, projectiles, parentModel, parent_unique_id, spatialHashMap){//spatialHashMap
+        //we need to determine what startX, startY, and startZ are for all 5 robots. (3 are pure melee)
+        //ending coordinates should always just be the x and y coordinates. for z, it should be higher. 
+        this.startX = startX; 
         this.startY = startY;
+        this.startZ = startZ;
+
         this.endX = endX;
         this.endY = endY;
+        this.endZ = 2.5;
         this.dmg = dmg;
         this.projSpeed = projSpeed;
         this.soc_id = soc_id;
@@ -14,16 +19,18 @@ class Projectile{
         this.projectiles = projectiles;
         this.sMap = spatialHashMap;
         this.parent_unique_id = parent_unique_id;
+        this.projSize = projSize;
 
        // this.sMap = spatialHashMap;
 
        //these are the starting positions.
         this.currentX = startX;
         this.currentY = startY;
+        this.currentZ = startZ;
         this.rotation = 0;
         this.type = "projectile" //really weird, when it was "Projectile", we wouldn't actually be able to get the projectile gltf, and it would use the one from the previous pass!!! look into this.
 
-        this.length = Math.sqrt((this.startX - this.endX)**2 + (this.startY - this.endY)**2);
+        this.length = Math.sqrt((this.startX - this.endX)**2 + (this.startY - this.endY)**2 + (this.startZ - this.endZ)**2);
 
 
     }
@@ -31,6 +38,8 @@ class Projectile{
         
         this.currentX -= ((this.startX - this.endX)/this.length)*this.projSpeed/10;
         this.currentY -= ((this.startY - this.endY)/this.length)*this.projSpeed/10;
+        this.currentZ -= ((this.startZ - this.endZ)/this.length)*this.projSpeed/10;
+
         //first, figure out if there was a collision
         let possCollisions =  this.sMap.get(this.currentX, this.currentY, 'collision');
         let collisionFound = false;
@@ -43,7 +52,7 @@ class Projectile{
                     console.log(this.parent_unique_id);
                     console.log(this.allObjs[this.parent_unique_id]);*/
                     //console.log("parent logged");
-                    let dist = Math.sqrt((this.currentX - possCollisionObj.x)**2 + (this.currentY - possCollisionObj.y)**2); //make special pythagorean theorem method.
+                    let dist = Math.sqrt((this.currentX - possCollisionObj.x)**2 + (this.currentY - possCollisionObj.y)**2 ); //make special pythagorean theorem method.
                   /*  console.log("DIST")
                     console.log(dist);
                     console.log(this.currentX);
@@ -77,7 +86,7 @@ class Projectile{
         )
         //second, distance check.
         if (!collisionFound){
-           let dist = Math.sqrt((this.startX - this.currentX)**2 + (this.startY - this.currentY)**2);
+           let dist = Math.sqrt((this.startX - this.currentX)**2 + (this.startY - this.currentY)**2 + (this.startZ - this.currentZ)**2);
             if (dist >= 35){ //if we've gone 35 units without a collision, then destroy the projectile. 
                 delete this.allObjs[this.unique_id]
                 delete this.projectiles[this.unique_id];
@@ -90,12 +99,15 @@ class Projectile{
     }
 
     infoPack(){
+        //console.log(this.currentZ);
         return {
             x: this.currentX,
             y: this.currentY,
+            z: this.currentZ,
             type: this.type,
             unique_id: this.unique_id,
-            rotation: this.rotation
+            rotation: this.rotation,
+            projSize: this.projSize
             //I'm assuming that if in "process.js" there are any non-entered fields those will just be null.
         }
 

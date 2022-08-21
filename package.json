@@ -51,6 +51,7 @@
     "three": "^0.142.0",
     "three-css2drender": "^1.0.0",
     "three-fbx-loader": "^1.0.3",
+    "three-outlinepass": "^1.2.0",
     "throttle-debounce": "^2.3.0",
     "uniqid": "^5.4.0",
     "url-loader": "^4.1.1",

@@ -19,7 +19,7 @@ class Player{
         this.orbitYVert = 0;
         this.orbitXHoriz =0;
         this.orbitYHoriz = 0;
-        this.type = 'player';  
+        this.type = 'player';
 
 
         //these two are mainly just used for confirmation.

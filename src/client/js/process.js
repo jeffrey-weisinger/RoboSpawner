@@ -192,6 +192,9 @@ function interpolateObject(prevObj, nextObj, timeRatio){
       console.log("nextX" + nextObj.x);*/
       returnObj.side = nextObj.side;
     }  
+    if (prevObj.type == "projectile"){
+      returnObj.z = nextObj.z ;
+    }
 
    
     return returnObj;

@@ -4,6 +4,7 @@ import {handleUpdate} from './handleUpdate.js'
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { RenderPass, EffectComposer, OutlinePass } from "three-outlinepass" /* LOL THIS SO SCUFFED */
 
 import {pickupItem, reqRoboAdd, orbitUpdate} from './network.js';
  
@@ -38,11 +39,18 @@ import gltfPath_chip10 from '../../assets/models/chip10.gltf';
 import gltfPath_chip11 from '../../assets/models/chip11.gltf';
 import gltfPath_chip12 from '../../assets/models/chip12.gltf';
 
+import gltfPath_boss1 from '../../assets/models/boss1.gltf';
+import gltfPath_boss2 from '../../assets/models/boss2.gltf';
+import gltfPath_finalBoss from '../../assets/models/finalBoss.gltf';
+
+
 
 import gltfPath_gear from '../../assets/models/gameGear.gltf'
 
 import gltfPath_projectileBlue  from '../../assets/models/projectileBlue.gltf'
 import gltfPath_projectileRed  from '../../assets/models/projectileRed.gltf'
+
+
 
 
 const raycaster = new THREE.Raycaster();
@@ -70,6 +78,7 @@ let loader = new GLTFLoader();*/
 
 /* courtesy of wael yasmina */
 
+//let outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, perspectiveCamera); /* Courtesy of Stack Overflow https://stackoverflow.com/questions/26341396/outline-a-3d-object-in-three-js */
 
 const scene = new THREE.Scene();
 /*console.log("SCENE: ");
@@ -195,6 +204,7 @@ let mainPlayerIdle;
 let mainPlayerRun;
 let mainPlayerCurrentAnim;
 let beingsMap = new Map();
+let labelsMap = new Map();
 let gltfPath;
 let v = 1;
 
@@ -228,6 +238,33 @@ new Promise(resolve => {//gltfPath_playerRed gltfPath_robo1Blue
         resolve();
     })
 })*/
+
+
+
+
+var compose = new EffectComposer(renderer);
+var selectedObjects = []
+var renderPass = new RenderPass(scene, perspectiveCamera);
+var outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, perspectiveCamera, selectedObjects);
+outlinePass.renderToScreen = true;
+outlinePass.selectedObjects = selectedObjects;
+
+compose.addPass(renderPass);
+compose.addPass(outlinePass);
+var params = {
+    edgeStrength: 2,
+    edgeGlow: 1,
+    edgeThickness: 1.0,
+    pulsePeriod: 0,
+    usePatternTexture: false
+};
+
+
+outlinePass.edgeStrength = params.edgeStrength;
+outlinePass.edgeGlow = params.edgeGlow;
+outlinePass.visibleEdgeColor.set(0xffffff);
+outlinePass.hiddenEdgeColor.set(0xffffff);
+
 
 let clockDelta //defined globally.
 controls.update();
@@ -300,12 +337,22 @@ async function updatePlayer() {
                     label.layers.set( 0 );  
                     playerContainer = new ThreeObj(_mainPlayerInfo.unique_id, _mainPlayerInfo.type, actionArray, _mainPlayerInfo.animation, playerMixer, testDiv)        
                     playerContainer.setHP(100);
+                    labelsMap.set(_mainPlayerInfo.unique_id, label);
 
                     //setting global uuid
                     console.log(playerMixer._root.userData);
                     playerMixer._root.userData.global_uuid = "ROBOROBO"///_mainPlayerInfo.unique_id;
                     playerMixer._root.position.y += 1.55   ;//this is actually z. we put it here so it only happens once.
-
+                    selectedObjects.push(playerMixer._root);
+                    console.log(playerMixer);
+                    console.log(playerMixer._root);
+                    console.log(playerMixer._root.children[0].children[5].geometry)
+                    const geometry = playerMixer._root.children[0].children[5].geometry
+                    //const geometry = new THREE.BoxGeometry( 100, 100, 100 );
+                    const edges = new THREE.EdgesGeometry( geometry );
+                    const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
+                    scene.add( line );
+                    console.log("pLAYERMIXERROOT")
                     resolve();
                     
                 });
@@ -431,7 +478,7 @@ async function updateBeing(){
                                 }
                             break;
                             case "2":
-                                zOffset = 0.55;
+                                zOffset = 0.62;
 
                                 if (being.side == 'ally'){
                                     gltfPath = gltfPath_robo2Blue;
@@ -470,6 +517,18 @@ async function updateBeing(){
 
                                 }
                             break;
+                            case "6":
+                                zOffset = 0.7;
+                                gltfPath = gltfPath_boss1
+                                break;
+                            case "7":
+                                zOffset = 0.7;
+                                gltfPath = gltfPath_boss2
+                                break;  
+                            case "8":
+                                zOffset = 1.2;
+                                gltfPath = gltfPath_finalBoss
+                                break;  
                         }
                         break;
                     case 'gear':
@@ -480,9 +539,9 @@ async function updateBeing(){
                         console.log("PROJ");
                         if (being.side == 'ally')
                             gltfPath = gltfPath_projectileBlue;
-                        else
+                        else{}
                             gltfPath = gltfPath_projectileRed;
-                        zOffset = 2.3;
+                        zOffset = being.z; //z will exist ONLY for projectile.
                         //we will need x and y offsets, no?
 
                         break;
@@ -537,7 +596,14 @@ async function updateBeing(){
                        /*! console.log('in other words, being with the id: ' + unique_id + " is not in the map, and we're adding it");*/
                         scene.add(gltf.scene);
                         if (being.type == 'robot'){
-                            gltf.scene.scale.set(0.3, 0.3, 0.3);
+                            if (parseInt(being.model) == 8){
+                                gltf.scene.scale.set(1.2, 1.2, 1.2);
+                            }
+                            else if (parseInt(being.model)<=5){
+                                gltf.scene.scale.set(0.3, 0.3, 0.3);
+                            }else{
+                                gltf.scene.scale.set(0.65, 0.65, 0.65);
+                            }
                         }else if (being.type == 'player'){
                             gltf.scene.scale.set(0.7, 0.7, 0.7);
                         }else if (being.type == 'gear'){
@@ -554,7 +620,12 @@ async function updateBeing(){
                         if (being.type != 'gear' && being.type != "projectile" && being.type != 'chip'){ //because none of these should have health bars or healthbars //note that we need to figure out the rotation situation for gears and chips.
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Idle' )));
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Run' )));
-                            actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Attack' )));
+                            if (being.model != "8"){
+                                actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Attack' )));
+                            }else{
+                                actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Attack' )));
+                               // actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'AttackRanged' )));
+                            }
                           /*  actionArray.forEach(action => {
                                 action.timeScale = 50; //they seem to be reallly slow so we're speeding it up!
                             }) */
@@ -573,6 +644,8 @@ async function updateBeing(){
                             }
                             mixer._root.add( label ); //this will be for each individual mixer.
                             label.layers.set( 0 );  
+                            labelsMap.set(unique_id, label);
+
                         } 
                         
                         //we are adding the uuid!
@@ -593,6 +666,9 @@ async function updateBeing(){
             let beingContainer = beingsMap.get(unique_id); //this will always return with something.
             beingContainer.updateX(being.x, playerX); //this works since playerX now exists!
             beingContainer.updateY(being.y, playerY);
+            if (being.type == 'projectile'){
+                beingContainer.mixer._root.position.y = being.z;
+            }
             //if (being.type != 'projectile'){. got rid of this if statement because i've decided that i'm going to give a rotation of 0 to projectile, and same logic for gear.
             beingContainer.updateRot(being.rotation); //note that when this is NAN, it fails.
             //}
@@ -634,7 +710,18 @@ async function updateBeing(){
 
                     //we're actually going to delete the object too. 
                     scene.remove(beingContainer.mixer._root); //this is an object
+                    console.log("REMOVING");
+                    console.log(beingContainer.mixer._root);
+                    console.log(beingContainer.unique_id);
+                    console.log("-")
+                    Object.keys(labelsMap).forEach(uuid=>console.log(uuid));
+                    console.log("=")
+
+                    console.log(labelsMap[beingContainer.unique_id])
+                    beingContainer.mixer._root.remove(labelsMap.get(beingContainer.unique_id));
+                    labelsMap.delete(beingContainer.unique_id);//pretty sure we can remove by just accessing the key.
                     beingsMap.delete(beingContainer.unique_id);
+                    
 
                     //ids_to_remove.push(beingContainer.unique_id);
                      //i really hope this doesn't cause any issues because we're deleting inside of the map.
@@ -671,7 +758,7 @@ async function updateBeing(){
 let dir
 let arrowHelper
 function cleanup(){
-
+    compose.render(clockDelta   );
    // renderer.setSize( window.innerWidth, window.innerHeight );
     if(mix) mix.update(clock.getDelta());
 
@@ -715,7 +802,8 @@ export function mouseDownCanvas(e){ // it doesn't matter the order that this is 
     console.log(pointer.x);
     console.log(pointer.y);
     raycaster.setFromCamera( pointer, perspectiveCamera );
-    const intersects = raycaster.intersectObjects( scene.children ); 
+    const intersects = raycaster.intersectObjects( scene.children );
+    
 
     console.log(intersects);   
     let uuidsArr = [];

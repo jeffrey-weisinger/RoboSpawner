@@ -114,7 +114,9 @@ class ThreeObj{
         //console.log("<5.1>, " + newAnimationName)
         if (this.currentAnimationName != newAnimationName){ // if it doesn't exist or they don't match
             this.mixer.stopAllAction();
+            console.log(newAnimationName);
             console.log("CHANGE OF ANIMATION");   
+            console.log(this.actionArray);
             switch( newAnimationName){
                 case "Idle":
                     this.actionArray[0].play();

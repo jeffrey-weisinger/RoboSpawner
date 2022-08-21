@@ -377,17 +377,20 @@ class Arena{
                 })
 
                 //death
-              /*  Object.values(this.robots).forEach(robot => {
+                Object.values(this.robots).forEach(robot => {
                 if (robot.hp <= 0){
-                    delete this.players[robot.unique_id];
+                    this.sMap.deleteBeing(robot.unique_id);
                     delete this.allObjects[robot.unique_id];
+                    delete this.robots[robot.unique_id];                    //can we even do this?
+
+
                     //note that we have to do this last, because we need to keep the player object around as a reference to remove it from the two places where it gets referenced.
                     //robot = null;
                     //wait, note that we don't even need to do that bc it'll get garbage collected.
  
 
                 }
-            });*/
+            });
 
                 let t = Date.now();
                 //console.log(playerObj);

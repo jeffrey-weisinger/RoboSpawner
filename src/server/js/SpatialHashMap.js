@@ -67,8 +67,8 @@ class SpatialHashMap{
     }
 
     deleteBeing(unique_id){
-        console.log("REMOVING");
-        console.log(unique_id);
+       // console.log("REMOVING");
+       // console.log(unique_id);
         let being = this.beingMap.get(unique_id);
         if (being){
             let posArr = being.posArr

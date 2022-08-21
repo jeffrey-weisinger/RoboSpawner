@@ -1,5 +1,5 @@
 //Don't forget to update your spatial hashmap for robots, players, projectiles, and anything that can move!
-const { times } = require("lodash");
+const { times, takeRightWhile } = require("lodash");
 const Projectile = require("./Projectile.js")
 const { v4: uuidv4 } = require('uuid');
 
@@ -32,14 +32,16 @@ class Robot{
        // console.log("this.projectiles");
        // console.log(this.projectiles);
         this.sMap = sMap;
+        this.leftAtk;
 
+        
         this.projSpeed;
         switch(this.model){
             case "1":
                 this.atkDistance = 1;
                 break;
             case "2":
-                this.atkDistance = 3;
+                this.atkDistance = 10;
                 this.range = 1.5;
                 this.projSpeed = 1.5;
                 break;
@@ -55,6 +57,20 @@ class Robot{
                 this.atkDistance = 4;
                 this.range = 3;
                 this.projSpeed = 1;
+                break;
+            case "6":
+                this.atkDistance = 12;
+                this.range = 3;
+                this.projSpeed = 2;
+                this.projSize = 1.4;
+
+                break;
+
+            case "8":
+                this.atkDistance = 15;
+                this.range = 3;
+                this.projSpeed = 2;
+                this.projSize = 2.3;
                 break;
         } 
         //note that this.projSpeed is only defined for those that have range. 
@@ -134,6 +150,9 @@ class Robot{
                 //console.log(minDistance);
                 console.log(minObj);
                 console.log(minDistance)*/
+
+
+
                 if (Math.abs(minDistance) >= this.atkDistance){ //then we're not in range. move closer. atkDistance will always be positive.
                    // console.log("YE");
                     this.x -= (this.x - minObj.x) / Math.sqrt((this.x - minObj.x)**2 + (this.y - minObj.y)**2)/10
@@ -148,8 +167,9 @@ class Robot{
                     //this.rotation = Math.atan2(minObj.y - this.y, minObj.x - this.x); //we still want to rotate. this is mainly for bots that didn't get a chance to rotate since they were spawned so close to each other.
                     //console.log(this.unique_id);
                     this.rotation = Math.atan2(minObj.x - this.x, minObj.y - this.y);
-                    console.log(this.x);
-                    console.log(this.y);
+                    //console.log(this.x);
+                    //console.log(this.y);
+                    //out of convenience, we're just using this whole process to see if there exists a minObj to begin with for model 8.
                     this.roboToAtk = minObj;
                     this.attack(); //note that we only call this once per start of attack! because then we go into attack mode. (we already set phase to attack)
 
@@ -160,6 +180,9 @@ class Robot{
 
             }
             //if we didn't find one, we still might have coords we can go closer to.
+        }else{
+            this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
+  
         }
 /*
         if (this.phase == "attack"){
@@ -177,42 +200,190 @@ class Robot{
     }
 
     attack(){
-        this.attackDetails(); //i guess functions are also this.
-        this.intervalId = setInterval(this.attackDetails.bind(this), 1650); //do this every three seconds.
+        if (this.model == "6") this.leftAtk = true;
+        this.attackDetails(); //i guess functions are also this.    
+        setTimeout(()=> {
+            this.intervalId = setInterval(this.attackDetails.bind(this), 875);
+        }, 380)
+      
+         //do this every three seconds.
         //do we still need .bind(this) if it's not in the constructor?
     }
 
     attackDetails(){
-        if (Math.sqrt((this.roboToAtk.y - this.y)**2 + (this.roboToAtk.x - this.x)**2) <= this.atkDistance){
-            this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
-            if (this.model == "2" || this.model == "3" || this.model == "5"){
-                let projUuid = uuidv4();
-                let projectile = new Projectile(this.x, this.y, this.roboToAtk.x, this.roboToAtk.y, this.dmg, this.projSpeed, this.soc_id,  projUuid, this.allObjs, this.projectiles, this.unique_id, this.sMap); //startX, startY, endX, endY -- note that each projectile won't necessarily hit the enemy., dmg for if/when we hit.
-                //console.log(this.projectiles);
-                console.log("///")
-                this.projectiles[projUuid] = projectile;
-                this.allObjs[projUuid] = projectile;
-                this.sMap.insert(this.x, this.y, 1, 1, projUuid); //now update.
-            }else if (this.model == "1" || this.model == "4"){ //model must be 1 or 4.
-                    this.roboToAtk.hp - this.dmg;
+        //if we're in here and we're model 8, we have to do things differently. 
+        //we're in here because we know that at least ONE robot exists that we should be attacking. instead of just attacking that individual robot, though
+        //we have got to attack any robot in the nearby area that's an enemy. 
+         this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
+/*
+        if (this.model == "8"){
+            let atkArr= this.sMap.get(this.x, this.y, 'seek'); //even though we're not in seek, this works.
+            let enemyAtkArr = [];
+            atkArr.forEach(possEnemy => {
+                let possEnemyObj = this.allObjs[possEnemy.unique_id]
+                if((  possEnemyObj.type == "robot" || possEnemyObj.type == "player") && (possEnemyObj.soc_id != this.soc_id) && (Math.sqrt((possEnemyObj.y - this.y)**2 + (possEnemyObj.x - this.x)**2) <= this.atkDistance)){//)
+                    enemyAtkArr.push(possEnemyObj);
+            }});
+            
+            if (enemyAtkArr.length == 0){
+                console.log("zeero")
+
+                this.phase == "seek";
+            }else{
+                console.log("NON-0")
+                
+                if (!this.roboToAtk){
+                    //then, we must find the next smallest distance guy.
+                }
+                let pureRot = Math.atan2(this.roboToAtk.y - this.y, this.roboToAtk.x - this.x);
+                let extraVertX = Math.cos((pureRot))*1.5//*0.85
+                let extraVertY = Math.sin((pureRot))*1.5
+                let extraHorizX = -Math.cos((pureRot-Math.PI/2))*2; 
+                let extraHorizY = -Math.sin((pureRot-Math.PI/2))*2;
+                let startZ = 15.5;
+                enemyAtkArr.forEach(enemy => {
+                    let projUuid = uuidv4();
+                    let startX = this.x + extraVertX + extraHorizX;
+                    let startY = this.y + extraVertY + extraHorizY;
+                    let projectile = new Projectile(startX, startY, startZ, enemy.x, enemy.y, this.dmg, this.projSpeed, this.soc_id,  projUuid, this.allObjs, this.projectiles, this.model, this.unique_id, this.sMap); //startX, startY, endX, endY -- note that each projectile won't necessarily hit the enemy., dmg for if/when we hit.
+                    //console.log(this.projectiles);
+                    console.log("///")
+                    this.projectiles[projUuid] = projectile;
+                    this.allObjs[projUuid] = projectile;
+                    this.sMap.insert(this.x, this.y, 1, 1, projUuid); //now update.
+                })
             }
-        }else{
-            this.phase = "seek";
-            //will this be a problem doing this in the setInterval? I don't think so, it just means we won't have any interval anymore.
-            clearInterval(this.intervalId); //also this should be fine (for existence) because the intervalId should exist no matter what at this point.
-        }
+
+        }else{*/ 
+            if (!this.allObjs[this.roboToAtk.unique_id]) //meaning it was removed...
+                {
+                    this.phase == "seek";
+            }else{
+                if (Math.sqrt((this.roboToAtk.y - this.y)**2 + (this.roboToAtk.x - this.x)**2) <= this.atkDistance){
+                    this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
+                    if (this.model != "1" || this.model == "4" || this.model == "7" ){
+                        let pureRot = Math.atan2(this.roboToAtk.y - this.y, this.roboToAtk.x - this.x);
+                        let projUuid = uuidv4();
+        
+                        let extraVertX = 0;
+                        let extraVertY = 0;
+                        let extraHorizX = 0;
+                        let extraHorizY = 0;
+        
+                        //they go together by 2 for vert and horiz respectively.
+                        let vertXUnit = Math.cos((pureRot))//Math.sqrt((Math.cos(this.rotation)**2 + Math.sin(this.rotation)**2))// - Math.PI/2))
+                        let vertYUnit = Math.sin((pureRot))//Math.sqrt((Math.cos(this.rotation)**2 + Math.sin(this.rotation)**2))// - Math.PI/2))
+                        let horizXUnit = Math.cos((pureRot-Math.PI/2))//Math.sqrt((Math.cos(this.rotation-Math.PI/2)**2 + Math.sin(this.rotation-Math.PI/2)**2))// - Math.PI/2))
+                        let horizYUnit = Math.sin((pureRot-Math.PI/2))//Math.sqrt((Math.cos(this.rotation-Math.PI/2)**2 + Math.sin(this.rotation-Math.PI/2    )**2))// - Math.PI/2))
+                        /*console.log(this.rotation);
+                        console.log(this.x);
+                        console.log(this.y);
+                        console.log(this.roboToAtk.x)
+                        console.log(this.roboToAtk.y);
+                        console.log("AA");
+                        console.log(extraVertX);
+                        console.log(extraVertY);*/
+                        let startZ = 0;
+                        switch(this.model){
+                            case "2":
+                                extraVertX = 2*vertXUnit//*0.85
+                                extraVertY = 2*vertYUnit//*0.85;
+                                extraHorizX = -horizXUnit*0.5; //scaled by 0.2 remember that pairs should always be scaled by the same amount for each. 
+                                extraHorizY = -horizYUnit*0.5;
+                                startZ = 3.9
+                            /*
+                               console.log("loggin");
+                               console.log(extraVertX);
+                               console.log(extraVertY);
+                               console.log(this.rotation);
+                               console.log(this.x);
+                               console.log(this.y);
+                               console.log(this.roboToAtk.x);
+                               console.log(this.roboToAtk.y);
+                                */
+                                break;
+                            case "3":
+                                extraVertX = vertXUnit*1.69//*0.85
+                                extraVertY = vertYUnit*1.69//*0.85;
+                                extraHorizX = -horizXUnit*0.53; //scaled by 0.2 remember that pairs should always be scaled by the same amount for each. 
+                                extraHorizY = -horizYUnit*0.53;
+                                //extraVertX = vertXUnit*0.2
+                                //extraVertY = vertYUnit*0.2;
+                                //extraHorizX = horizXUnit*4; //scaled by 0.2 remember that pairs should always be scaled by the same amount for each. 
+                                //extraHorizY = horizYUnit*4;
+                                startZ = 2.75
+        
+                                break;
+                            case "5":
+                                extraVertX = vertXUnit//*0.85
+                                extraVertY = vertYUnit
+                                extraHorizX = -horizXUnit*0.52; 
+                                extraHorizY = -horizYUnit*0.52;
+                                startZ = 4.05;
+        
+                                break;
+                            case "6":
+                                if (this.leftAtk){
+                                    extraVertX = vertXUnit*2.45//*0.85
+                                    extraVertY = vertYUnit*2.45
+                                    extraHorizX = -horizXUnit*1.21; 
+                                    extraHorizY = -horizYUnit*1.21;
+                                    startZ = 3.4;
+                                    this.leftAtk = false;
+                                }else if (!this.leftAtk){
+                                    extraVertX = vertXUnit*2.45//*0.85
+                                    extraVertY = vertYUnit*2.45
+                                    extraHorizX = horizXUnit*1.21; 
+                                    extraHorizY = horizYUnit*1.21;
+                                    startZ = 3.4;
+                                    this.leftAtk = true;
+                                }
+        
+                                break;
+                            case "8":
+                                extraVertX = vertXUnit*1.5//*0.85
+                                extraVertY = vertYUnit*1.5
+                                extraHorizX = -horizXUnit*2; 
+                                extraHorizY = -horizYUnit*2;
+                                startZ = 15.5;
+        
+                                break;
+        
+                        }
+                        let startX = this.x + extraVertX + extraHorizX;
+                        let startY = this.y + extraVertY + extraHorizY;
+        
+                        let projectile = new Projectile(startX, startY, startZ, this.roboToAtk.x, this.roboToAtk.y, this.dmg, this.projSize, this.projSpeed, this.soc_id,  projUuid, this.allObjs, this.projectiles, this.model, this.unique_id, this.sMap); //startX, startY, endX, endY -- note that each projectile won't necessarily hit the enemy., dmg for if/when we hit.
+                        //console.log(this.projectiles);
+                        console.log("///")
+                        this.projectiles[projUuid] = projectile;
+                        this.allObjs[projUuid] = projectile;
+                        this.sMap.insert(this.x, this.y, 1, 1, projUuid); //now update.
+                    }else if (this.model == "1" || this.model == "4" || this.model == "7"){ //model must be 1 or 4.
+                            this.roboToAtk.hp - this.dmg;
+                    }
+                }else{
+                    this.phase = "seek";
+                    //will this be a problem doing this in the setInterval? I don't think so, it just means we won't have any interval anymore.
+                    clearInterval(this.intervalId); //also this should be fine (for existence) because the intervalId should exist no matter what at this point.
+                }
+          //  }
+            }
+        
+
     }
 
     infoPack(){
        // console.log("RETURNING MODEL");
-       // console.log(this.model);
+      // // console.log(this.model);
+      //c console.log(this.rotation)
         return {
             type: 'robot',
 
             unique_id: this.unique_id,
             //playerType: this.playerType,
             animation: this.animation,
-            rotation: this.rotation,
+            rotation: this.rotation,//-Math.PI/2,
             model: this.model,
             hp: this.hp,
             dmg: this.dmg,
