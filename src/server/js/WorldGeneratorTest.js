@@ -73,7 +73,7 @@ class WorldGeneratorTest{
         this.sMap.insert(490, 490, 1, 1, uuid12 );*/
 
         let uuid13 = uuidv4();
-        let robo13 = new Robot(505, 495, 0, 'Run', "8", null, uuid13, null, this.allObjs, this.projectiles, this.sMap)
+        let robo13 = new Robot(505, 495, 0, 'Run', "8", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
         this.roboObj[uuid13] = robo13;
         this.allObjs[uuid13] = robo13;
         this.sMap.insert(490, 490, 1, 1, uuid13 );

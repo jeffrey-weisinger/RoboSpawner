@@ -672,11 +672,16 @@ async function updateBeing(){
             //if (being.type != 'projectile'){. got rid of this if statement because i've decided that i'm going to give a rotation of 0 to projectile, and same logic for gear.
             beingContainer.updateRot(being.rotation); //note that when this is NAN, it fails.
             //}
-            
+            console.log("AOT S0 E1");
+            console.log(being.type);
            // console.log("<5>, about to update animation: " + being.animation);
-           if (being.type != 'gear' || being.type != 'projectile'){
+           if (being.type != 'gear' && being.type != 'projectile' && being.type != 'chip' ){
             //console.log("ABT TO PLAY");
+            console.log("ARE YOU GOING TO SET??")
+            console.log(being.hp);
             beingContainer.updateAnimation(being.animation);
+            beingContainer.setHP(being.hp);//because robots and players have hp.
+            
            }
             beingContainer.checked = true; //so at this point, everything will have been checked!
            // if(beingContainer.mixer) (beingContainer.mixer).update(clock.getDelta());

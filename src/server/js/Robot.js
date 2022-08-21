@@ -4,20 +4,23 @@ const Projectile = require("./Projectile.js")
 const { v4: uuidv4 } = require('uuid');
 
 class Robot{
-    constructor(x, y, rotation, animation, model, soc_id, uuid, parent, allObjs, projectiles, sMap){
+    constructor(x, y, rotation, animation, model, soc_id, uuid, parent, allObjs, robots, projectiles, sMap){
         this.soc_id = soc_id;
         this.unique_id = uuid;
         this.rotation = rotation;
         this.animation = animation;
         this.model = model;
+        this.robots = robots;
         this.x = x;
         this.y = y;
+        this.regAtkedObj = {}; //everything we're being attacked by
+        this.commandAtkedObj = {};
         this.parent = parent;
         if (model == 1){
             this.width = 1;
             this.height = 1; 
         }
-        this.hp = 1;
+        this.hp = 100;
         this.dmg = 20;
         this.phase = "seek";
         this.seekTarget;//must be enemy coords (which we will get) //note that we do this every turn, only for seek. no reason to store it in a global.
@@ -69,6 +72,7 @@ class Robot{
             case "8":
                 this.atkDistance = 15;
                 this.range = 3;
+                this.hp = 300;
                 this.projSpeed = 2;
                 this.projSize = 2.3;
                 break;
@@ -101,7 +105,8 @@ class Robot{
                 console.log("---a---")
                 console.log(this.model);
                 console.log(this.unique_id);     */
-                let beingObj = allObjs[being.unique_id];    
+                let beingObj = allObjs[being.unique_id]; 
+                   
                // console.log(beingObj.type);
                /* 
                 console.log(being);
@@ -171,18 +176,21 @@ class Robot{
                     //console.log(this.y);
                     //out of convenience, we're just using this whole process to see if there exists a minObj to begin with for model 8.
                     this.roboToAtk = minObj;
+                    this.roboToAtk.regAtkedObj[this.unique_id] = this; //can we do THIS??;
                     this.attack(); //note that we only call this once per start of attack! because then we go into attack mode. (we already set phase to attack)
 
                 }
             } else{ //a minObj doesn't exist.
+                this.phase = "seek";
                 this.animation = "Idle"; //although, we're still in the seek phase. 
                 //we will not atk.
 
             }
             //if we didn't find one, we still might have coords we can go closer to.
         }else{
-            this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
-  
+            if (this.roboToAtk){
+                this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
+            }
         }
 /*
         if (this.phase == "attack"){
@@ -214,7 +222,7 @@ class Robot{
         //if we're in here and we're model 8, we have to do things differently. 
         //we're in here because we know that at least ONE robot exists that we should be attacking. instead of just attacking that individual robot, though
         //we have got to attack any robot in the nearby area that's an enemy. 
-         this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
+       //  this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
 /*
         if (this.model == "8"){
             let atkArr= this.sMap.get(this.x, this.y, 'seek'); //even though we're not in seek, this works.
@@ -255,9 +263,11 @@ class Robot{
             }
 
         }else{*/ 
-            if (!this.allObjs[this.roboToAtk.unique_id]) //meaning it was removed...
-                {
+            if (!this.roboToAtk || !this.allObjs[this.roboToAtk.unique_id]){ //meaning it was removed...        
+                    //delete this.roboToAtk.regAtkedObj[this.unique_id];
                     this.phase == "seek";
+                    this.animation = "Idle";
+                    clearInterval(this.intervalId);
             }else{
                 if (Math.sqrt((this.roboToAtk.y - this.y)**2 + (this.roboToAtk.x - this.x)**2) <= this.atkDistance){
                     this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
@@ -363,7 +373,9 @@ class Robot{
                             this.roboToAtk.hp - this.dmg;
                     }
                 }else{
+                    delete this.roboToAtk.regAtkedObj[this.unique_id];
                     this.phase = "seek";
+                    this.animation = "Idle";
                     //will this be a problem doing this in the setInterval? I don't think so, it just means we won't have any interval anymore.
                     clearInterval(this.intervalId); //also this should be fine (for existence) because the intervalId should exist no matter what at this point.
                 }
@@ -389,6 +401,21 @@ class Robot{
             dmg: this.dmg,
             x : this.x,
             y: this.y
+        }
+    }
+
+    regNullify(){
+        this.roboToAtk = null;
+    }
+
+    onDeath(){
+        this.sMap.deleteBeing(this.unique_id);
+        delete this.allObjs[this.unique_id];
+        delete this.robots[this.unique_id];      
+        Object.values(this.regAtkedObj).forEach(robot=>robot.regNullify());
+        this.regAtkedObj = {}; //this shouldn't be necessary.
+        if(this.phase == "attack"){ //i'm worried that the function might still be running even if it no longer exists.. it's like a weird reference to itself situation.
+            clearInterval(this.intervalId);
         }
     }
 }

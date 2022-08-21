@@ -19,6 +19,7 @@ class Player{
         this.orbitYVert = 0;
         this.orbitXHoriz =0;
         this.orbitYHoriz = 0;
+        this.regAtkedObj = {};
         this.type = 'player';
 
 

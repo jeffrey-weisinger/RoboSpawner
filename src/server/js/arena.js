@@ -235,7 +235,7 @@ class Arena{
 */
             let model = this.invRobots[uuid].model;
 
-            let robotToAdd = new Robot(player.x + x, player.y + y, 0, "Run", model, socket.id, uuid, player, this.allObjects, this.projectiles, this.sMap) //x, y, rotation, animation, model, soc_id, uuid, parent(id)
+            let robotToAdd = new Robot(player.x + x, player.y + y, 0, "Run", model, socket.id, uuid, player, this.allObjects, this.robots, this.projectiles, this.sMap) //x, y, rotation, animation, model, soc_id, uuid, parent(id)
         
             delete this.invRobots[uuid]
             delete player.invRobots[uuid]//do we need more confirmation??? not really, because the id must be of this player by virtue of this player referencing the id-- so we don't need to attach a socket to it.
@@ -291,7 +291,11 @@ class Arena{
        /// console.log("loggin all objs")
         //console.log(this.allObjects);
         //console.log("asdfsadfadsfa");
+        console.log("THESE ARE ROBOS");
         Object.values(this.robots).forEach(robot=>{
+            console.log(robot.unique_id);
+            console.log(robot.model);
+
             robot.act(this.sMap, this.allObjects);
         }) 
 
@@ -379,9 +383,8 @@ class Arena{
                 //death
                 Object.values(this.robots).forEach(robot => {
                 if (robot.hp <= 0){
-                    this.sMap.deleteBeing(robot.unique_id);
-                    delete this.allObjects[robot.unique_id];
-                    delete this.robots[robot.unique_id];                    //can we even do this?
+                    robot.onDeath();
+              //can we even do this?
 
 
                     //note that we have to do this last, because we need to keep the player object around as a reference to remove it from the two places where it gets referenced.
@@ -450,7 +453,7 @@ class Arena{
 
     handleKeyInput(socket, obj){
         let {key, type} = obj;
-        console.log("this is the obj");
+       // console.log("this is the obj");
         //console.log(obj);
         if (type == "down"){
            // console.log(this.players[socket]);

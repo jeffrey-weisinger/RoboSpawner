@@ -10,7 +10,7 @@ class Projectile{
 
         this.endX = endX;
         this.endY = endY;
-        this.endZ = 2.5;
+        this.endZ = 2;
         this.dmg = dmg;
         this.projSpeed = projSpeed;
         this.soc_id = soc_id;
@@ -20,6 +20,7 @@ class Projectile{
         this.sMap = spatialHashMap;
         this.parent_unique_id = parent_unique_id;
         this.projSize = projSize;
+        this.parentModel = parentModel;
 
        // this.sMap = spatialHashMap;
 
@@ -43,16 +44,32 @@ class Projectile{
         //first, figure out if there was a collision
         let possCollisions =  this.sMap.get(this.currentX, this.currentY, 'collision');
         let collisionFound = false;
+
+       // console.log(possCollisions);
+        //console.log("!!");
+       // console.log(this.unique_id);
+        //console.log(this.parent_unique_id);
         possCollisions.forEach(possCollision => {
             let possCollisionObj = this.allObjs[possCollision.unique_id]
             
                 if (possCollisionObj && possCollisionObj.type != 'projectile' && !collisionFound && possCollisionObj.unique_id != this.parent_unique_id){ // use pythagorean theorem to get distance. we will consider the first object that has a distance of less than 0.4 to it as a collision.
+                    
+                    console.log("AYY");
+                    console.log(this.unique_id);
+                    console.log(possCollisionObj.unique_id);
+                    console.log(this.allObjs[possCollisionObj.unique_id].type);
                     /*console.log(possCollisionObj);
                     console.log(possCollisionObj.unique_id);
                     console.log(this.parent_unique_id);
                     console.log(this.allObjs[this.parent_unique_id]);*/
                     //console.log("parent logged");
                     let dist = Math.sqrt((this.currentX - possCollisionObj.x)**2 + (this.currentY - possCollisionObj.y)**2 ); //make special pythagorean theorem method.
+                    if(this.parentModel.model == "8"){
+                        console.log(dist);
+                        console.log("AFSDFSDF");
+    
+                    }
+
                   /*  console.log("DIST")
                     console.log(dist);
                     console.log(this.currentX);
@@ -75,6 +92,9 @@ class Projectile{
                             //console.log(possCollisionObj.hp);
 
                             possCollisionObj.hp -= this.dmg;
+                            console.log(possCollisionObj.hp);
+                            console.log("-COLLISION-");
+                            console.log(possCollisionObj.hp);
                             //console.log("COLLIDED");
                             collisionFound = true;
                            // console.log(possCollisionObj.hp);
