@@ -1,9 +1,10 @@
 class Player{
-    constructor(x, y, rotation, animation, socket_id, unique_id){
+    constructor(x, y, rotation, animation, socket_id, unique_id, sMap){
         this.gears = 25; //this is the starting value.
         this.soc_id = socket_id;
         this.unique_id = unique_id;
         //this.playerType = playerType;
+        this.sMap = sMap;
         this.gravityFactor = 0;
         this.hp = 100;
         this.dmg = 10;
@@ -122,6 +123,8 @@ class Player{
             }
         }
         )
+        this.sMap.update(this.x, this.y, this.unique_id, "player");
+
         //console.log("returning x :" + this.x);
         //console.log("returning y :" + this.y);
  

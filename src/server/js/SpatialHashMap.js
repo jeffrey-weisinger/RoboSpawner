@@ -267,6 +267,32 @@ class SpatialHashMap{
         //console.log("66ADSAFA")
         return {minCell, maxCell};
     }
+
+    update(newX, newY, unique_id, type, model){
+
+        let being = this.beingMap.get(unique_id)
+      /*  if (type == "projectile"){
+            console.log("PREV BEEN");
+            console.log(being.minCell);
+            console.log(being.maxCell);
+            console.log(newX);
+            console.log(newY);
+
+        }*/
+        let {newMinCell, newMaxCell} = this.cellFinder(newX, newY, 1, 1);
+        if (newMinCell == being.minCell && newMaxCell == being.maxCell){
+            return;
+        }else{
+            this.deleteBeing(unique_id);
+            this.insert(newX, newY, 1, 1, unique_id);
+        }
+        if (type == "robot" && model == "2"){
+
+        console.log("POST BEEN");
+        console.log(this.beingMap.get(unique_id).minCell);
+        console.log(this.beingMap.get(unique_id).maxCell);
+        }
+    }
 } 
 module.exports = SpatialHashMap;
 

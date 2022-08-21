@@ -307,7 +307,7 @@ function updateStore(){
 
 export function guiSetup(){
     $("#gears").append(`<img src = ${gearImg} width=90 height=80>`).append('<span>0</span>');
-    $("#energy").append(`<img src = ${lightningBolt} width=42 height=70>`).append('<span>0</span>');;
+    $("#level").append('<div>Level: </div>').append('<span></span>')//.append(`<img src = ${lightningBolt} width=42 height=70>`).append('<span>0</span>');;
 
 }
 
@@ -551,4 +551,8 @@ export function updateChipsIntoInv(obj){
     chipDiv.append(chipImgDiv.append(chipImgjQuery));
     chipDiv.prepend($(`<div>${chipTitle}</div>`).addClass('chipTitle'));
     $("#chipsInv").append(chipDiv);
+}
+
+export function updateLvl(newLvl){
+    $("#level span").html(newLvl);
 }

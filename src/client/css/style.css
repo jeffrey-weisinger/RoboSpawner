@@ -556,7 +556,7 @@ canvas{
 
     display: inline-block;
     top: 15px;
-    left: 1400px;
+    left: 980px;
     font-size: 3rem;
     font-family: Arial, Helvetica, sans-serif;
    /* background-color: yellow;
@@ -569,13 +569,14 @@ canvas{
 
     width: 90%;
     height: auto;
-    margin-right: 1rem;
+    margin-right: 3rem;
 }
-#energy{
+#level{
     display: flex;
 
     width: 90%;
     height: auto;
+    align-items: flex-start;
 }
 #energy img{
     position: relative;

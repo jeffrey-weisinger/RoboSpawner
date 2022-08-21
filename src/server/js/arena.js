@@ -28,10 +28,17 @@ class Arena{
 
         setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
         //setInterval(this.printPlayers.bind(this), 500);
+        this.level = 1;
+        this.enemyRobotsCount = 0;
         this.sMap = new SpatialHashMap(0, 10000, 0, 10000, 20, 20);
-        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.allObjects);
-        this.WGen.wGen1(); //should generate the first world for TEST.
+        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.allObjects, this);
+        this.WGen.wGenLvl(this.level.toString());
+        //this.WGen.wGen1(); //should generate the first world for TEST.
         setInterval(this.logRoboPositions.bind(this), 10000); 
+    }
+
+    updateEnemyCount(enemyCount){
+        this.enemyRobotsCount = enemyCount;
     }
  
     setType(type){
@@ -66,12 +73,14 @@ class Arena{
         const uuid = uuidv4();
         //we use socket to access, but note that some will NOT have socket.ids. FOR RETURN, we always use uuid.
         //uuids are ONLY for drawing -- and also to keep track for when in map. 
-        let pl = new Player(500, 500, 0, "Run", soc.id, soc.id);
+        let pl = new Player(500, 500, 0, "Run", soc.id, soc.id, this.sMap);
         this.players[soc.id] =  pl;//id, playerNumber, playerType
         this.allObjects[soc.id] = pl;   
         console.log("logging all players");
         console.log(this.players);
         this.sMap.insert(500, 500, 1, 1, soc.id);
+        this.sockets[soc.id].emit('updateLevel', this.level.toString());//so, whenever you join, it's updated accordingly.  
+
 /*
 
         let roboUuid = uuidv4()
@@ -291,10 +300,11 @@ class Arena{
        /// console.log("loggin all objs")
         //console.log(this.allObjects);
         //console.log("asdfsadfadsfa");
-        console.log("THESE ARE ROBOS");
+
+      //  console.log("THESE ARE ROBOS");
         Object.values(this.robots).forEach(robot=>{
-            console.log(robot.unique_id);
-            console.log(robot.model);
+         //   console.log(robot.unique_id);
+         //   console.log(robot.model);
 
             robot.act(this.sMap, this.allObjects);
         }) 
@@ -312,6 +322,9 @@ class Arena{
       //  console.log("^^ robots");
 
       //i see. this doesn't even return until the player joins.
+      /*if (this.enemyRobotsCount == 0){
+        this.level++;
+      }*/
         Object.values(this.players).map(pl => {
             if (pl.soc_id != null){//meaning it's a real player
                 let x = pl.x;
@@ -383,6 +396,9 @@ class Arena{
                 //death
                 Object.values(this.robots).forEach(robot => {
                 if (robot.hp <= 0){
+                   /* if (robot.parent == null){
+                        this.enemyRobotsCount--;
+                    }*/
                     robot.onDeath();
               //can we even do this?
 
@@ -395,6 +411,12 @@ class Arena{
                 }
             });
 
+
+          /*  if (this.level <= 7){
+                this.WGen.wGenLvl(this.level.toString());
+                this.sockets[pl.soc_id].emit('updateLevel', this.level.toString());
+            }*/
+           
                 let t = Date.now();
                 //console.log(playerObj);
                 let returnObj = {t, playerObj, othersArr};

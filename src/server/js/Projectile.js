@@ -40,7 +40,14 @@ class Projectile{
         this.currentX -= ((this.startX - this.endX)/this.length)*this.projSpeed/10;
         this.currentY -= ((this.startY - this.endY)/this.length)*this.projSpeed/10;
         this.currentZ -= ((this.startZ - this.endZ)/this.length)*this.projSpeed/10;
+        this.sMap.update(this.currentX, this.currentY, this.unique_id, 'projectile');
+        if (this.currentZ <= 0){
+            
+            delete this.allObjs[this.unique_id]
+            delete this.projectiles[this.unique_id];        
+            this.sMap.deleteBeing(this.unique_id);
 
+        }
         //first, figure out if there was a collision
         let possCollisions =  this.sMap.get(this.currentX, this.currentY, 'collision');
         let collisionFound = false;
@@ -49,26 +56,48 @@ class Projectile{
         //console.log("!!");
        // console.log(this.unique_id);
         //console.log(this.parent_unique_id);
+      //  console.log
+      
+      //  console.log("nathaneil b");
+        
+        if(this.parentModel == "8"){
+            possCollisions.forEach(col => {
+              //  let type = this.allObjs[col.unique_id].type;//prints type of coll.
+              //  console.log(type);
+                if (this.allObjs[col.unique_id].type == 'robot' && this.allObjs[col.unique_id].model == "2"){
+                    console.log("TWO");
+                }
+               // console.log(this.allObjs[col.unique_id].unique_id);
+
+            })
+        }
         possCollisions.forEach(possCollision => {
             let possCollisionObj = this.allObjs[possCollision.unique_id]
-            
-                if (possCollisionObj && possCollisionObj.type != 'projectile' && !collisionFound && possCollisionObj.unique_id != this.parent_unique_id){ // use pythagorean theorem to get distance. we will consider the first object that has a distance of less than 0.4 to it as a collision.
-                    
-                    console.log("AYY");
-                    console.log(this.unique_id);
+                //console.log("nathaniel b");
+                /*if(this.parentModel == "8"){
+                    console.log("nathatniel b");
                     console.log(possCollisionObj.unique_id);
                     console.log(this.allObjs[possCollisionObj.unique_id].type);
+                    console.log(this.parent_unique_id);
+                }*/
+                if (possCollisionObj && possCollisionObj.type != 'projectile' && !collisionFound && possCollisionObj.unique_id != this.parent_unique_id){ // use pythagorean theorem to get distance. we will consider the first object that has a distance of less than 0.4 to it as a collision.
+                    
+
                     /*console.log(possCollisionObj);
                     console.log(possCollisionObj.unique_id);
                     console.log(this.parent_unique_id);
                     console.log(this.allObjs[this.parent_unique_id]);*/
                     //console.log("parent logged");
                     let dist = Math.sqrt((this.currentX - possCollisionObj.x)**2 + (this.currentY - possCollisionObj.y)**2 ); //make special pythagorean theorem method.
-                    if(this.parentModel.model == "8"){
+                    /*if(this.parentModel == "8"){
+                        console.log("======");
+                       // console.log(this.unique_id);
+                        console.log(possCollisionObj.unique_id);
+                        console.log(this.allObjs[possCollisionObj.unique_id].type);
                         console.log(dist);
-                        console.log("AFSDFSDF");
+                        console.log("-------");
     
-                    }
+                    }*/
 
                   /*  console.log("DIST")
                     console.log(dist);
@@ -90,7 +119,6 @@ class Projectile{
                         //console.log("IN RANGE")
                         if (possCollisionObj.type == 'robot' || possCollisionObj.type == 'player'){ //otherwise, it just disappears on collision. and nothing happens.
                             //console.log(possCollisionObj.hp);
-
                             possCollisionObj.hp -= this.dmg;
                             console.log(possCollisionObj.hp);
                             console.log("-COLLISION-");

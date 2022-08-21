@@ -163,8 +163,10 @@ class Robot{
                     this.x -= (this.x - minObj.x) / Math.sqrt((this.x - minObj.x)**2 + (this.y - minObj.y)**2)/10
                     this.y -= (this.y - minObj.y) / Math.sqrt((this.x - minObj.x)**2 + (this.y - minObj.y)**2)/10
                     this.rotation = Math.atan2(minObj.x - this.x, minObj.y - this.y);
-                    
                     this.animation = "Run";
+                    this.sMap.update(this.x, this.y, this.unique_id, 'robot', this.model);
+                    //one of two places where the robot could be moving. 
+
                 }else{
                    // console.log("AHHMM"); //we should go into full atk mode here.
                     this.phase = "attack";
@@ -265,13 +267,13 @@ class Robot{
         }else{*/ 
             if (!this.roboToAtk || !this.allObjs[this.roboToAtk.unique_id]){ //meaning it was removed...        
                     //delete this.roboToAtk.regAtkedObj[this.unique_id];
-                    this.phase == "seek";
+                    this.phase = "seek";
                     this.animation = "Idle";
                     clearInterval(this.intervalId);
             }else{
                 if (Math.sqrt((this.roboToAtk.y - this.y)**2 + (this.roboToAtk.x - this.x)**2) <= this.atkDistance){
                     this.rotation = Math.atan2(this.roboToAtk.x - this.x, this.roboToAtk.y - this.y);
-                    if (this.model != "1" || this.model == "4" || this.model == "7" ){
+                    if (this.model != "1" && this.model != "4" && this.model != "7" ){
                         let pureRot = Math.atan2(this.roboToAtk.y - this.y, this.roboToAtk.x - this.x);
                         let projUuid = uuidv4();
         
@@ -369,8 +371,8 @@ class Robot{
                         this.projectiles[projUuid] = projectile;
                         this.allObjs[projUuid] = projectile;
                         this.sMap.insert(this.x, this.y, 1, 1, projUuid); //now update.
-                    }else if (this.model == "1" || this.model == "4" || this.model == "7"){ //model must be 1 or 4.
-                            this.roboToAtk.hp - this.dmg;
+                    }else{// if (this.model == "1" || this.model == "4" || this.model == "7"){ //model must be 1 or 4.
+                            this.roboToAtk.hp -= this.dmg;
                     }
                 }else{
                     delete this.roboToAtk.regAtkedObj[this.unique_id];

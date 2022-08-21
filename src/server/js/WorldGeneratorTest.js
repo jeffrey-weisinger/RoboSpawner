@@ -5,7 +5,7 @@ const Gear = require('./Gear');
 const Chip = require('./Chip');
 
 class WorldGeneratorTest{
-    constructor(spatialHashMap, playerObj, roboObj, buildObj, items, projectiles, allObjs){
+    constructor(spatialHashMap, playerObj, roboObj, buildObj, items, projectiles, allObjs, arena){
 
         this.sMap = spatialHashMap;
         this.playerObj = playerObj;
@@ -13,6 +13,7 @@ class WorldGeneratorTest{
         this.buildObj = buildObj; 
         this.allObjs = allObjs;
         this.projectiles = projectiles;
+        this.arena = arena;
 
         this.items = items;
     }
@@ -21,19 +22,19 @@ class WorldGeneratorTest{
         console.log("WORLD GEN");
         /*
         let uuid1 = uuidv4();
-        let robo1_1 = new Robot(510, 510, 0, "Run", "2", null, uuid1, null);
+        let robo1_1 = new Robot(510, 510, 0, "Run", "4", null, uuid1, null);
         this.roboObj[uuid1] = robo1_1
         this.allObj[uuid1] = robo1_1
         //equivalent to a direct insertion.
-        this.sMap.insert(505, 505, 1, 1, uuid1) ;
-*/
- /*       
+        this.sMap.insert(505, 505, 1, 1, uuid1) ;*/
+
+      /*
         let uuid2 = uuidv4();
-        let robo2 = new Robot(505, 505, 0, "Run", "2", null, uuid2, null, this.allObjs, this.projectiles, this.sMap);
+        let robo2 = new Robot(505, 505, 0, "Run", "4", null, uuid2, null, this.allObjs, this.projectiles, this.sMap);
         this.roboObj[uuid2] = robo2;
         this.allObjs[uuid2] = robo2;
-        this.sMap.insert(505, 505, 1, 1, uuid2);
-*//*
+        this.sMap.insert(505, 505, 1, 1, uuid2)*/
+/*
         let uuid10 = uuidv4();
         let robo10 = new Robot(495, 495, 0, 'Run', "5", null, uuid10, null, this.allObjs, this.projectiles, this.sMap)
         this.roboObj[uuid10] = robo10;
@@ -71,12 +72,12 @@ class WorldGeneratorTest{
         this.roboObj[uuid12] = robo12;
         this.allObjs[uuid12] = robo12;
         this.sMap.insert(490, 490, 1, 1, uuid12 );*/
-
+/*
         let uuid13 = uuidv4();
-        let robo13 = new Robot(505, 495, 0, 'Run', "8", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+        let robo13 = new Robot(505, 495, 0, 'Run', "4", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
         this.roboObj[uuid13] = robo13;
         this.allObjs[uuid13] = robo13;
-        this.sMap.insert(490, 490, 1, 1, uuid13 );
+        this.sMap.insert(490, 490, 1, 1, uuid13 );*/
 /*
 
         let uuid2 = uuidv4();
@@ -393,6 +394,53 @@ class WorldGeneratorTest{
 */
 
         
+    }
+
+    wGenLvl(lvlNum){
+        switch(lvlNum){
+                case "1":
+                        let uuid1 = uuidv4();
+                        let robo1 = new Robot(505, 495, 0, 'Run', "1", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                        this.roboObj[uuid1] = robo1;
+                        this.allObjs[uuid1] = robo1;
+                        this.sMap.insert(490, 490, 1, 1, uuid1 );
+                        this.arena.updateEnemyCount(1);
+                        break;
+                case "2":
+                        console.log("WE IN 2");
+                        let uuid2 = uuidv4();
+                        let robo2 = new Robot(505, 495, 0, 'Run', "2", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                        this.roboObj[uuid2] = robo2;
+                        this.allObjs[uuid2] = robo2;
+                        this.sMap.insert(490, 490, 1, 1, uuid2 );
+                        this.arena.updateEnemyCount(1);
+                        break;
+                case "3":
+                        let uuid3 = uuidv4();
+                        let robo3 = new Robot(505, 495, 0, 'Run', "3", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                        this.roboObj[uuid3] = robo3;
+                        this.allObjs[uuid3] = robo3;
+                        this.sMap.insert(490, 490, 1, 1, uuid3 );
+                        this.arena.updateEnemyCount(1);
+                        break;
+                case "4":
+                        let uuid4 = uuidv4();
+                        let robo4 = new Robot(505, 495, 0, 'Run', "4", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                        this.roboObj[uuid4] = robo4;
+                        this.allObjs[uuid4] = robo4;
+                        this.sMap.insert(490, 490, 1, 1, uuid4 );
+                        this.arena.updateEnemyCount(1);
+                        break;  
+                case "5":
+                        this.arena.updateEnemyCount("3");
+                        break;  
+                case "6":
+                        this.arena.updateEnemyCount("3");
+                        break;  
+                case "7":
+                        this.arena.updateEnemyCount("4");
+                        break;  
+        }
     }
 
 
