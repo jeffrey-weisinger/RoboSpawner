@@ -61,6 +61,7 @@ io.on('connection', (socket)=>{
     socket.on('orbitUpdate', obj =>updateDirection(socket, obj) );
     socket.on('moveChipToActive', obj => moveChipToActive(socket, obj));
     socket.on('moveChipToInv', obj => moveChipToInv(socket, obj));
+    socket.on('disconnect', ()=>disconnect(socket) );
 
 
 });
@@ -280,4 +281,8 @@ function moveChipToInv(socket, obj){
     if (arenas[socket.id]){
         arenas[socket.id].moveChipToInv(socket, obj);
     }
+}
+
+function disconnect(socket){
+    socket.disconnect();
 }

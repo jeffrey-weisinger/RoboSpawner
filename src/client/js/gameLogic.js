@@ -556,3 +556,10 @@ export function updateChipsIntoInv(obj){
 export function updateLvl(newLvl){
     $("#level span").html(newLvl);
 }
+
+export function showEndGameScreen(result){
+    let screen = $("#endGameScreen")//.show();
+    screen.show();
+    console.log("RESULT");
+    console.log(result);
+}

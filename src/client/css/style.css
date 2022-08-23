@@ -576,7 +576,8 @@ canvas{
 
     width: 90%;
     height: auto;
-    align-items: flex-start;
+    align-items: center;
+
 }
 #energy img{
     position: relative;
@@ -969,4 +970,13 @@ h3{
     font-size: 1rem;
     font-weight: bold;
     justify-content: space-around;
+}
+
+#endScreen{
+    position: absolute;
+    left: 500px;
+    top: 500px;
+    width: 10rem;
+    height: 10rem;
+    background-color: purple;
 }

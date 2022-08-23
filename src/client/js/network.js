@@ -10,7 +10,7 @@ import {setupCanvas, updateCanvas} from './canvas.js' //update canvas because th
 import {draw} from './draw.js';
 import {startCapturingInput, resetDiv, removeDiv, chipMovedActiveResult, chipMovedInvResult} from './input.js';
 import {initState, processGameUpdate} from './process.js' //the center of where we get/process our updates from the server! 
-import {updateGears, updateChipsIntoInv, addToInventory, updateLvl} from './gameLogic.js';
+import {updateGears, updateChipsIntoInv, addToInventory, updateLvl, showEndGameScreen} from './gameLogic.js';
 import { update } from 'lodash';
 let mode;
 let playerClassType;
@@ -65,6 +65,7 @@ export function connect(playerType){
             socket.on('chipMovedActive', chipMovedActiveResult);
             socket.on('chipMovedInv', chipMovedInvResult);
             socket.on('updateLevel', lvl => updateLvl(lvl));
+            socket.on('endGameForPlayer', result=> disconnect(result))
         }) 
         resolve()});
 }
@@ -141,3 +142,7 @@ export function moveChipToInv(obj){
     socket.emit('moveChipToInv', obj);
 }
 
+function disconnect(result){
+    socket.disconnect();
+    showEndGameScreen(result);
+}

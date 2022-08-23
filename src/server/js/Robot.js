@@ -41,40 +41,69 @@ class Robot{
         this.projSpeed;
         switch(this.model){
             case "1":
+                this.dmg = 10;
+                this.hp = 100;
+                
                 this.atkDistance = 1;
+
+
                 break;
             case "2":
+                this.dmg = 200;
+                this.hp = 70;
                 this.atkDistance = 10;
                 this.range = 1.5;
                 this.projSpeed = 1.5;
+                this.projSize = 0.4;
+
+
                 break;
             case "3":
+                this.dmg = 30;
+                this.hp = 60;
                 this.atkDistance = 7;
                 this.range = 3;
                 this.projSpeed = 3;
+                this.projSize = 0.4;
+
                 break;
             case "4":
+                this.dmg = 15;
+                this.hp = 120;
                 this.atkDistance = 1;
                 break;
             case "5":
+                this.dmg = 14;
+                this.hp = 70;
                 this.atkDistance = 4;
                 this.range = 3;
                 this.projSpeed = 1;
+                this.projSize = 0.4;
+
                 break;
             case "6":
+                this.dmg = 35;
+                this.hp = 130;
                 this.atkDistance = 12;
                 this.range = 3;
                 this.projSpeed = 2;
-                this.projSize = 1.4;
-
+                this.projSize = 0.8;
                 break;
-
+            case "7":
+                this.dmg = 40;
+                this.hp = 180;
+                this.atkDistance = 12;
+                this.range = 3;
+                this.projSpeed = 2;
+                break;
             case "8":
+                this.dmg = 60;
+                this.hp = 250;
                 this.atkDistance = 15;
                 this.range = 3;
                 this.hp = 300;
                 this.projSpeed = 2;
-                this.projSize = 2.3;
+                this.projSize = 1.2;
                 break;
         } 
         //note that this.projSpeed is only defined for those that have range. 
@@ -83,7 +112,6 @@ class Robot{
 
 
         //idea courtesy of stackOverflow 
-        this.intervalId;
     }
 
     act(sMap, allObjs, peopleArr){
@@ -169,6 +197,8 @@ class Robot{
 
                 }else{
                    // console.log("AHHMM"); //we should go into full atk mode here.
+                   console.log(this.model);
+
                     this.phase = "attack";
                     this.animation = "Attack";
                     //this.rotation = Math.atan2(minObj.y - this.y, minObj.x - this.x); //we still want to rotate. this is mainly for bots that didn't get a chance to rotate since they were spawned so close to each other.
@@ -265,6 +295,7 @@ class Robot{
             }
 
         }else{*/ 
+
             if (!this.roboToAtk || !this.allObjs[this.roboToAtk.unique_id]){ //meaning it was removed...        
                     //delete this.roboToAtk.regAtkedObj[this.unique_id];
                     this.phase = "seek";

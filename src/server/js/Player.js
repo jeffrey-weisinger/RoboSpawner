@@ -1,6 +1,6 @@
 class Player{
     constructor(x, y, rotation, animation, socket_id, unique_id, sMap){
-        this.gears = 25; //this is the starting value.
+        this.gears = 100; //this is the starting value.
         this.soc_id = socket_id;
         this.unique_id = unique_id;
         //this.playerType = playerType;

@@ -15,6 +15,7 @@ const axios = require('axios').default;
 export function menuLogicSetup(){
     //$('#game').hide();
     $('#visuals').hide();
+    $('#endScreen').hide();
     
     gameSetup(); //i see.
    // zoom(); //for menu.
@@ -367,4 +368,8 @@ export function menuComplete(){ //called when we're completed -- through a socke
     /////
     //gameSetup();
 
+}
+
+export function completionButton(){
+    
 }

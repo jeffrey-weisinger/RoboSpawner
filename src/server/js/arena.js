@@ -29,9 +29,11 @@ class Arena{
         setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
         //setInterval(this.printPlayers.bind(this), 500);
         this.level = 1;
+        this.returnNewLevel = false;
         this.enemyRobotsCount = 0;
         this.sMap = new SpatialHashMap(0, 10000, 0, 10000, 20, 20);
         this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.allObjects, this);
+       // this.WGen.wGenSetup();
         this.WGen.wGenLvl(this.level.toString());
         //this.WGen.wGen1(); //should generate the first world for TEST.
         setInterval(this.logRoboPositions.bind(this), 10000); 
@@ -322,11 +324,52 @@ class Arena{
       //  console.log("^^ robots");
 
       //i see. this doesn't even return until the player joins.
-      /*if (this.enemyRobotsCount == 0){
-        this.level++;
-      }*/
+
+                //death
+        //note that this should probably be somewhere outside of the player-specific domain,
+        Object.values(this.robots).forEach(robot => {
+            if (robot.hp <= 0){
+                if (robot.parent == null){
+                    this.enemyRobotsCount--;
+                }
+                robot.onDeath();
+            //can we even do this?
+
+
+                //note that we have to do this last, because we need to keep the player object around as a reference to remove it from the two places where it gets referenced.
+                //robot = null;
+                //wait, note that we don't even need to do that bc it'll get garbage collected.
+
+
+            }
+        });
+        if (this.enemyRobotsCount == 0){
+
+            if (this.level < 7){
+                this.level++;
+                this.returnNewLevel = true;
+                this.WGen.wGenLvl(this.level.toString());
+            }
+            //deleting the player is most definitely NOT compatible w/ singleplayer stuff.
+            if (this.level == 7){//meaning we beat the game.
+                //ends for all players. 
+                Object.values(this.players, pl=> {
+                    this.endGameForPlayer(pl.soc_id, "win");
+                })
+            }
+    
+          }//           
+          //we need a different loop for this, because we might end up removing the player from the game.
+            Object.values(this.players).map(pl => {
+                //first, we should see if the player is already dead or not. this will help us know if we need to do the rest of this. 
+                if (pl.hp <= 0){
+                    this.sockets[pl.soc_id].emit({t:Date.now(), playerObj:{hp:0}, othersArr:[]})
+                    this.endGameForPlayer(pl.soc_id, "lose");
+                }        
+            })
         Object.values(this.players).map(pl => {
             if (pl.soc_id != null){//meaning it's a real player
+
                 let x = pl.x;
                 let y = pl.y;
                 let objsToReturn = this.sMap.get(x, y, 'find'); 
@@ -393,29 +436,11 @@ class Arena{
                     };
                 })
 
-                //death
-                Object.values(this.robots).forEach(robot => {
-                if (robot.hp <= 0){
-                   /* if (robot.parent == null){
-                        this.enemyRobotsCount--;
-                    }*/
-                    robot.onDeath();
-              //can we even do this?
 
-
-                    //note that we have to do this last, because we need to keep the player object around as a reference to remove it from the two places where it gets referenced.
-                    //robot = null;
-                    //wait, note that we don't even need to do that bc it'll get garbage collected.
- 
-
-                }
-            });
-
-
-          /*  if (this.level <= 7){
-                this.WGen.wGenLvl(this.level.toString());
+            //all this level stuff is NOT compatible with singleplayer stuff.
+            if (this.returnNewLevel){
                 this.sockets[pl.soc_id].emit('updateLevel', this.level.toString());
-            }*/
+            }
            
                 let t = Date.now();
                 //console.log(playerObj);
@@ -438,6 +463,8 @@ class Arena{
 
 
             } ;
+            this.returnNewLevel = false;
+
         });
         //let objsToReturn = this.sMap.findView(); 
        // console.log(objsToReturn);
@@ -457,6 +484,7 @@ class Arena{
             //console.log("ensdpessfs");
             soc.emit('returnInfo', pI);
         })*/
+       
     }
     
     logRoboPositions(){    
@@ -496,6 +524,14 @@ class Arena{
         if (type == 'move'){
             this.players[socket.id].mouseMove(x, y, canvasX, canvasY);
         }
+    }
+
+    endGameForPlayer(socket_id, result){//Only ends the game for a specific player
+        this.sockets[socket_id].emit("endGameForPlayer", result) //note that this must be done first, or else we're going to end up in trouble.
+        //because after this, the player will no longer be able to communicate with the server.
+        delete this.sockets[socket_id];
+        delete this.players[socket_id]; 
+
     }
 
 

@@ -539,8 +539,9 @@ async function updateBeing(){
                         console.log("PROJ");
                         if (being.side == 'ally')
                             gltfPath = gltfPath_projectileBlue;
-                        else{}
+                        else{
                             gltfPath = gltfPath_projectileRed;
+                        }
                         zOffset = being.z; //z will exist ONLY for projectile.
                         //we will need x and y offsets, no?
 
@@ -609,7 +610,8 @@ async function updateBeing(){
                         }else if (being.type == 'gear'){
                             gltf.scene.scale.set(0.8, 0.8, 0.8);
                         }else if(being.type == 'projectile'){
-                            gltf.scene.scale.set(0.4, 0.4, 0.4);
+                            gltf.scene.scale.set(being.projSize, being.projSize, being.projSize);
+
                         }
                         mixer = new THREE.AnimationMixer(gltf.scene);
                         

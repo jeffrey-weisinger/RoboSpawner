@@ -194,6 +194,7 @@ function interpolateObject(prevObj, nextObj, timeRatio){
     }  
     if (prevObj.type == "projectile"){
       returnObj.z = nextObj.z ;
+      returnObj.projSize = nextObj.projSize;
     }
 
    
