@@ -428,23 +428,145 @@ class WorldGeneratorTest{
         this.allObjs[this.uuid7] = this.robo7;
         //this.sMap.insert(490, 505, 1, 1, uuid5 );*/
         let uuid1tree = uuidv4();
-        let tree1 = new Tree(505, 505, 0, uuid1tree);
+        let tree1 = new Tree(510, 490, 0, uuid1tree);
         this.treeObj[uuid1tree] = tree1;
         this.allObjs[uuid1tree] = tree1;
         this.sMap.insert(505, 505, 1, 1, uuid1tree );
-     
 
         let uuid2tree = uuidv4();
-        let tree2 = new Tree(510, 510, 0, uuid2tree);
+        let tree2 = new Tree(510, 500, 0, uuid2tree);
         this.treeObj[uuid2tree] = tree2;
         this.allObjs[uuid2tree] = tree2;
         this.sMap.insert(510, 510, 1, 1, uuid2tree );
 
         let uuid3tree = uuidv4();
-        let tree3 = new Tree(515, 515, 0, uuid3tree);
+        let tree3 = new Tree(510, 510, 0, uuid3tree);
         this.treeObj[uuid3tree] = tree3;
         this.allObjs[uuid3tree] = tree3;
         this.sMap.insert(515, 515, 1, 1, uuid3tree );
+
+        let uuid4tree = uuidv4();
+        let tree4 = new Tree(490, 510, 0, uuid4tree);
+        this.treeObj[uuid4tree] = tree4;
+        this.allObjs[uuid4tree] = tree4;
+        this.sMap.insert(510, 510, 1, 1, uuid4tree );
+
+        let uuid5tree = uuidv4();
+        let tree5 = new Tree(490, 500, 0, uuid5tree);
+        this.treeObj[uuid5tree] = tree5;
+        this.allObjs[uuid5tree] = tree5;
+        this.sMap.insert(515, 515, 1, 1, uuid5tree );
+
+        let uuid6tree = uuidv4();
+        let tree6 = new Tree(490, 490, 0, uuid6tree);
+        this.treeObj[uuid6tree] = tree6;
+        this.allObjs[uuid6tree] = tree6;
+        this.sMap.insert(505, 505, 1, 1, uuid6tree );
+
+
+        
+        let uuid1chip = uuidv4();
+        let chip1 = new Chip(495, 470, 0, "2", uuid1chip);
+        this.items[uuid1chip] = chip1;
+        this.allObjs[uuid1chip] = chip1;
+        this.sMap.insert(502, 502, 1, 1, uuid1chip);
+
+        let uuid2chip = uuidv4();
+        let chip2 = new Chip(500, 470, 0, "3", uuid2chip);
+        this.items[uuid2chip] = chip2;
+        this.allObjs[uuid2chip] = chip2;
+        this.sMap.insert(502, 502, 1, 1, uuid2chip);
+ 
+        let uuid3chip = uuidv4();
+        let chip3 = new Chip(505, 470, 0, "6", uuid3chip);
+        this.items[uuid3chip] = chip3;
+        this.allObjs[uuid3chip] = chip3;
+        this.sMap.insert(502, 502, 1, 1, uuid3chip);
+
+        let uuid4chip = uuidv4();
+        let chip4 = new Chip(495, 530, Math.PI, "7", uuid4chip);
+        this.items[uuid4chip] = chip4;
+        this.allObjs[uuid4chip] = chip4;
+        this.sMap.insert(502, 502, 1, 1, uuid4chip);
+
+        let uuid5chip = uuidv4();
+        let chip5 = new Chip(500, 530, Math.PI, "10", uuid5chip);
+        this.items[uuid5chip] = chip5;
+        this.allObjs[uuid5chip] = chip5;
+        this.sMap.insert(502, 502, 1, 1, uuid5chip);
+ 
+        let uuid6chip = uuidv4();
+        let chip6 = new Chip(505, 530, Math.PI, "11", uuid6chip);
+        this.items[uuid6chip] = chip6;
+        this.allObjs[uuid6chip] = chip6;
+        this.sMap.insert(502, 502, 1, 1, uuid6chip);
+/*
+        let uuid7chip = uuidv4();
+        let chip7 = new Chip(470, 510, 0, "7", uuid7chip);
+        this.items[uuid7chip] = chip7;
+        this.allObjs[uuid7chip] = chip7;
+        this.sMap.insert(502, 502, 1, 1, uuid7chip);
+
+        let uuid8chip = uuidv4();
+        let chip8 = new Chip(470, 470, 0, "8", uuid8chip);
+        this.items[uuid8chip] = chip8;
+        this.allObjs[uuid8chip] = chip8;
+        this.sMap.insert(502, 502, 1, 1, uuid8chip);
+ 
+        let uuid9chip = uuidv4();
+        let chip9 = new Chip(490, 470, 0, "9", uuid9chip);
+        this.items[uuid9chip] = chip9;
+        this.allObjs[uuid9chip] = chip9;
+        this.sMap.insert(502, 502, 1, 1, uuid9chip);
+
+        let uuid10chip = uuidv4();
+        let chip10 = new Chip(510, 470, 0, "10", uuid10chip);
+        this.items[uuid10chip] = chip1;
+        this.allObjs[uuid10chip] = chip10;
+        this.sMap.insert(502, 502, 1, 1, uuid10chip);
+
+        let uuid11chip = uuidv4();
+        let chip11 = new Chip(530, 470, 0, "11", uuid11chip);
+        this.items[uuid11chip] = chip11;
+        this.allObjs[uuid11chip] = chip11;
+        this.sMap.insert(502, 502, 1, 1, uuid11chip);
+ 
+        let uuid12chip = uuidv4();
+        let chip12 = new Chip(530, 510, 0, "12", uuid12chip);
+        this.items[uuid12chip] = chip12;
+        this.allObjs[uuid12chip] = chip12;
+        this.sMap.insert(502, 502, 1, 1, uuid12chip);
+*/
+
+
+
+        let uuid1gear = uuidv4();
+        let gear1 = new Gear(uuid1gear, 502.5, 470, 0);    
+        this.items[uuid1gear] = gear1;   
+        this.allObjs[uuid1gear] = gear1;
+        this.sMap.insert(502, 502, 1, 1, uuid1gear);
+
+        let uuid2gear = uuidv4();
+        let gear2 = new Gear(uuid2gear, 497.5, 470, 0);    
+        this.items[uuid2gear] = gear2;
+        this.allObjs[uuid2gear] = gear2;
+        this.sMap.insert(502, 502, 1, 1, uuid2gear);
+ 
+        let uuid3gear = uuidv4();
+        let gear3 = new Gear(uuid3gear, 502.5, 530, 0);    
+        this.items[uuid3gear] = gear3;
+        this.allObjs[uuid3gear] = gear3;
+        this.sMap.insert(502, 502, 1, 1, uuid3gear);
+
+        let uuid4gear = uuidv4();
+        let gear4 = new Gear(uuid4gear, 497.5, 530, 0);    
+        this.items[uuid4gear] = gear4;
+        this.allObjs[uuid4gear] = gear4;
+        this.sMap.insert(502, 502, 1, 1, uuid4gear);
+
+        
+
+
 
     }
     wGenLvl(lvlNum, playerX, playerY){

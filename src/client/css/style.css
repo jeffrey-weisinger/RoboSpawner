@@ -983,7 +983,7 @@ h3{
 
 
 .roboUIUpper{
-    border: 2px solid rgb(202, 193, 180);
+    /*border: 2px solid rgb(202, 193, 180);  -- maybe no border is better here!*/
     height:1rem;
     width: 100%;
     margin-top: 0.2rem;

@@ -41,7 +41,7 @@ class Robot{
         this.projSpeed;
         switch(this.model){
             case "1":
-                this.dmg = 105;
+                this.dmg = 15;
                 this.hp = 100;
                 
                 this.atkDistance = 1;
@@ -451,6 +451,65 @@ class Robot{
         if(this.phase == "attack"){ //i'm worried that the function might still be running even if it no longer exists.. it's like a weird reference to itself situation.
             clearInterval(this.intervalId);
         }
+    }
+
+    addChip(chip){
+        //dealing with the old active chip, and undoing whatever it did.
+        switch(activeChip){
+            case "1":
+                break;
+            case "2":
+                break;
+            case "3":
+                break;
+            case "4":
+                break;
+            case "5":
+                break;
+            case "6":
+                break;
+            case "7":
+                break;
+            case "8":
+                break;
+            case "9":
+                break;
+            case "10":
+                break;
+            case "11":
+                break;
+            case "12":
+                break;
+        }
+        //dealing with the new active chip, and doing whatever it should do.
+        this.activeChip = chip;
+        switch(activeChip){
+            case "1":
+                break;
+            case "2":
+                break;
+            case "3":
+                break;
+            case "4":
+                break;
+            case "5":
+                break;
+            case "6":
+                break;
+            case "7":
+                break;
+            case "8":
+                break;
+            case "9":
+                break;
+            case "10":
+                break;
+            case "11":
+                break;
+            case "12":
+                break;
+        }
+
     }
 }
 

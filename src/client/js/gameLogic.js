@@ -35,7 +35,7 @@ import chip11Img from '../../assets/icons/chip11ImgClipped.png'
 import chip12Img from '../../assets/icons/chip12ImgClipped.png'
 
 
-let gears = 0;
+let gears = 100;
 
 
 import { consoleLogTester } from "./menuLogic";
@@ -528,9 +528,11 @@ export function updateChipsIntoInv(obj){
             break;
         case "2":
             chipImg = chip2Img;
+            chipTitle = "Chip of Damage"
             break;
         case "3":
             chipImg = chip3Img;
+            chipTitle = "Shield Chip"
             break;
         case "4":
             chipImg = chip4Img;
@@ -541,22 +543,26 @@ export function updateChipsIntoInv(obj){
             break;
         case "6":
             chipImg = chip6Img;
+            chipTitle = "Move Speed Chip"
             break;
         case "7":
             chipImg = chip7Img;
+            chipTitle = "Chip of Range"
             break;
         case "8":
             chipImg = chip8Img;
             break;
         case "9":
             chipImg = chip9Img;
+            chipTitle = "Dragon Chip" //should be for #10
             break;
         case "10":
             chipImg = chip10Img;
-            chipTitle = "Dragon Chip"
+            chipTitle = "Attack Speed Chip" 
             break;
         case "11":
             chipImg = chip11Img;
+            chipTitle = "Chip of Healing" 
             break;
         case "12":
             chipImg = chip12Img;
