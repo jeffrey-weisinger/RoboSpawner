@@ -37,8 +37,9 @@ Three.js. Lots of it. I take the updates coming back every 1/30th of a second fr
 **Who worked on this project?**
 Just me! (Jeffrey Weisinger) 
 
-
 Don't want to read the above? Watch my video below:
+
+
 ## Video
 --Video Goes Here--
 --Maybe some cool Screenshots--
