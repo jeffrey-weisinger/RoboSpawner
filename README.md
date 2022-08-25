@@ -74,10 +74,10 @@ Different robots have different strengths and weaknesses. You can only deploy 5 
 You lose when your health hits 0. Beat all 8 levels to win the game!
 
 =======
-## Future Updates (TODO):
-	- Chips will boost the stats of individual robots, giving your army a better chance against the enemy invasion.
-	- I'm adding a "special ability" for each robot
-	- A wider variety of challenging enemies
+## Future Updates (TODO)
+- Chips will boost the stats of individual robots, giving your army a better chance against the enemy invasion.
+- I'm adding a "special ability" for each robot
+- A wider variety of challenging enemies
 
 ## Sources Cited:
 
