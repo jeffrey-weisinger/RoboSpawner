@@ -12,7 +12,7 @@ RoboSpawner.io was inspired by 2D .io games from my childhood that I played late
     
 Tools used, How you made it (I'm going to be using a Q and A format)
   
-How do you communicate between the server and the client?
+**How do you communicate between the server and the client?**
     
 Robospawner has its foundation in speedy socket.io requests being sent from server to client. No HTTP Requests, Ajax, or Postman required! Without this, the game would be laggy and unplayable. 
     
@@ -60,14 +60,14 @@ After all packages are installed, run the demo by typing
 and open localhost:4000 in the browser of your choice (Google Chrome may work best). Finally, click "Singleplayer Demo." Enjoy!
 
 
-## How to Play (Demo): (Large Font)
+## How to Play (Demo):
 Survive an enemy invasion by building a robot army to defend yourself!
 
-You spawn with 100 gears. Buy robots from the store using gears, and then drag them from your robots inventory onto the battlefield to deploy them. 
+You spawn with 100 **gears**. Buy robots from the store using **gears**, and then drag them from your robots inventory onto the battlefield to deploy them. 
 
-Both chips and gears can be found laying on the ground. Click to pick them up.
+Both **chips** and **gears** can be found laying on the ground. Click to pick them up.
 
-Drag chips from your chips inventory onto robot profiles to power up your army (currently, the chips themselves have no effect).
+Drag **chips** from your **chips** inventory onto robot profiles to power up your army (currently, the **chips** themselves have no effect).
 
 Different robots have different strengths and weaknesses. You can only deploy 5 of them at once, so choose wisely.
 
