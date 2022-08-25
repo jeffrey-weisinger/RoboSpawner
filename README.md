@@ -7,8 +7,8 @@ I made a webgame this summer involving Robots, Webpack, and THREE.js. Play the d
 ## About:
 --Brief Description--
 
-	- Motivation
-		RoboSpawner.io was inspired by 2D .io games from my childhood that I played late at night with my friends. I liked the idea of having a game so accessible on the web, and I wanted to recreate something similar. In this project, I took things a level further and made my game in 3D!
+Motivation:  
+RoboSpawner.io was inspired by 2D .io games from my childhood that I played late at night with my friends. I liked the idea of having a game so accessible on the web, and I wanted to recreate something similar. In this project, I took things a level further and made my game in 3D!
     
 Tools used, How you made it (I'm going to be using a Q and A format)
   
@@ -43,7 +43,7 @@ Don't want to read the above? Watch my video below:
 --Video Goes Here--
 --Maybe some cool Screenshots--
 
-## Demo: (large font)
+## Demo:
 Make sure that you have npm and node.js on your computer before installing this demo.
 Navigate to the directory where you'd like to install RoboSpawner. Then, in the terminal, type:
 
@@ -74,12 +74,12 @@ Different robots have different strengths and weaknesses. You can only deploy 5 
 You lose when your health hits 0. Beat all 8 levels to win the game!
 
 =======
-## Future Updates (Demo): (Large Font) (TODO) 
+## Future Updates (TODO):
 	- Chips will boost the stats of individual robots, giving your army a better chance against the enemy invasion.
 	- I'm adding a "special ability" for each robot
 	- A wider variety of challenging enemies
 
-## Sources: (Client)
+## Sources Cited:
 
 
 
