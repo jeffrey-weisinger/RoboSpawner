@@ -4,6 +4,7 @@ import {drawBeings} from './drawBeings.js';
 //import {animate} from './drawBeings4.js'
 //import {test} from './asyncTesting.js';
 let num = 1 ;
+let continueAnim = true;
 
 export async function draw(){   
     //if (num )
@@ -53,11 +54,15 @@ export async function draw(){
         
         ///setupBasic();
         //setTimeout(20000, draw());
-        requestAnimationFrame(draw);
+        if (continueAnim){
+            requestAnimationFrame(draw);
+        }
     }else{
         //console.log("NOT IN");
         //it does this until render.
-        requestAnimationFrame(draw); 
+        if (continueAnim){
+            requestAnimationFrame(draw); 
+        }
     }
    //test();
     //drawGUI(update[2]); //1 json object.
@@ -66,4 +71,8 @@ export async function draw(){
 
     }
 
+}
+
+export function stopAnim(){
+    continueAnim = false;
 }

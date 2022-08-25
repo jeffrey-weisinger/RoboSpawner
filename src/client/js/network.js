@@ -7,7 +7,7 @@ const axios = require('axios').default;
 import {menuLogicSetup, fillButtons, handleErrors, consoleLogTester, menuComplete} from './menuLogic.js';
 import {agentSelectComplete} from './agentSelectLogic.js'
 import {setupCanvas, updateCanvas} from './canvas.js' //update canvas because that's where we're going to start listening ==> updating.
-import {draw} from './draw.js';
+import {draw, stopAnim} from './draw.js';
 import {startCapturingInput, resetDiv, removeDiv, chipMovedActiveResult, chipMovedInvResult} from './input.js';
 import {initState, processGameUpdate} from './process.js' //the center of where we get/process our updates from the server! 
 import {updateGears, updateChipsIntoInv, addToInventory, updateLvl, showEndGameScreen} from './gameLogic.js';
@@ -78,6 +78,11 @@ export function emitKey(key){
 export function emitCreateValidation(validateObj){
     socket.emit('createValidate', validateObj);
 }
+
+export function emitCreateValidationSinglePlayer(){
+    console.log("YO??")
+    socket.emit('createSinglePlayer');
+}
 export function emitJoinValidation(validateObj){
     socket.emit('joinValidate', validateObj);
 }
@@ -143,6 +148,8 @@ export function moveChipToInv(obj){
 }
 
 function disconnect(result){
+    console.log("DISCONNECTING!!")
     socket.disconnect();
     showEndGameScreen(result);
+    stopAnim();
 }

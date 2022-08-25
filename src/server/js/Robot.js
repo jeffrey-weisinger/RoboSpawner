@@ -41,7 +41,7 @@ class Robot{
         this.projSpeed;
         switch(this.model){
             case "1":
-                this.dmg = 10;
+                this.dmg = 105;
                 this.hp = 100;
                 
                 this.atkDistance = 1;
@@ -49,7 +49,7 @@ class Robot{
 
                 break;
             case "2":
-                this.dmg = 200;
+                this.dmg = 90;
                 this.hp = 70;
                 this.atkDistance = 10;
                 this.range = 1.5;
@@ -68,7 +68,7 @@ class Robot{
 
                 break;
             case "4":
-                this.dmg = 15;
+                this.dmg = 105;
                 this.hp = 120;
                 this.atkDistance = 1;
                 break;
@@ -125,6 +125,7 @@ class Robot{
             //console.log("A");
             let minDistance = Number.MAX_SAFE_INTEGER;
             let minObj;
+           // console.log(atkArr);
             atkArr.forEach(being => {
                 //console.log("BEING")
                 //console.log(being);
@@ -398,7 +399,7 @@ class Robot{
         
                         let projectile = new Projectile(startX, startY, startZ, this.roboToAtk.x, this.roboToAtk.y, this.dmg, this.projSize, this.projSpeed, this.soc_id,  projUuid, this.allObjs, this.projectiles, this.model, this.unique_id, this.sMap); //startX, startY, endX, endY -- note that each projectile won't necessarily hit the enemy., dmg for if/when we hit.
                         //console.log(this.projectiles);
-                        console.log("///")
+                        //console.log("///")
                         this.projectiles[projUuid] = projectile;
                         this.allObjs[projUuid] = projectile;
                         this.sMap.insert(this.x, this.y, 1, 1, projUuid); //now update.

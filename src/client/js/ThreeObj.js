@@ -1,6 +1,7 @@
 class ThreeObj{   
-    constructor(unique_id, type, actionArray, animation, mixer, label){//}, twoDRenderer){
+    constructor(unique_id, model, type, actionArray, animation, mixer, label){//}, twoDRenderer){
         this.type = type;
+        this.model = model;
         this.mixer = mixer;
         this.actionArray = actionArray;
         this.currentAnimationName;
@@ -23,6 +24,39 @@ class ThreeObj{
         //$("body").append(this.outerHealth);
        // this.twoDRenderer
         //the outerHealth element is specific to this. i'm pretty sure that if we delete it, we will delete the entire health bar.
+        this.totalHP;
+        if (this.type == "player"){
+            this.totalHP = 100;
+        }else if (this.type == "robot"){
+            switch(this.model){
+                case "1":
+                    this.totalHP = 100;
+                    break;
+                case "2":
+                    this.totalHP = 70;
+                    break;
+                case "3":
+                    this.totalHP = 60;
+                    break;
+                case "4":
+                    this.totalHP = 120;
+                    break;
+                case "5":
+                    this.totalHP = 70;
+                    break;
+                case "6":
+                    this.totalHP = 130;
+                    break;
+                case "7":
+                    this.totalHP = 180;
+                    break;
+                case "8":
+                    this.totalHP = 250;
+                    break;
+    
+            }
+        }
+       
         
     }
 
@@ -103,7 +137,7 @@ class ThreeObj{
     setHP(newHP){
        // console.log(newHP);
         //console.log(newHP/100*70);
-        this.label.children[0].style["width"] = (newHP/100*70)+ "px";
+        this.label.children[0].style["width"] = (newHP/this.totalHP*70)+ "px";
         //console.log(this.label.children[0].style.width);
     }   
     updateAnimation(newAnimationName){

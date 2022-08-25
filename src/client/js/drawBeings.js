@@ -43,6 +43,9 @@ import gltfPath_boss1 from '../../assets/models/boss1.gltf';
 import gltfPath_boss2 from '../../assets/models/boss2.gltf';
 import gltfPath_finalBoss from '../../assets/models/finalBoss.gltf';
 
+import gltfPath_tree from '../../assets/models/tree.gltf';
+
+
 
 
 import gltfPath_gear from '../../assets/models/gameGear.gltf'
@@ -335,7 +338,7 @@ async function updatePlayer() {
                     label.position.y += 2.1;
                     playerMixer._root.add( label );
                     label.layers.set( 0 );  
-                    playerContainer = new ThreeObj(_mainPlayerInfo.unique_id, _mainPlayerInfo.type, actionArray, _mainPlayerInfo.animation, playerMixer, testDiv)        
+                    playerContainer = new ThreeObj(_mainPlayerInfo.unique_id, "0", _mainPlayerInfo.type, actionArray, _mainPlayerInfo.animation, playerMixer, testDiv)        
                     playerContainer.setHP(100);
                     labelsMap.set(_mainPlayerInfo.unique_id, label);
 
@@ -351,7 +354,7 @@ async function updatePlayer() {
                     //const geometry = new THREE.BoxGeometry( 100, 100, 100 );
                     const edges = new THREE.EdgesGeometry( geometry );
                     const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
-                    scene.add( line );
+                    //scene.add( line );
                     console.log("pLAYERMIXERROOT")
                     resolve();
                     
@@ -587,6 +590,10 @@ async function updateBeing(){
                                 break;
                         }
                     break;
+                    case 'tree':
+                        gltfPath = gltfPath_tree;
+                        console.log("TREE");
+                    break;
 
 
 
@@ -619,7 +626,7 @@ async function updateBeing(){
                         let actionArray = [];
                         let label;
                         let testDiv
-                        if (being.type != 'gear' && being.type != "projectile" && being.type != 'chip'){ //because none of these should have health bars or healthbars //note that we need to figure out the rotation situation for gears and chips.
+                        if (being.type != 'gear' && being.type != "projectile" && being.type != 'chip'  && being.type != 'tree'){ //because none of these should have health bars or healthbars //note that we need to figure out the rotation situation for gears and chips.
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Idle' )));
                             actionArray.push(mixer.clipAction(THREE.AnimationClip.findByName( clips, 'Run' )));
                             if (being.model != "8"){
@@ -656,7 +663,7 @@ async function updateBeing(){
                         mixer._root.userData.type = being.type; //this is for all mixers.
 
                         //note that the actionArray may be undefined.
-                        beingsMap.set(unique_id, new ThreeObj(unique_id, being.type, actionArray, being.animation, mixer, testDiv));
+                        beingsMap.set(unique_id, new ThreeObj(unique_id, being.model, being.type, actionArray, being.animation, mixer, testDiv));
                         mixer._root.position.y += zOffset;//this is actually z. we put it here so it only happens once.
                         //note how we don't need to reference the threeObj here because we're only doing this once.
                         resolve();
@@ -677,7 +684,7 @@ async function updateBeing(){
             console.log("AOT S0 E1");
             console.log(being.type);
            // console.log("<5>, about to update animation: " + being.animation);
-           if (being.type != 'gear' && being.type != 'projectile' && being.type != 'chip' ){
+           if (being.type != 'gear' && being.type != 'projectile' && being.type != 'chip' && being.type != 'tree' ){
             //console.log("ABT TO PLAY");
             console.log("ARE YOU GOING TO SET??")
             console.log(being.hp);

@@ -10,8 +10,8 @@ const Chip = require('./Chip.js');
 const GuiChip = require('./GuiChip.js')
 
 class Arena{ 
-    constructor(){
-        this.type;
+    constructor(type){
+        this.type = type;
         this.sockets = {};
         this.players = {};
         this.myNum;
@@ -24,6 +24,7 @@ class Arena{
         // the above are things that we look up when we want to filter by group, especially players.
         //when an object is added, it will ALWAYS be added t0o both 
         this.allObjects = {};
+        this.trees = {};
         this.chips = {};
 
         setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
@@ -32,11 +33,18 @@ class Arena{
         this.returnNewLevel = false;
         this.enemyRobotsCount = 0;
         this.sMap = new SpatialHashMap(0, 10000, 0, 10000, 20, 20);
-        this.WGen = new WGen(this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.allObjects, this);
-       // this.WGen.wGenSetup();
+        this.WGen = new WGen(this.type, this.sMap, this.players, this.robots, this.buildings, this.items, this.projectiles, this.trees, this.allObjects, this);
+        this.WGen.wGenSetup();
         this.WGen.wGenLvl(this.level.toString());
         //this.WGen.wGen1(); //should generate the first world for TEST.
-        setInterval(this.logRoboPositions.bind(this), 10000); 
+        //setInterval(this.logRoboPositions.bind(this), 10000); 
+        this.gameEnded = false;
+
+        if (this.type == "demo"){
+            this.maxLevel = 8; 
+        }else{ //multiplayer
+            this.maxLevel = 7;
+        }
     }
 
     updateEnemyCount(enemyCount){
@@ -266,7 +274,10 @@ class Arena{
     updateDirection(socket, obj){
         let {x, y} = obj;
         let player = this.players[socket.id];
-        player.updateDirection(x, y);
+        if (player){ //my theory is that when sockets get disconnected, it's not fast enough and this will still receive some info. let's prevent that. 
+            player.updateDirection(x, y);
+
+        }
     }
     printPlayers(){
         console.log("////");
@@ -343,32 +354,46 @@ class Arena{
 
             }
         });
-        if (this.enemyRobotsCount == 0){
+ 
+        //we need a different loop for this.
 
-            if (this.level < 7){
-                this.level++;
-                this.returnNewLevel = true;
-                this.WGen.wGenLvl(this.level.toString());
+        Object.values(this.players).map(pl => {
+            if (pl.soc_id != null){
+                if (this.enemyRobotsCount == 0){
+
+                    if (this.level < this.maxLevel){
+                       // console.log("AYO?AA?");
+                        this.level++;
+                        this.returnNewLevel = true;
+                        this.WGen.wGenLvl(this.level.toString(), pl.x, pl.y);
+                        
+                    }else if
+                    //deleting the player is most definitely NOT compatible w/ singleplayer stuff.
+                    (this.level == this.maxLevel){//meaning we beat the game. -- you would already need to be at this level.
+                        //ends for all players. 
+                      //  Object.values(this.players, pl=> {
+                            this.endGameForPlayer(pl.soc_id, "Win");
+                       // })
+                    }
+            
+                  }/*else{
+                   // console.log(this.enemyRobotsCount);
+                  }*/
+                    //           
+                  //we need a different loop for this, because we might end up removing the player from the game.
+                    //Object.values(this.players).map(pl => {
+                        //first, we should see if the player is already dead or not. this will help us know if we need to do the rest of this. 
+                        if (pl.hp <= 0){
+                            this.sockets[pl.soc_id].emit({t:Date.now(), playerObj:{hp:0}, othersArr:[]})
+                            this.endGameForPlayer(pl.soc_id, "Lose");
+                        }   
             }
-            //deleting the player is most definitely NOT compatible w/ singleplayer stuff.
-            if (this.level == 7){//meaning we beat the game.
-                //ends for all players. 
-                Object.values(this.players, pl=> {
-                    this.endGameForPlayer(pl.soc_id, "win");
-                })
-            }
-    
-          }//           
-          //we need a different loop for this, because we might end up removing the player from the game.
-            Object.values(this.players).map(pl => {
-                //first, we should see if the player is already dead or not. this will help us know if we need to do the rest of this. 
-                if (pl.hp <= 0){
-                    this.sockets[pl.soc_id].emit({t:Date.now(), playerObj:{hp:0}, othersArr:[]})
-                    this.endGameForPlayer(pl.soc_id, "lose");
-                }        
-            })
+        })
         Object.values(this.players).map(pl => {
             if (pl.soc_id != null){//meaning it's a real player
+
+     
+                   // })
 
                 let x = pl.x;
                 let y = pl.y;
@@ -488,13 +513,13 @@ class Arena{
     }
     
     logRoboPositions(){    
-        console.log("///");
+        /*console.log("///");
         Object.values(this.robots).forEach(robot => {
            // console.log("WE UP");
             //console.log(robot.unique_id);
             //console.log(robot.x);
             //console.log(robot.y);
-        });
+        });*/
         
     }
     
@@ -509,12 +534,14 @@ class Arena{
            // console.log(this.players[socket]);
            //console.log(key + "<- key");
            if (key){ //i don't know what it means for key to be undefined, but it can happen.
-            this.players[socket.id].currentPress(key.toLowerCase());
+            let player = this.players[socket.id];
+            if (player) this.players[socket.id].currentPress(key.toLowerCase());
            }
         } else{
             //console.log(type);  
             if (key){ //i don't know what it means for key to be undefined, but it can happen.
-                this.players[socket.id].currentUnPress(key.toLowerCase());
+                let player = this.players[socket.id];
+                if (player) this.players[socket.id].currentUnPress(key.toLowerCase());
             }
         }
     }
@@ -522,11 +549,19 @@ class Arena{
     handleMouseInput(socket, obj){
         let {x, y, canvasX, canvasY, type} = obj;
         if (type == 'move'){
-            this.players[socket.id].mouseMove(x, y, canvasX, canvasY);
+            let player = this.players[socket.id];
+            if (player){
+                player.mouseMove(x, y, canvasX, canvasY);
+            }
         }
     }
 
     endGameForPlayer(socket_id, result){//Only ends the game for a specific player
+        //if the result is failure, we should emit back another update just to set the hp to 0. 
+        //let playerObj = this.players[socket_id].infoPack()
+        //playerObj.hp = 0;
+       // this.sockets[socket_id].emit('returnInfo', {t:Date.now(), playerObj:{playerObj:}, othersArr:[]});
+       console.log("Abt to disconnect");
         this.sockets[socket_id].emit("endGameForPlayer", result) //note that this must be done first, or else we're going to end up in trouble.
         //because after this, the player will no longer be able to communicate with the server.
         delete this.sockets[socket_id];

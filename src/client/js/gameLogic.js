@@ -1,6 +1,6 @@
 import $ from "jquery";
 import projStoreIcon from '../../assets/icons/myProjStoreIcon.png';
-import projOrbInvIcon from '../../assets/icons/myCroppedOrbIcon.png';
+import projChipInvIcon from '../../assets/icons/myChipIconCropped.png';
 import projRoboInvIcon from '../../assets/icons/myRoboInventoryIcon.png';
 import gearImg from '../../assets/icons/projCroppedGears.png'
 import lightningBolt from '../../assets/icons/projCroppedLightningBolt.png';
@@ -66,6 +66,25 @@ export function gameSetup(){
     $("#robosInv-icon-holder").append(invBubble);
     chipsBubble = $('<div><span></span></div>').addClass("chipsBubble");
 
+    
+    let roboUIUpper = ($(`<div>Active Robots</div>`).addClass('roboUIUpper'));
+    let roboUIImgHolder = $("<div></div>").addClass('roboUIImgHolder');
+    roboUIImgHolder.append(`<img src=${projRoboInvIcon} width=35 height=100%>`);
+    $("#roboUI").append(roboUIUpper.append(roboUIImgHolder));
+
+    $("#endScreenButton").on('click', ()=> {
+        /*console.log("YOU'RE CLLICKING ME")
+        $('#visuals').hide();
+        $('#endScreenHolder').hide();
+        $("#game").hide();
+        $("canvas").hide();
+        $(".viewport").hide();
+        $("#test").hide();  
+
+        $("#menu").show();
+        $("#titleCardHolder").show();*/
+        location.reload(); //so much more simple!
+    })
 }
 function iconSetup(){
     //first we're actually going to just insert..
@@ -78,7 +97,7 @@ function iconSetup(){
     console.log($("#store-icon-holder")[0]);
     //$("#store-icon-holder")[0].addEventListener('click', () => {console.log("ONG (and for eraal)")});
     $("#store-icon-holder").prepend(`<img src = ${projStoreIcon} width=35 height=35>`)
-    $("#chipsInv-icon-holder").prepend(`<img src = ${projOrbInvIcon} width=35 height=35>`)
+    $("#chipsInv-icon-holder").prepend(`<img src = ${projChipInvIcon} width=35 height=35>`)
     $("#robosInv-icon-holder").prepend(`<img src = ${projRoboInvIcon} width=35 height=35>`)
 
 
@@ -558,8 +577,12 @@ export function updateLvl(newLvl){
 }
 
 export function showEndGameScreen(result){
-    let screen = $("#endGameScreen")//.show();
+    let screen = $("#endScreenHolder")//.show();
+    screen.css('zIndex', '15');
     screen.show();
-    console.log("RESULT");
+    console.log("LOGGING HTML");
+    console.log($("#endScreenText1")[0].innerHTML);
+    $("#endScreenText1")[0].innerHTML += (result + "!");
+    console.log("RESULT!?");
     console.log(result);
 }

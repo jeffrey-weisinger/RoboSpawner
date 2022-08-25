@@ -174,7 +174,7 @@ function interpolateObject(prevObj, nextObj, timeRatio){
       returnObj.rotation = interpolateDirection(prevObj.rotation, nextObj.rotation, timeRatio);
 
       //console.log(returnObj.x);
-      if (prevObj.type != "gear" && prevObj.type != "gear"){  //honestly, this doesn't really do anything because they'll just be undefined otherwise, which isn't an issue. 
+      if (prevObj.type != "gear" && prevObj.type != "chip" && prevObj.type != "tree" ){  //honestly, this doesn't really do anything because they'll just be undefined otherwise, which isn't an issue. 
      //   returnObj.unique_id = nextObj.unique_id;
         returnObj.dmg = nextObj.dmg;
         returnObj.hp = nextObj.hp;

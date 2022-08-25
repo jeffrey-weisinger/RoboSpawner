@@ -62,6 +62,7 @@ io.on('connection', (socket)=>{
     socket.on('moveChipToActive', obj => moveChipToActive(socket, obj));
     socket.on('moveChipToInv', obj => moveChipToInv(socket, obj));
     socket.on('disconnect', ()=>disconnect(socket) );
+    socket.on('createSinglePlayer', ()=>handleCreateValidationSinglePlayer(socket));
 
 
 });
@@ -74,7 +75,7 @@ function newBypassArena(socket){
     }*/ 
     //basically faking our way through the main menu.
 
-    let arena = new Arena(); //should be only arena.
+    let arena = new Arena('multiplayer'); //should be only arena.
     arena.setType("multi");
     Object.assign(arenas, {[socket.id] : arena});
     console.log(arenas);
@@ -122,7 +123,7 @@ function handleCreateValidation(socket, validationObj){
         Object.assign(rooms, {[roomname] : validationObj}) ;
         //console.log(rooms); 
         
-        let arena = new Arena();
+        let arena = new Arena('multiplayer');
         arena.setType("multi");
         Object.assign(arenas, {[socket.id] : arena});
         console.log(arenas);
@@ -149,6 +150,23 @@ function handleCreateValidation(socket, validationObj){
     console.log()
     
     //arenaSetup("", "room")
+}
+
+function handleCreateValidationSinglePlayer(socket){
+    /*let newDemoArena = new Arena('demo');
+    newDemoArena.addSocket(socket, "DEMO")
+    newDemoArena.addPlayer(socket);
+    socket.emit('menuComplete');
+    socket.emit('gameTime');*/
+    let newDemoArena = new Arena('demo'); //should be only arena.
+    newDemoArena.setType("multi");
+    Object.assign(arenas, {[socket.id] : newDemoArena});
+    //console.log(arenas);
+    newDemoArena.addSocket(socket, "DEMO");
+    socket.emit('menuComplete');
+    arenaAdd(socket);
+    console.log("menuCasdfsasfaomplete");
+
 }
 
 function handleJoinValidation(socket, validationObj){

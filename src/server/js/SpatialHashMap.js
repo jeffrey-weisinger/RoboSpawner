@@ -288,9 +288,9 @@ class SpatialHashMap{
         }
         if (type == "robot" && model == "2"){
 
-        console.log("POST BEEN");
-        console.log(this.beingMap.get(unique_id).minCell);
-        console.log(this.beingMap.get(unique_id).maxCell);
+       // console.log("POST BEEN");
+        //console.log(this.beingMap.get(unique_id).minCell);
+        //console.log(this.beingMap.get(unique_id).maxCell);
         }
     }
 } 

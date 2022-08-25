@@ -1,6 +1,6 @@
 import './../css/style.css';
 import $ from "jquery";
-import {emitCreateValidation, emitJoinValidation} from "./network.js"
+import {emitCreateValidationSinglePlayer, emitCreateValidation, emitJoinValidation} from "./network.js"
 //import { divide } from 'lodash';
 //import { emit } from 'nodemon';
 import { connect } from './network';
@@ -15,8 +15,15 @@ const axios = require('axios').default;
 export function menuLogicSetup(){
     //$('#game').hide();
     $('#visuals').hide();
-    $('#endScreen').hide();
+    $('#endScreenHolder').hide();
+    $("#game").hide();
+    $("canvas").hide();
+    $(".viewport").hide();
+    $("#test").hide();
+    $("#createRoom").show();
+    $("#joinRoom").show();
     
+
     gameSetup(); //i see.
    // zoom(); //for menu.
 //window.setInterval(1000, fillButtons);
@@ -31,10 +38,13 @@ $("#createButton").on('click', e=>{
     toggleVisible($("#createRoom")[0]);
 });
 
+
 $("#joinButton").on('click', e=>{
     e.preventDefault();
     toggleVisible($("#joinRoom")[0]);
 });
+toggleVisible($("#createRoom")[0]);
+toggleVisible($("#joinRoom")[0]);
 
 $("#public").on('change', e=>{
     $("#optional").hide();
@@ -44,6 +54,8 @@ $("#unlisted").on('change', e=>{
 });
 
 $("#createPlay").on('click', createValidate);
+$("#singlePlayerButton").on('click', createValidateSinglePlayer);
+
 //fillButtons();
 
 }
@@ -335,6 +347,13 @@ function createValidate(e){
     //fillButtons();
 }
 
+function createValidateSinglePlayer(e){
+    //we're not going to do validation here because it's just the demo right now. it might be added later.
+    emitCreateValidationSinglePlayer();
+}
+
+
+
 function joinValidate(e){
     console.log('joinValidate');
     //let host = $(e.target).parent().children("#Host").html().substring(6);//note that substring is 0-indexed.
@@ -361,10 +380,14 @@ function validateSingle(){
 }*/
 
 export function menuComplete(){ //called when we're completed -- through a socket connected using network to server.
+    console.log("conpletea")
     backToNormal();
     $("#bypassButton").hide();
     $("#menu").hide();
     $("#game").show();
+    $("canvas").show();
+    $(".viewport").show();
+    $("#titleCardHolder").hide();
     /////
     //gameSetup();
 
