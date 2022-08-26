@@ -575,7 +575,7 @@ class WorldGeneratorTest{
                         case "1":
                                 console.log("ONE ONE ONE");
                                 let uuid1 = uuidv4();
-                                let robo1 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo1 = new Robot(500, 500 + 15, 0, 'Run', "1", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid1] = robo1;
                                 this.allObjs[uuid1] = robo1;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );
@@ -590,7 +590,7 @@ class WorldGeneratorTest{
 
                         case "2":
                                 let uuid3 = uuidv4();
-                                let robo3 = new Robot(playerX, playerY+5, 0, 'Run', "2", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo3 = new Robot(playerX, playerY+10, 0, 'Run', "2", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid3] = robo3;
                                 this.allObjs[uuid3] = robo3;
                                 this.sMap.insert(505, 495, 1, 1, uuid3 );

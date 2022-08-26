@@ -49,7 +49,7 @@ class Projectile{
 
         }
         //first, figure out if there was a collision
-        let possCollisions =  this.sMap.get(this.currentX, this.currentY, 'collision');
+        let possCollisions =  this.sMap.get(this.currentX, this.currentY, 'seek');
         let collisionFound = false;
 
        // console.log(possCollisions);
@@ -120,9 +120,9 @@ class Projectile{
                         if (possCollisionObj.type == 'robot' || possCollisionObj.type == 'player'){ //otherwise, it just disappears on collision. and nothing happens.
                             //console.log(possCollisionObj.hp);
                             possCollisionObj.hp -= this.dmg;
-                            console.log(possCollisionObj.hp);
-                            console.log("-COLLISION-");
-                            console.log(possCollisionObj.hp);
+                           // console.log(possCollisionObj.hp);
+                            //console.log("-COLLISION-");
+                           // console.log(possCollisionObj.hp);
                             //console.log("COLLIDED");
                             collisionFound = true;
                            // console.log(possCollisionObj.hp);

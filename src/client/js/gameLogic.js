@@ -592,3 +592,10 @@ export function showEndGameScreen(result){
     console.log("RESULT!?");
     console.log(result);
 }
+
+export function robotDelete(uuid){
+    /*if($("#"+uuid).parent().parent().find(".chipHolder").children()){ //so if the chipholder has any children, aka if the chipholder contains anything. 
+    }*/
+    //we need to find the chip..    
+    $("#"+uuid).parent().parent()[0].remove();
+}

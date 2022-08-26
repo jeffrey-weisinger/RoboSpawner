@@ -49,7 +49,7 @@ class Robot{
 
                 break;
             case "2":
-                this.dmg = 90;
+                this.dmg = 70;
                 this.hp = 70;
                 this.atkDistance = 10;
                 this.range = 1.5;

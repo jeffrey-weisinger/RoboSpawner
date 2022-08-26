@@ -78,7 +78,7 @@ class Arena{
     }
 
     addPlayer(soc){
-        console.log("PLAYER ADDED");
+        //console.log("PLAYER ADDED");
        // console.log("why we in here so goddamn often");
         const uuid = uuidv4();
         //we use socket to access, but note that some will NOT have socket.ids. FOR RETURN, we always use uuid.
@@ -86,8 +86,8 @@ class Arena{
         let pl = new Player(500, 500, 0, "Run", soc.id, soc.id, this.sMap);
         this.players[soc.id] =  pl;//id, playerNumber, playerType
         this.allObjects[soc.id] = pl;   
-        console.log("logging all players");
-        console.log(this.players);
+        //console.log("logging all players");
+        //console.log(this.players);
         this.sMap.insert(500, 500, 1, 1, soc.id);
         this.sockets[soc.id].emit('updateLevel', this.level.toString());//so, whenever you join, it's updated accordingly.  
 
@@ -114,11 +114,11 @@ class Arena{
 
     pickupItem(socket, uuidsArr){
 
-        console.log("we're gettin in");
+        //console.log("we're gettin in");
         //we're assuming that such a uuid will always exist.. but in the case that isn't the case..
         uuidsArr.forEach(uuid => {
             console.log("THIS IS THE UUID:")
-            console.log(uuid);
+            //console.log(uuid);
             if (this.allObjects[uuid]){
                 let type = this.allObjects[uuid].type;
                 if (type == 'gear'){
@@ -172,7 +172,7 @@ class Arena{
         }
         if (player.gears >= gearsNeeded){
             player.gears -= gearsNeeded;
-            console.log("OOH");
+           // console.log("OOH");
             console.log({model:model, playerGears:player.gears});
             let newRoboUuid = uuidv4();
             let newInvRobot = new InvRobot(newRoboUuid, model);
@@ -197,14 +197,14 @@ class Arena{
 
     moveChipToActive(socket, obj){
         let {uuid, robouuid} = obj;
-        console.log("MOVE TO ACTIVE");
-        console.log(uuid);
-        console.log(robouuid)
-        console.log(obj);
+       // console.log("MOVE TO ACTIVE");
+        //console.log(uuid);
+        //console.log(robouuid)
+        //console.log(obj);
         let pl = this.players[socket.id]
-        console.log(pl)
-        console.log("PLAYER LOGGED")
-        console.log(pl.invChips[uuid]);
+        //console.log(pl)
+        //console.log("PLAYER LOGGED")
+        //console.log(pl.invChips[uuid]);
         if (pl.invChips[uuid]){
             pl.activeChips[uuid] = pl.invChips[uuid]
             if (this.robots[robouuid].activeChip != null){
@@ -236,13 +236,13 @@ class Arena{
         }
     }
     addToBattleField(socket, obj){
-        console.log("WE IN AND WE UP");
+       // console.log("WE IN AND WE UP");
         let {uuid, x, y} = obj;
         let player = this.players[socket.id]
-        console.log(this.invRobots);
-        console.log(uuid);
+       // console.log(this.invRobots);
+       // console.log(uuid);
         if (this.invRobots[uuid]){//let us assume this means that it exists.
-            console.log("INININ");
+           // console.log("INININ");
            /* let zOffset;
             switch(model){
 
@@ -263,7 +263,7 @@ class Arena{
             this.allObjects[uuid] = robotToAdd;
             this.robots[uuid] = robotToAdd;
 
-            console.log(this.robots);
+            //console.log(this.robots);
             this.sMap.insert(player.x + x, player.y + y, 1, 1, uuid);
             socket.emit('updateDiv', {update:"remove", uuid:uuid})
         }else{
@@ -342,6 +342,10 @@ class Arena{
             if (robot.hp <= 0){
                 if (robot.parent == null){
                     this.enemyRobotsCount--;
+                }else{ //for right now, we're assuming that this means it's a player's robot.
+                    Object.values(this.sockets).forEach(socket =>{
+                        socket.emit("robotDelete", robot.unique_id);
+                    })
                 }
                 robot.onDeath();
             //can we even do this?

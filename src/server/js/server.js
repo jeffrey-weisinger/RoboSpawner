@@ -275,10 +275,10 @@ function buyRobot(socket, model){
 }
 
 function addToBattleField(socket, obj){
-    console.log("WE WEWEWE");
+    //console.log("WE WEWEWE");
     if (arenas[socket.id]){ 
         arenas[socket.id].addToBattleField(socket, obj);
-        console.log("BUY REQa");
+        //console.log("BUY REQa");
     }
 }
 
