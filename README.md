@@ -48,15 +48,15 @@ Don't want to read the above? Watch my video below:
 Make sure that you have the **most recent** versions of npm and node.js on your computer before installing this demo.  
 Navigate to the directory where you'd like to install RoboSpawner. Then, in the terminal, type:
 
-    "git clone https://github.com/jeffrey-weisinger/RoboSpawner.git"
+    git clone https://github.com/jeffrey-weisinger/RoboSpawner.git
   
 Then, install all the dependencies by typing 
 
-    "npm install"
+    npm install
   
 After all packages are installed, run the demo by typing
 
-    "npm start"
+    npm start
   
 and open localhost:4000 in the browser of your choice (Google Chrome may work best). Finally, click "Singleplayer Demo." Enjoy!
 
