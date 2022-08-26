@@ -45,7 +45,7 @@ Don't want to read the above? Watch my video below:
 --Maybe some cool Screenshots--
 
 ## Demo:
-Make sure that you have npm and node.js on your computer before installing this demo.
+Make sure that you have the **most recent** versions of npm and node.js on your computer before installing this demo.  
 Navigate to the directory where you'd like to install RoboSpawner. Then, in the terminal, type:
 
     "git clone https://github.com/jeffrey-weisinger/RoboSpawner.git"
