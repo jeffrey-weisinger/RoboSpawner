@@ -79,7 +79,7 @@ You lose when your health hits 0. Beat all 8 levels to win the game!
 - A wider variety of challenging enemies
 
 ## Sources Cited:
-SimonDev: https://www.youtube.com/watch?v=sx4IIQL0x7c&t=676s
+SimonDev Spatial Hashmap: https://www.youtube.com/watch?v=sx4IIQL0x7c&t=676s
 
 
 
