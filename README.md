@@ -6,7 +6,7 @@ I made a webgame this summer involving Robots, Webpack, and THREE.js. Play the d
 
 ## About:
 
-***Motivation:***  
+**Motivation:**
 RoboSpawner was inspired by 2D .io games from my childhood that I played late at night with my friends. I liked the idea of having a game so accessible on the web, and I wanted to recreate something similar. In this project, I took things a level further and made my game in 3D!
     
 Tools used, How you made it (I'm going to be using a Q and A format)
