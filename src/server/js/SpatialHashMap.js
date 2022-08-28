@@ -151,7 +151,7 @@ class SpatialHashMap{
                 searchAmt = 1;
                 break;
             case "seek":
-                searchAmt = 2;
+                searchAmt = 3;
                 break;
                 
         }

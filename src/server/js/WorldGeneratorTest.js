@@ -579,6 +579,30 @@ class WorldGeneratorTest{
                                 this.roboObj[uuid1] = robo1;
                                 this.allObjs[uuid1] = robo1;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );
+
+                         /*       console.log("ONE ONE ONE");
+                                let uuid2 = uuidv4();
+                                let robo2 = new Robot(530, 500 + 15, 0, 'Run', "7", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid2] = robo2;
+                                this.allObjs[uuid2] = robo2;
+                                this.sMap.insert(505, 495, 1, 1, uuid2 );
+
+                                console.log("ONE ONE ONE");
+                                let uuid4 = uuidv4();
+                                let robo4 = new Robot(480, 500 + 15, 0, 'Run', "6", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid4] = robo4;
+                                this.allObjs[uuid4] = robo4;
+                                this.sMap.insert(505, 495, 1, 1, uuid4 );*/
+
+
+                                
+                                /*console.log("ONE ONE ONE");
+                                let uuid6 = uuidv4();
+                                let robo6 = new Robot(470, 500 + 15, 0, 'Run', "8", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid6] = robo6;
+                                this.allObjs[uuid6] = robo6;
+                                this.sMap.insert(505, 495, 1, 1, uuid6 );*/
+        /*
         /*
                                 let uuid2 = uuidv4();
                                 let robo2 = new Robot(500 + 2*3, 500 + 0.5*3, 0, 'Run', "1", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
