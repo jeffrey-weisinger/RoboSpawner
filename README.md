@@ -5,9 +5,8 @@ RoboSpawner is a 3D webgame developed by Jeffrey Weisinger during the summer of 
 I made a webgame this summer involving Robots, Webpack, and THREE.js. Play the demo today!
 
 ## About:
---Brief Description--
 
-Motivation:  
+**Motivation:**
 RoboSpawner was inspired by 2D .io games from my childhood that I played late at night with my friends. I liked the idea of having a game so accessible on the web, and I wanted to recreate something similar. In this project, I took things a level further and made my game in 3D!
     
 Tools used, How you made it (I'm going to be using a Q and A format)
@@ -74,13 +73,13 @@ Different robots have different strengths and weaknesses. You can only deploy 5 
 
 You lose when your health hits 0. Beat all 8 levels to win the game!
 
-=======
 ## Future Updates (TODO)
 - Chips will boost the stats of individual robots, giving your army a better chance against the enemy invasion.
 - I'm adding a "special ability" for each robot
 - A wider variety of challenging enemies
 
 ## Sources Cited:
+SimonDev Spatial Hashmap: https://www.youtube.com/watch?v=sx4IIQL0x7c&t=676s
 
 
 
