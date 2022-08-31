@@ -427,6 +427,7 @@ class WorldGeneratorTest{
         this.roboObj[this.uuid7] = this.robo7;
         this.allObjs[this.uuid7] = this.robo7;
         //this.sMap.insert(490, 505, 1, 1, uuid5 );*/
+        
         let uuid1tree = uuidv4();
         let tree1 = new Tree(510, 490, 0, uuid1tree);
         this.treeObj[uuid1tree] = tree1;
@@ -464,7 +465,7 @@ class WorldGeneratorTest{
         this.sMap.insert(505, 505, 1, 1, uuid6tree );
 
 
-        
+        /*
         let uuid1chip = uuidv4();
         let chip1 = new Chip(495, 470, 0, "2", uuid1chip);
         this.items[uuid1chip] = chip1;
@@ -539,7 +540,7 @@ class WorldGeneratorTest{
 */
 
 
-
+/*
         let uuid1gear = uuidv4();
         let gear1 = new Gear(uuid1gear, 502.5, 470, 0);    
         this.items[uuid1gear] = gear1;   
@@ -563,7 +564,7 @@ class WorldGeneratorTest{
         this.items[uuid4gear] = gear4;
         this.allObjs[uuid4gear] = gear4;
         this.sMap.insert(502, 502, 1, 1, uuid4gear);
-
+*/
         
 
 
@@ -575,27 +576,160 @@ class WorldGeneratorTest{
                         case "1":
                                 console.log("ONE ONE ONE");
                                 let uuid1 = uuidv4();
-                                let robo1 = new Robot(500, 500 + 15, 0, 'Run', "1", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo1 = new Robot(510, 482, 0, 'Idle', "6", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)//499.8, 500,
                                 this.roboObj[uuid1] = robo1;
                                 this.allObjs[uuid1] = robo1;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );
 
-                         /*       console.log("ONE ONE ONE");
                                 let uuid2 = uuidv4();
-                                let robo2 = new Robot(530, 500 + 15, 0, 'Run', "7", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo2 = new Robot(511, 500, 0, 'Idle', "8", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid2] = robo2;
                                 this.allObjs[uuid2] = robo2;
                                 this.sMap.insert(505, 495, 1, 1, uuid2 );
 
+
+                                let uuid3 = uuidv4();
+                                let robo3 = new Robot(510, 518, 0, 'Idle', "7", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid3] = robo3;
+                                this.allObjs[uuid3] = robo3;
+                                this.sMap.insert(505, 495, 1, 1, uuid3 );
+/*
                                 console.log("ONE ONE ONE");
                                 let uuid4 = uuidv4();
-                                let robo4 = new Robot(480, 500 + 15, 0, 'Run', "6", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo4 = new Robot(480, 500, 0, 'Idle', "7", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid4] = robo4;
                                 this.allObjs[uuid4] = robo4;
-                                this.sMap.insert(505, 495, 1, 1, uuid4 );*/
+                                this.sMap.insert(505, 495, 1, 1, uuid4 );
+                                
 
+                                let uuid6 = uuidv4();
+                                let robo6 = new Robot(491.5, 500, 0, 'Idle', "6", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid6] = robo6;
+                                this.allObjs[uuid6] = robo6;
+                                this.sMap.insert(505, 495, 1, 1, uuid6 );
+
+                                let uuid7 = uuidv4();
+                                let robo7 = new Robot(508, 500, 0, 'Idle', "7", null, uuid7, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid7] = robo7;
+                                this.allObjs[uuid7] = robo7;
+                                this.sMap.insert(505, 495, 1, 1, uuid7 );
+
+                                let uuid8 = uuidv4();
+                                let robo8 = new Robot(489.5, 500, 0, 'Idle', "6", null, uuid8, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid8] = robo8;
+                                this.allObjs[uuid8] = robo8;
+                                this.sMap.insert(505, 495, 1, 1, uuid8 );
+/*
+                                
+                                let uuid2 = uuidv4();
+                                let robo2 = new Robot(503.5, 500, 0, 'Idle', "6", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid2] = robo2;
+                                this.allObjs[uuid2] = robo2;
+                                this.sMap.insert(505, 495, 1, 1, uuid2 );
+
+
+                                let uuid3 = uuidv4();
+                                let robo3 = new Robot(496, 500, 0, 'Idle', "7", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid3] = robo3;
+                                this.allObjs[uuid3] = robo3;
+                                this.sMap.insert(505, 495, 1, 1, uuid3 );
+
+                                console.log("ONE ONE ONE");
+                                let uuid4 = uuidv4();
+                                let robo4 = new Robot(493.5, 500, 0, 'Idle', "5", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid4] = robo4;
+                                this.allObjs[uuid4] = robo4;
+                                this.sMap.insert(505, 495, 1, 1, uuid4 );
+                                let uuid5 = uuidv4();
+                                let robo5 = new Robot(506, 500, 0, 'Idle', "5", null, uuid5, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid5] = robo5;
+                                this.allObjs[uuid5] = robo5;
+                                this.sMap.insert(505, 495, 1, 1, uuid5 );
 
                                 
+                                let uuid6 = uuidv4();
+                                let robo6 = new Robot(491.5, 500, 0, 'Idle', "4", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid6] = robo6;
+                                this.allObjs[uuid6] = robo6;
+                                this.sMap.insert(505, 495, 1, 1, uuid6 );
+
+                                let uuid7 = uuidv4();
+                                let robo7 = new Robot(508, 500, 0, 'Idle', "4", null, uuid7, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid7] = robo7;
+                                this.allObjs[uuid7] = robo7;
+                                this.sMap.insert(505, 495, 1, 1, uuid7 );
+
+                                let uuid8 = uuidv4();
+                                let robo8 = new Robot(489.5, 500, 0, 'Idle', "3", null, uuid8, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid8] = robo8;
+                                this.allObjs[uuid8] = robo8;
+                                this.sMap.insert(505, 495, 1, 1, uuid8 );
+
+                                let uuid9 = uuidv4();
+                                let robo9 = new Robot(510, 500, 0, 'Idle', "3", null, uuid9, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid9] = robo9;
+                                this.allObjs[uuid9] = robo9;
+                                this.sMap.insert(505, 495, 1, 1, uuid9 );
+
+                                let uuid10 = uuidv4();
+                                let robo10 = new Robot(487.5, 500, 0, 'Idle', "2", null, uuid10, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid10] = robo10;
+                                this.allObjs[uuid10] = robo10;
+                                this.sMap.insert(505, 495, 1, 1, uuid10 );
+
+                                let uuid11 = uuidv4();
+                                let robo11 = new Robot(512, 500, 0, 'Idle', "2", null, uuid11, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid11] = robo11;
+                                this.allObjs[uuid11] = robo11;
+                                this.sMap.insert(505, 495, 1, 1, uuid11 );
+
+                                let uuid12 = uuidv4();
+                                let robo12 = new Robot(485.5, 500, 0, 'Idle', "1", null, uuid12, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid12] = robo12;
+                                this.allObjs[uuid12] = robo12;
+                                this.sMap.insert(505, 495, 1, 1, uuid12 );   
+
+
+                                let uuid13 = uuidv4();
+                                let robo13 = new Robot(514, 500, 0, 'Idle', "1", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid13] = robo13;
+                                this.allObjs[uuid13] = robo13;
+                                this.sMap.insert(505, 495, 1, 1, uuid13 );   */
+/*
+
+
+
+
+                                let uuid8 = uuidv4();
+                                let robo8 = new Robot(502, 502, 0, 'Idle', "8", null, uuid8, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid8] = robo8;
+                                this.allObjs[uuid8] = robo8;
+                                this.sMap.insert(505, 495, 1, 1, uuid8 );
+
+                                let uuid9 = uuidv4();
+                                let robo9 = new Robot(502, 504, 0, 'Idle', "1", null, uuid9, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid9] = robo9;
+                                this.allObjs[uuid9] = robo9;
+                                this.sMap.insert(505, 495, 1, 1, uuid9 );
+
+                                let uuid10 = uuidv4();
+                                let robo10 = new Robot(504, 500, 0, 'Idle', "2", null, uuid10, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid10] = robo10;
+                                this.allObjs[uuid10] = robo10;
+                                this.sMap.insert(505, 495, 1, 1, uuid10 );
+
+                                let uuid11 = uuidv4();
+                                let robo11 = new Robot(504, 502, 0, 'Idle', "3", null, uuid11, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid11] = robo11;
+                                this.allObjs[uuid11] = robo11;
+                                this.sMap.insert(505, 495, 1, 1, uuid11 );
+
+                                let uuid12 = uuidv4();
+                                let robo12 = new Robot(504, 504, 0, 'Idle', "4", null, uuid12, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                this.roboObj[uuid12] = robo12;
+                                this.allObjs[uuid12] = robo12;
+                                this.sMap.insert(505, 495, 1, 1, uuid12 );*/
+     /*                           
                                 /*console.log("ONE ONE ONE");
                                 let uuid6 = uuidv4();
                                 let robo6 = new Robot(470, 500 + 15, 0, 'Run', "8", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -609,16 +743,17 @@ class WorldGeneratorTest{
                                 this.roboObj[uuid2] = robo2;
                                 this.allObjs[uuid2] = robo2;
                                 this.sMap.insert(490, 490, 1, 1, uuid2 );*/
-                                this.arena.updateEnemyCount(1);
+                                this.arena.updateEnemyCount(1);         
                                 break;
 
                         case "2":
+                                /*
                                 let uuid3 = uuidv4();
-                                let robo3 = new Robot(playerX, playerY+10, 0, 'Run', "2", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo3 = new Robot(playerX, playerY+10, 0, 'Run', "7", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid3] = robo3;
                                 this.allObjs[uuid3] = robo3;
                                 this.sMap.insert(505, 495, 1, 1, uuid3 );
-
+*/
                                /* let uuid4 = uuidv4();
                                 let robo4 = new Robot(playerX, playerY-5, 0, 'Run', "1", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid4] = robo4;
@@ -629,11 +764,13 @@ class WorldGeneratorTest{
                                 break;
 
                         case "3":
+                                /*
                                 let uuid5 = uuidv4();
-                                let robo5 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "3", null, uuid5, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo5 = new Robot(playerX, playerY+10, 0, 'Run', "8", null, uuid5, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid5] = robo5;
                                 this.allObjs[uuid5] = robo5;
                                 this.sMap.insert(505, 495, 1, 1, uuid5 );
+                                */
 
                               /*  let uuid6 = uuidv4();
                                 let robo6 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -644,11 +781,12 @@ class WorldGeneratorTest{
                                 break;
 
                         case "4":
+                                /*
                                 let uuid7 = uuidv4();
                                 let robo7 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "4", null, uuid7, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid7] = robo7;
                                 this.allObjs[uuid7] = robo7;
-                                this.sMap.insert(505, 495, 1, 1, uuid7 );
+                                this.sMap.insert(505, 495, 1, 1, uuid7 );*/
 /*
                                 let uuid8 = uuidv4();
                                 let robo8 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid8, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -659,11 +797,12 @@ class WorldGeneratorTest{
                                 break;
 
                         case "5":
+                                /*
                                 let uuid11 = uuidv4();
                                 let robo11 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "5", null, uuid11, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid11] = robo11;
                                 this.allObjs[uuid11] = robo11;
-                                this.sMap.insert(505, 495, 1, 1, uuid11 );
+                                this.sMap.insert(505, 495, 1, 1, uuid11 );*/
         
                                /* let uuid12 = uuidv4();
                                 let robo12 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid12, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -676,11 +815,11 @@ class WorldGeneratorTest{
 
                         
                         case "6":
-                                let uuid13 = uuidv4();
+                                /*let uuid13 = uuidv4();
                                 let robo13 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "6", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid13] = robo13;
                                 this.allObjs[uuid13] = robo13;
-                                this.sMap.insert(505, 495, 1, 1, uuid13 );
+                                this.sMap.insert(505, 495, 1, 1, uuid13 );*/
         
                                 /*let uuid14 = uuidv4();
                                 let robo14 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid14, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)

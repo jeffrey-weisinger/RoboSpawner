@@ -1,5 +1,5 @@
 {
-  "name": "zenfightjs",
+  "name": "RoboSpawner",
   "version": "1.0.0",
   "description": "",
   "main": "./server/js/server.js",

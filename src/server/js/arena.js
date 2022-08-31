@@ -19,15 +19,12 @@ class Arena{
         this.projectiles = {};
         this.buildings = {};
         this.items = {};
-        this.invRobots = {}; //these won't go into all objects, because inventory items haven't spawned yet -- we don't count them as objects.
-        //this is for "looking things up" when we don't know exactly what we want to look up. 
-        // the above are things that we look up when we want to filter by group, especially players.
-        //when an object is added, it will ALWAYS be added t0o both 
+        this.invRobots = {};
         this.allObjects = {};
         this.trees = {};
         this.chips = {};
 
-        setInterval(this.returnToSockets.bind(this), 1000/60); //oh damn, this is every 1/2 second only.
+        setInterval(this.returnToSockets.bind(this), 1000/60); 
         //setInterval(this.printPlayers.bind(this), 500);
         this.level = 1;
         this.returnNewLevel = false;
@@ -83,7 +80,7 @@ class Arena{
         const uuid = uuidv4();
         //we use socket to access, but note that some will NOT have socket.ids. FOR RETURN, we always use uuid.
         //uuids are ONLY for drawing -- and also to keep track for when in map. 
-        let pl = new Player(500, 500, 0, "Run", soc.id, soc.id, this.sMap);
+        let pl = new Player(523, 500, 0, "Run", soc.id, soc.id, this.sMap);
         this.players[soc.id] =  pl;//id, playerNumber, playerType
         this.allObjects[soc.id] = pl;   
         //console.log("logging all players");

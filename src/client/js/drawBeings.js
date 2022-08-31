@@ -45,9 +45,11 @@ import gltfPath_finalBoss from '../../assets/models/finalBoss.gltf';
 
 import gltfPath_tree from '../../assets/models/tree.gltf';
 
-
-
-
+/*
+let boss1Instaniation = loader.load(gltfPath_boss1, gltf=>{
+    //asdfasdfaf
+})
+*/
 import gltfPath_gear from '../../assets/models/gameGear.gltf'
 
 import gltfPath_projectileBlue  from '../../assets/models/projectileBlue.gltf'
@@ -99,8 +101,8 @@ perspectiveCamera.position.set(0, 5, 13);
 perspectiveCamera.rotation.set(0, 0, 0); 
 
 //perspectiveCamera.lookAt(new THREE.Vector3(0, 0, 0));
-console.log("just initialized the perspective camera");
-console.log(perspectiveCamera);
+//console.log("just initialized the perspective camera");
+//console.log(perspectiveCamera);
 
 const clock = new THREE.Clock();
 const directionalLight1 = new THREE.DirectionalLight( 0xffffff, 5 );
@@ -378,7 +380,7 @@ async function updatePlayer() {
                     playerMixer.update(clockDelta);
                 }
                 playerContainer.setHP(_mainPlayerInfo.hp); //assuming the hp comes back.
-
+                //playerContainer.mixer._root.position.y += 100;
              }  );}
             /*! console.log("<3>");*//*
             await new Promise (resolve => 
@@ -529,7 +531,7 @@ async function updateBeing(){
                                 gltfPath = gltfPath_boss2
                                 break;  
                             case "8":
-                                zOffset = 1.2;
+                                zOffset = 0.82;
                                 gltfPath = gltfPath_finalBoss
                                 break;  
                         }
@@ -605,7 +607,7 @@ async function updateBeing(){
                         scene.add(gltf.scene);
                         if (being.type == 'robot'){
                             if (parseInt(being.model) == 8){
-                                gltf.scene.scale.set(1.2, 1.2, 1.2);
+                                gltf.scene.scale.set(0.8, 0.8, 0.8);
                             }
                             else if (parseInt(being.model)<=5){
                                 gltf.scene.scale.set(0.3, 0.3, 0.3);
@@ -681,13 +683,13 @@ async function updateBeing(){
             //if (being.type != 'projectile'){. got rid of this if statement because i've decided that i'm going to give a rotation of 0 to projectile, and same logic for gear.
             beingContainer.updateRot(being.rotation); //note that when this is NAN, it fails.
             //}
-            console.log("AOT S0 E1");
-            console.log(being.type);
+            //console.log("AOT S0 E1");
+            //console.log(being.type);
            // console.log("<5>, about to update animation: " + being.animation);
            if (being.type != 'gear' && being.type != 'projectile' && being.type != 'chip' && being.type != 'tree' ){
             //console.log("ABT TO PLAY");
-            console.log("ARE YOU GOING TO SET??")
-            console.log(being.hp);
+            //console.log("ARE YOU GOING TO SET??")
+            //console.log(being.hp);
             beingContainer.updateAnimation(being.animation);
             beingContainer.setHP(being.hp);//because robots and players have hp.
             
@@ -796,7 +798,7 @@ function cleanup(){
     const length = 1;
     const hex = 0xffff00;
     arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-    scene.add( arrowHelper );
+    //scene.add( arrowHelper );
     //console.log("updates in degrees");
     //console.log((z+ 3*Math.PI/2)*180/Math.PI);
 

@@ -12,6 +12,9 @@ import {startCapturingInput, resetDiv, removeDiv, chipMovedActiveResult, chipMov
 import {initState, processGameUpdate} from './process.js' //the center of where we get/process our updates from the server! 
 import {updateGears, updateChipsIntoInv, addToInventory, updateLvl, showEndGameScreen, robotDelete} from './gameLogic.js';
 import { update } from 'lodash';
+import background from "../../assets/icons/background5.png"
+import filler from "../../assets/icons/filler.png"
+
 let mode;
 let playerClassType;
 let multiStyle;
@@ -24,34 +27,19 @@ function hide(element){
 }*/
 let room_arr;
 
+//$('#background').append($(`<img src=${filler}></img>`))
+$('#background').append($(`<img src=${background}></img>`))
 
 
 export function connect(playerType){
     return new Promise((resolve, reject) =>{
         //any socket stuff goes here.
         socket.on('connect', ()=>{
-         //   $('#myTestButton1')[0].onclick = () => console.log("OOMA POMA1");
-         //   $('#myTestButton2')[0].onclick = () => console.log("OOMA POMA2");
             console.log("connected!");
-           // document.getElementById("superButton").addEventListener('click', ()=> {console.log("SUPERE!"); socket.emit("gimmeInfo")});
-           /*document.getElementById("bypassButton").addEventListener('click', ()=>{socket.emit('bypass')});*/
-           //$("#store-icon-holder")[0].onclick = ()=>{console.log("DUMBASS WTF ARE YOU DOING")};
-
-           //document.getElementById("testTime").onclick = () => {console.log("test time!!")};
-           //$("#testTime")[0].onclick = () => {console.log("test time!!")};
-            //addAllConstantListeners();
-            //enterName();
             menuLogicSetup();
-            //better earlier than later
             initState();
-            //setupCanvas(); 
-            //updateCanvas();
-            //draw();
             socket.on('returnInfo', info => {
-                //console.log("U P D A T E");
-               /* console.log("received info. now logging player info:");
-                console.log(info.playerObj.unique_id);
-                console.log("should have logged^");*/
+                //console.log("New Server Update!");
                  processGameUpdate(info)});
             socket.on('refillButtons', fillButtons);
             socket.on('error', (type, roomname) => {handleErrors(type, roomname); console.log(type + " is what was returned.")});
@@ -81,7 +69,7 @@ export function emitCreateValidation(validateObj){
 }
 
 export function emitCreateValidationSinglePlayer(){
-    console.log("YO??")
+    //console.log("YO??")
     socket.emit('createSinglePlayer');
 }
 export function emitJoinValidation(validateObj){

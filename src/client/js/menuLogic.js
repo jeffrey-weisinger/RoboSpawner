@@ -385,6 +385,9 @@ export function menuComplete(){ //called when we're completed -- through a socke
     $("#bypassButton").hide();
     $("#menu").hide();
     $("#game").show();
+    $("#game").hide();
+    $("#background").hide();
+
     $("canvas").show();
     $(".viewport").show();
     $("#titleCardHolder").hide();

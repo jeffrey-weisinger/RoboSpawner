@@ -32,7 +32,7 @@ let chipHolderDiv;
 let firstOver360 = true;
 let startPlace;
 let originalRoboDiv;
-console.log(document.styleSheets[0].cssRules);
+//console.log(document.styleSheets[0].cssRules);
 
 let halfRoboHeight;// = $('.roboUnit').css('height');//we can just say this since all the robo units are effectively the same.
 let halfRoboWidth;
@@ -40,24 +40,24 @@ let halfChipHeight;
 let halfChipWidth;
 Object.values(document.styleSheets[0].cssRules).forEach(rule => {
     if (rule.selectorText == '.roboUnit'){
-        console.log("RULE");
-        console.log(rule.style);
+        //console.log("RULE");
+       // console.log(rule.style);
         halfRoboHeight = rule.style.height;
         halfRoboHeight = halfRoboHeight.substring(0, halfRoboHeight.length-2)/2
 
         halfRoboWidth = rule.style.width;
         halfRoboWidth = halfRoboWidth.substring(0, halfRoboWidth.length-2)/2    }
     if (rule.selectorText == '.chipDiv'){
-        console.log("RULE");
-        console.log(rule.style);
+        //console.log("RULE");
+       // console.log(rule.style);
         halfChipHeight = rule.style.height;
         halfChipHeight = halfChipHeight.substring(0, halfChipHeight.length-3)/2*16-39
 
         halfChipWidth = rule.style.width;
         halfChipWidth = halfChipWidth.substring(0, halfChipWidth.length-3)/2*16-27    }      
 })
-console.log('halfHeight' + halfChipHeight);
-console.log('halfWidth' + halfChipWidth );
+//console.log('halfHeight' + halfChipHeight);
+//console.log('halfWidth' + halfChipWidth );
 
 
 
@@ -149,14 +149,14 @@ function handleMouseDown(e){
                         if (div.classList[0] == 'roboUnit'){
                             type = 'robot';
                             draggingUuid = div.id //already string.
-                            console.log("draggingUUID in mousedown: " + draggingUuid);
+                           // console.log("draggingUUID in mousedown: " + draggingUuid);
                             model = div.classList[1];
                         }
                         if (div.classList[0] == 'chipDiv'){
                             type = 'chip';
                             startPlace = "inv"
                             draggingUuid = div.id //already string.
-                            console.log("draggingUUID in mousedown: " + draggingUuid);
+                            //console.log("draggingUUID in mousedown: " + draggingUuid);
                             //model = div.classList[1]
                         }
                     }

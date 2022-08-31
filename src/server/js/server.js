@@ -1,5 +1,4 @@
 const express = require('express');
-//const { fstat } = require('fs');
 const app = express();
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -14,7 +13,6 @@ let i = 1;
 let rooms = {};
 let arenas = {};
 let passcodes = {};
-//let roomNames = {room_arr: ['joseph room', 'bing bong room', 'king kong room']};
 
 app.use(webpackDevMiddleware(compiler));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -22,6 +20,7 @@ app.use(bodyParser.json())
 const server = app.listen(port, () => {
     console.log("now listening!");
 })//making the server listen 
+
 
 app.get('/room', (req, res)=>{
     res.setHeader('Content-Type', 'application/json');
@@ -31,7 +30,6 @@ app.get('/room', (req, res)=>{
 });
 
 app.post('/room', (req, res)=>{
-    console.log("yesssssir");
     //console.log(req.body);
     res.end("req.")
 })
@@ -43,7 +41,7 @@ app.post('/validation/multi', (req, res)=>{
 
 
 const io = socketio(server)
-//const arena = new Arena(); We were creating a new arena!
+
 io.on('connection', (socket)=>{
     //socket.on('addPlayer', playerType => {console.log("we're adding a player."); arena.addPlayer(socket, playerType)});
     socket.on("gimmeInfo", ()=>  {if (arenas[socket.id]){console.log("SUPPER BOTUON"); arenas[socket.id].returnToSocketsWhenPressed();}});
@@ -73,8 +71,6 @@ function newBypassArena(socket){
     while(arenaKeys.hasNext()){
         arenaKeys.next.remove(); //stack overflow solution! we'll prob remove this eventually though.
     }*/ 
-    //basically faking our way through the main menu.
-
     let arena = new Arena('multiplayer'); //should be only arena.
     arena.setType("multi");
     Object.assign(arenas, {[socket.id] : arena});
@@ -252,25 +248,19 @@ function handleMouseInput(socket, obj){
 
 
 function pickupItem(socket, uuidsArr){
-    console.log("PICKING UP, SERVER");
    // console.log(arenas);
    // console.log(socket.id);
     if (arenas[socket.id]){
         arenas[socket.id].pickupItem(socket, uuidsArr);
     }else{
-        console.log("no sockets?");
     }
-    console.log("AQAAH");
 }
 
 function buyRobot(socket, model){
-    console.log("OOHGA DOOGA")
     console.log(socket.id);
     if (arenas[socket.id]){ 
         arenas[socket.id].buyRequest(socket, model);
-        console.log("BUY REQ");
     }
-    console.log("BUY REQ2");
 
 }
 
