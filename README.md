@@ -8,8 +8,7 @@ I made a webgame this summer involving Robots, Webpack, and THREE.js. Play the d
 
 **Motivation:**
 RoboSpawner was inspired by 2D .io games from my childhood that I played late at night with my friends. I liked the idea of having a game so accessible on the web, and I wanted to recreate something similar. In this project, I took things a level further and made my game in 3D!
-    
-Tools used, How you made it (I'm going to be using a Q and A format)
+ 
   
 **How do you communicate between the server and the client?**
     
@@ -40,10 +39,15 @@ Don't want to read the above? Watch my video below:
 
 
 ## Video
---Video Goes Here--
---Maybe some cool Screenshots--
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/yh0pPX7mq7o/0.jpg)](http://www.youtube.com/watch?v=yh0pPX7mq7o "RoboSpawner Informational Video")
+
+<img width="1280" alt="screenshot2" src="https://user-images.githubusercontent.com/83981926/187777173-9038bf88-a801-4bb7-93c4-2435c239c819.png">
+
+<img width="1275" alt="screenshot3" src="https://user-images.githubusercontent.com/83981926/187777189-53117d73-6d43-4a6a-93a4-52d858bf8670.png">
 
 ## Demo:
+
 Make sure that you have the **most recent** versions of npm and node.js on your computer before installing this demo.  
 Navigate to the directory where you'd like to install RoboSpawner. Then, in the terminal, type:
 
