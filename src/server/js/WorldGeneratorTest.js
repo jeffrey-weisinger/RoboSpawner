@@ -576,11 +576,11 @@ class WorldGeneratorTest{
                         case "1":
                                 console.log("ONE ONE ONE");
                                 let uuid1 = uuidv4();
-                                let robo1 = new Robot(510, 482, 0, 'Idle', "6", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)//499.8, 500,
+                                let robo1 = new Robot(500, 510, 0, 'Idle', "1", null, uuid1, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)//499.8, 500,
                                 this.roboObj[uuid1] = robo1;
                                 this.allObjs[uuid1] = robo1;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );
-
+                                /*
                                 let uuid2 = uuidv4();
                                 let robo2 = new Robot(511, 500, 0, 'Idle', "8", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid2] = robo2;
@@ -592,7 +592,7 @@ class WorldGeneratorTest{
                                 let robo3 = new Robot(510, 518, 0, 'Idle', "7", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid3] = robo3;
                                 this.allObjs[uuid3] = robo3;
-                                this.sMap.insert(505, 495, 1, 1, uuid3 );
+                                this.sMap.insert(505, 495, 1, 1, uuid3 );*/
 /*
                                 console.log("ONE ONE ONE");
                                 let uuid4 = uuidv4();
@@ -747,13 +747,13 @@ class WorldGeneratorTest{
                                 break;
 
                         case "2":
-                                /*
+                                
                                 let uuid3 = uuidv4();
-                                let robo3 = new Robot(playerX, playerY+10, 0, 'Run', "7", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo3 = new Robot(playerX, playerY+10, 0, 'Run', "2", null, uuid3, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid3] = robo3;
                                 this.allObjs[uuid3] = robo3;
                                 this.sMap.insert(505, 495, 1, 1, uuid3 );
-*/
+
                                /* let uuid4 = uuidv4();
                                 let robo4 = new Robot(playerX, playerY-5, 0, 'Run', "1", null, uuid4, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid4] = robo4;
@@ -764,13 +764,13 @@ class WorldGeneratorTest{
                                 break;
 
                         case "3":
-                                /*
+                                
                                 let uuid5 = uuidv4();
-                                let robo5 = new Robot(playerX, playerY+10, 0, 'Run', "8", null, uuid5, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo5 = new Robot(playerX, playerY+10, 0, 'Run', "3", null, uuid5, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid5] = robo5;
                                 this.allObjs[uuid5] = robo5;
                                 this.sMap.insert(505, 495, 1, 1, uuid5 );
-                                */
+                                
 
                               /*  let uuid6 = uuidv4();
                                 let robo6 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid6, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -781,12 +781,12 @@ class WorldGeneratorTest{
                                 break;
 
                         case "4":
-                                /*
+                                
                                 let uuid7 = uuidv4();
-                                let robo7 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "4", null, uuid7, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo7 = new Robot(playerX, playerY+10, 0, 'Run', "4", null, uuid7, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid7] = robo7;
                                 this.allObjs[uuid7] = robo7;
-                                this.sMap.insert(505, 495, 1, 1, uuid7 );*/
+                                this.sMap.insert(505, 495, 1, 1, uuid7 );
 /*
                                 let uuid8 = uuidv4();
                                 let robo8 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid8, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -797,12 +797,12 @@ class WorldGeneratorTest{
                                 break;
 
                         case "5":
-                                /*
+                                
                                 let uuid11 = uuidv4();
-                                let robo11 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "5", null, uuid11, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo11 = new Robot(playerX, playerY+10, 0, 'Run', "5", null, uuid11, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid11] = robo11;
                                 this.allObjs[uuid11] = robo11;
-                                this.sMap.insert(505, 495, 1, 1, uuid11 );*/
+                                this.sMap.insert(505, 495, 1, 1, uuid11 );
         
                                /* let uuid12 = uuidv4();
                                 let robo12 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid12, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -815,11 +815,11 @@ class WorldGeneratorTest{
 
                         
                         case "6":
-                                /*let uuid13 = uuidv4();
-                                let robo13 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "6", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let uuid13 = uuidv4();
+                                let robo13 = new Robot(playerX, playerY+10, 0, 'Run', "6", null, uuid13, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid13] = robo13;
                                 this.allObjs[uuid13] = robo13;
-                                this.sMap.insert(505, 495, 1, 1, uuid13 );*/
+                                this.sMap.insert(505, 495, 1, 1, uuid13 );
         
                                 /*let uuid14 = uuidv4();
                                 let robo14 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "1", null, uuid14, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
@@ -833,7 +833,7 @@ class WorldGeneratorTest{
                         case "7":
                                 console.log("CASE 7");
                                 let uuid15 = uuidv4();
-                                let robo15 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "7", null, uuid15, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo15 = new Robot(playerX, playerY + 10, 0, 'Run', "7", null, uuid15, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid15] = robo15;
                                 this.allObjs[uuid15] = robo15;
                                 this.sMap.insert(505, 495, 1, 1, uuid15 );
@@ -851,7 +851,7 @@ class WorldGeneratorTest{
                         case "8":
                                 console.log("CASE 8");
                                 let uuid17 = uuidv4();
-                                let robo17 = new Robot(500 + 1*3, 500 + 2*3, 0, 'Run', "8", null, uuid17, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
+                                let robo17 = new Robot(playerX , playerY + 10, 0, 'Run', "8", null, uuid17, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid17] = robo17;
                                 this.allObjs[uuid17] = robo17;
                                 this.sMap.insert(505, 495, 1, 1, uuid17 );
@@ -862,7 +862,6 @@ class WorldGeneratorTest{
                                 this.allObjs[uuid18] = robo18;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );*/
                                 this.arena.updateEnemyCount(1);
-
                                 break;
   
                         }
@@ -886,7 +885,7 @@ class WorldGeneratorTest{
                                 this.roboObj[uuid1] = robo1;
                                 this.allObjs[uuid1] = robo1;
                                 this.sMap.insert(505, 495, 1, 1, uuid1 );
-        
+                        
                                 let uuid2 = uuidv4();
                                 let robo2 = new Robot(500 + 2*3, 500 + 0.5*3, 0, 'Run', "1", null, uuid2, null, this.allObjs, this.roboObj, this.projectiles, this.sMap)
                                 this.roboObj[uuid2] = robo2;

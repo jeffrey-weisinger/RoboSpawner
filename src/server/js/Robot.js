@@ -82,7 +82,7 @@ class Robot{
 
                 break;
             case "6":
-                this.dmg = 15;//35
+                this.dmg = 35;
                 this.hp = 130;
                 this.atkDistance = 12;
                 this.range = 3;
@@ -90,19 +90,19 @@ class Robot{
                 this.projSize = 0.8;
                 break;
             case "7":
-                this.dmg = 10;//40
+                this.dmg = 40;
                 this.hp = 180;
                 this.atkDistance = 8;
                 this.range = 3;
                 this.projSpeed = 2;
                 break;
             case "8":
-                this.dmg = 10;//60
+                this.dmg = 60;
                 this.hp = 250;
                 this.atkDistance = 15;
                 this.range = 3;
                 this.hp = 300;
-                this.projSpeed = 0.5;//2
+                this.projSpeed = 2;
                 this.projSize = 1.2;
                 break;
         } 
