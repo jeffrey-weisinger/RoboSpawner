@@ -39,11 +39,8 @@ Don't want to read the above? Watch my video below:
 
 
 ## Video
-[![Watch the video](https://img.youtube.com/vi/watch?v=PiOwnpGUZ-4/maxresdefault.jpg)](https://www.youtube.com/watch?v=PiOwnpGUZ-4)
---Maybe some cool Screenshots--
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/yh0pPX7mq7o/0.jpg)](http://www.youtube.com/watch?v=yh0pPX7mq7o "RoboSpawner Informational Video")
-https://youtu.be/yh0pPX7mq7o
 
 
 
