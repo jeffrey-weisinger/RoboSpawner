@@ -46,7 +46,7 @@ Don't want to read the above? Watch my video below:
 
 <img width="1275" alt="screenshot3" src="https://user-images.githubusercontent.com/83981926/187777189-53117d73-6d43-4a6a-93a4-52d858bf8670.png">
 
-## Demo:![Uploading screenshot3.png…]()
+## Demo:
 
 Make sure that you have the **most recent** versions of npm and node.js on your computer before installing this demo.  
 Navigate to the directory where you'd like to install RoboSpawner. Then, in the terminal, type:
